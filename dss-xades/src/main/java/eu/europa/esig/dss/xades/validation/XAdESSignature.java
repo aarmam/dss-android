@@ -88,7 +88,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.transform.dom.DOMSource;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,7 +110,7 @@ public class XAdESSignature extends DefaultAdvancedSignature {
 	/**
 	 * The default canonicalization method used in {@link SignatureDigestReference} computation
 	 */
-	private static final String DEFAULT_CANONICALIZATION_METHOD = CanonicalizationMethod.EXCLUSIVE;
+	private static final String DEFAULT_CANONICALIZATION_METHOD = XMLCanonicalizer.DEFAULT_DSS_C14N_METHOD;
 
 	/**
 	 * This variable contains the list of {@code XAdESPaths} adapted to the specific
@@ -171,7 +170,7 @@ public class XAdESSignature extends DefaultAdvancedSignature {
 		//
 		// Set the default JCE algorithms
 		//
-		JCEMapper.setProviderId(DSSSecurityProvider.getSecurityProviderName());
+		JCEMapper.setProviderId(DSSSecurityProvider.getSecurityProvider());
 		JCEMapper.registerDefaultAlgorithms();
 
 		/**

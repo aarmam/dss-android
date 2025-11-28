@@ -50,8 +50,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static javax.xml.crypto.dsig.XMLSignature.XMLNS;
-
 /**
  * The XAdES CounterSignatureBuilder used to create a counter signature 
  * signing a SignatureValue of a parent signature
@@ -63,6 +61,9 @@ public class CounterSignatureBuilder extends ExtensionBuilder {
 
 	/** The default prefix for a counter signature id */
 	private static final String COUNTER_SIGNATURE_PREFIX = "CS-";
+
+	/** XML Digital Signature namespace URI */
+	private static final String XMLNS = "http://www.w3.org/2000/09/xmldsig#";
 
 	/**
 	 * Default constructor

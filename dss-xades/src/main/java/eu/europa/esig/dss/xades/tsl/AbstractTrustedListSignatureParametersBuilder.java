@@ -34,8 +34,8 @@ import eu.europa.esig.dss.xades.reference.CanonicalizationTransform;
 import eu.europa.esig.dss.xades.reference.DSSReference;
 import eu.europa.esig.dss.xades.reference.DSSTransform;
 import eu.europa.esig.dss.xades.reference.EnvelopedSignatureTransform;
+import eu.europa.esig.dss.xml.utils.XMLCanonicalizer;
 
-import javax.xml.crypto.dsig.CanonicalizationMethod;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,7 +50,7 @@ public abstract class AbstractTrustedListSignatureParametersBuilder extends Abst
      * The EXCLUSIVE canonicalization shall be used
      * See TS 119 612 "B.1 The Signature element"
      */
-    private static final String DEFAULT_CANONICALIZATION = CanonicalizationMethod.EXCLUSIVE;
+    private static final String DEFAULT_CANONICALIZATION = XMLCanonicalizer.DEFAULT_DSS_C14N_METHOD;
 
     /** The default prefix for an enveloped signature reference id */
     private static final String DEFAULT_REFERENCE_PREFIX = "ref-enveloped-signature";

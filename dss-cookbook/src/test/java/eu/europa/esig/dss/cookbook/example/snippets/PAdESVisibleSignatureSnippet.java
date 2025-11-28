@@ -29,7 +29,7 @@ import eu.europa.esig.dss.pades.SignatureFieldParameters;
 import eu.europa.esig.dss.pades.SignatureImageParameters;
 import eu.europa.esig.dss.pades.SignatureImageTextParameters;
 import eu.europa.esig.dss.pdf.pdfbox.visible.PdfBoxNativeFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
 
 import java.awt.Color;
 
@@ -47,7 +47,7 @@ public class PAdESVisibleSignatureSnippet {
 		// import eu.europa.esig.dss.pades.SignatureImageParameters;
 		// import eu.europa.esig.dss.pades.SignatureImageTextParameters;
 		// import eu.europa.esig.dss.pdf.pdfbox.visible.PdfBoxNativeFont;
-		// import org.apache.pdfbox.pdmodel.font.PDType1Font;
+		// import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
 		// import java.awt.Color;
 
 		// Instantiate PAdES-specific parameters
