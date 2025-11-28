@@ -29,8 +29,8 @@ import eu.europa.esig.trustedlist.jaxb.tsl.TrustStatusListType;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.bind.JAXBElement;
-import jakarta.xml.bind.JAXBException;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
@@ -41,18 +41,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.signerry.dss.test.TestUtils;
-
 public class TrustedListFacadeTest {
 
 	@Test
-	public void testTL() throws JAXBException, XMLStreamException, IOException, SAXException {
-		marshallUnmarshall(TestUtils.getResourceAsFile("tl.xml"));
+	void testTL() throws JAXBException, XMLStreamException, IOException, SAXException {
+		marshallUnmarshall(new File("src/test/resources/tl.xml"));
 	}
 
 	@Test
-	public void testLOTL() throws JAXBException, XMLStreamException, IOException, SAXException {
-		marshallUnmarshall(TestUtils.getResourceAsFile("lotl.xml"));
+	void testTLv5() throws JAXBException, XMLStreamException, IOException, SAXException {
+		marshallUnmarshall(new File("src/test/resources/tlv5.xml"));
+	}
+
+	@Test
+	void testTLv6() throws JAXBException, XMLStreamException, IOException, SAXException {
+		marshallUnmarshall(new File("src/test/resources/tlv6.xml"));
+	}
+
+	@Test
+	void testLOTL() throws JAXBException, XMLStreamException, IOException, SAXException {
+		marshallUnmarshall(new File("src/test/resources/lotl.xml"));
 	}
 
 	private void marshallUnmarshall(File file) throws JAXBException, XMLStreamException, IOException, SAXException {
@@ -67,11 +75,11 @@ public class TrustedListFacadeTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testMRA_LOTL_extract_withTrustedListFacade() throws JAXBException, XMLStreamException, IOException, SAXException {
+	void testMRA_LOTL_extract_withTrustedListFacade() throws JAXBException, XMLStreamException, IOException, SAXException {
 		TrustedListFacade facade = TrustedListFacade.newFacade();
 
 		TrustStatusListType trustStatusListType = facade
-				.unmarshall(TestUtils.getResourceAsFile("mra/mra-lotl.xml"));
+				.unmarshall(new File("src/test/resources/mra/mra-lotl.xml"));
 		assertNotNull(trustStatusListType);
 
 		OtherTSLPointersType pointersToOtherTSL = trustStatusListType.getSchemeInformation().getPointersToOtherTSL();

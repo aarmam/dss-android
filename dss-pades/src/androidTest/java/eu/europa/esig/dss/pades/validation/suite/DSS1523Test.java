@@ -28,8 +28,6 @@ import eu.europa.esig.dss.enumerations.MimeTypeEnum;
 import eu.europa.esig.dss.model.DSSDocument;
 import eu.europa.esig.dss.model.InMemoryDocument;
 import eu.europa.esig.dss.model.x509.CertificateToken;
-import eu.europa.esig.dss.pades.PAdESSignatureParameters;
-import eu.europa.esig.dss.pades.PAdESTimestampParameters;
 import eu.europa.esig.dss.pades.validation.PDFDocumentValidator;
 import eu.europa.esig.dss.pdf.PdfDssDict;
 import eu.europa.esig.dss.spi.x509.revocation.ocsp.OCSPResponseBinary;
@@ -51,9 +49,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/validation/suite/DSS1523Test.java
 import com.signerry.dss.test.TestUtils;
 
 public class DSS1523Test extends AbstractPkiFactoryTestValidation<PAdESSignatureParameters, PAdESTimestampParameters> {
+=======
+public class DSS1523Test extends AbstractPkiFactoryTestValidation {
+>>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/validation/suite/DSS1523Test.java
 
 	@Test
 	public void validation() {

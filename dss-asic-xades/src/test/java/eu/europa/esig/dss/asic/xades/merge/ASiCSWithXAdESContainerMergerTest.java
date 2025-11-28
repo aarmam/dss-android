@@ -41,7 +41,6 @@ import eu.europa.esig.dss.spi.DSSUtils;
 import eu.europa.esig.dss.test.AbstractPkiFactoryTestValidation;
 import eu.europa.esig.dss.utils.Utils;
 import eu.europa.esig.dss.validation.reports.Reports;
-import eu.europa.esig.dss.xades.XAdESTimestampParameters;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -56,23 +55,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.signerry.dss.test.TestUtils;
-
-public class ASiCSWithXAdESContainerMergerTest extends
-        AbstractPkiFactoryTestValidation<ASiCWithXAdESSignatureParameters, XAdESTimestampParameters> {
+public class ASiCSWithXAdESContainerMergerTest extends AbstractPkiFactoryTestValidation {
 
     @Test
     public void isSupportedTest() {
         ASiCSWithXAdESContainerMerger merger = new ASiCSWithXAdESContainerMerger();
-        assertTrue(merger.isSupported(new FileDocument(TestUtils.getResourceAsFile("validation/onefile-ok.asics"))));
-        assertTrue(merger.isSupported(new FileDocument(TestUtils.getResourceAsFile("validation/multifiles-ok.asics"))));
-        assertTrue(merger.isSupported(new FileDocument(TestUtils.getResourceAsFile("signable/test.zip")))); // simple container
-        assertFalse(merger.isSupported(new FileDocument(TestUtils.getResourceAsFile("validation/onefile-ok.asice"))));
-        assertFalse(merger.isSupported(new FileDocument(TestUtils.getResourceAsFile("validation/multifiles-ok.asice"))));
-        assertFalse(merger.isSupported(new FileDocument(TestUtils.getResourceAsFile("signable/asic_cades.zip"))));
-        assertFalse(merger.isSupported(new FileDocument(TestUtils.getResourceAsFile("signable/asic_xades.zip")))); // ASiC-E
-        assertFalse(merger.isSupported(new FileDocument(TestUtils.getResourceAsFile("signable/open-document.odt"))));
-        assertFalse(merger.isSupported(new FileDocument(TestUtils.getResourceAsFile("signable/test.txt"))));
+        assertTrue(merger.isSupported(new FileDocument("src/test/resources/validation/onefile-ok.asics")));
+        assertTrue(merger.isSupported(new FileDocument("src/test/resources/validation/multifiles-ok.asics")));
+        assertTrue(merger.isSupported(new FileDocument("src/test/resources/signable/test.zip"))); // simple container
+        assertFalse(merger.isSupported(new FileDocument("src/test/resources/validation/onefile-ok.asice")));
+        assertFalse(merger.isSupported(new FileDocument("src/test/resources/validation/multifiles-ok.asice")));
+        assertFalse(merger.isSupported(new FileDocument("src/test/resources/signable/asic_cades.zip")));
+        assertFalse(merger.isSupported(new FileDocument("src/test/resources/signable/asic_xades.zip"))); // ASiC-E
+        assertFalse(merger.isSupported(new FileDocument("src/test/resources/signable/open-document.odt")));
+        assertFalse(merger.isSupported(new FileDocument("src/test/resources/signable/test.txt")));
     }
 
     @Test
@@ -163,8 +159,8 @@ public class ASiCSWithXAdESContainerMergerTest extends
 
     @Test
     public void mergeTwoNotSignedZipTest() {
-        DSSDocument firstContainer = new FileDocument(TestUtils.getResourceAsFile("signable/test.zip"));
-        DSSDocument secondContainer = new FileDocument(TestUtils.getResourceAsFile("signable/document.odt"));
+        DSSDocument firstContainer = new FileDocument("src/test/resources/signable/test.zip");
+        DSSDocument secondContainer = new FileDocument("src/test/resources/signable/document.odt");
 
         ASiCContent firstAsicContent = new ASiCWithXAdESContainerExtractor(firstContainer).extract();
         ASiCContent secondAsicContent = new ASiCWithXAdESContainerExtractor(secondContainer).extract();
@@ -217,8 +213,8 @@ public class ASiCSWithXAdESContainerMergerTest extends
     @Test
     public void mergeDifferentNamespacesTest() {
         ASiCSWithXAdESContainerMerger merger = new ASiCSWithXAdESContainerMerger(
-                new FileDocument(TestUtils.getResourceAsFile("validation/onefile-ok.asics")),
-                new FileDocument(TestUtils.getResourceAsFile("validation/onefile-ok-another-asic-namespace.asics")));
+                new FileDocument("src/test/resources/validation/onefile-ok.asics"),
+                new FileDocument("src/test/resources/validation/onefile-ok-another-asic-namespace.asics"));
         Exception exception = assertThrows(IllegalInputException.class, () -> merger.merge());
         assertEquals("Signature containers have different namespace prefixes!", exception.getMessage());
     }
@@ -412,7 +408,7 @@ public class ASiCSWithXAdESContainerMergerTest extends
 
     @Test
     public void mergeOneFileTest() {
-        DSSDocument document = new FileDocument(TestUtils.getResourceAsFile("validation/onefile-ok.asics"));
+        DSSDocument document = new FileDocument("src/test/resources/validation/onefile-ok.asics");
 
         ASiCSWithXAdESContainerMerger merger = new ASiCSWithXAdESContainerMerger(document);
         DSSDocument mergedDocument = merger.merge();

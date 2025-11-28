@@ -22,10 +22,14 @@ package eu.europa.esig.trustedlist.mra;
 
 import eu.europa.esig.trustedlist.TrustedListUtils;
 import eu.europa.esig.trustedlist.jaxb.tsl.ObjectFactory;
+<<<<<<< HEAD
 import eu.europa.esig.xmldsig.XSDAbstractUtils;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 
+=======
+import eu.europa.esig.dss.jaxb.common.XSDAbstractUtils;
+>>>>>>> release-5.13.1
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;

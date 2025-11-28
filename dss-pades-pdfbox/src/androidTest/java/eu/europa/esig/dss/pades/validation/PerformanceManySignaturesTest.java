@@ -29,9 +29,13 @@ import eu.europa.esig.dss.pdf.PdfDssDict;
 import eu.europa.esig.dss.pdf.pdfbox.PdfBoxDocumentReader;
 import eu.europa.esig.dss.spi.x509.revocation.OfflineRevocationSource;
 import eu.europa.esig.dss.validation.AdvancedSignature;
+<<<<<<< HEAD:dss-pades-pdfbox/src/androidTest/java/eu/europa/esig/dss/pades/validation/PerformanceManySignaturesTest.java
 import eu.europa.esig.dss.validation.timestamp.TimestampToken;
 
 import org.junit.jupiter.api.Disabled;
+=======
+import eu.europa.esig.dss.spi.x509.tsp.TimestampToken;
+>>>>>>> release-5.13.1:dss-pades-pdfbox/src/test/java/eu/europa/esig/dss/pades/validation/PerformanceManySignaturesTest.java
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

@@ -42,7 +42,7 @@ import eu.europa.esig.dss.model.DSSDocument;
 import static com.signerry.dss.test.TestUtils.getResourceAsFile;
 import eu.europa.esig.dss.model.FileDocument;
 import eu.europa.esig.dss.signature.DocumentSignatureService;
-import eu.europa.esig.dss.xades.SantuarioInitializer;
+import eu.europa.esig.dss.xml.utils.SantuarioInitializer;
 import eu.europa.esig.dss.xades.XAdESSignatureParameters;
 import eu.europa.esig.dss.xades.XAdESTimestampParameters;
 import eu.europa.esig.dss.xades.reference.DSSReference;

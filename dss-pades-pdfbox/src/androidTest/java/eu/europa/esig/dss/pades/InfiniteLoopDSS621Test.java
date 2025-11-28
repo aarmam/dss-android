@@ -90,8 +90,13 @@ public class InfiniteLoopDSS621Test {
 
 	@Test
 	public void testReadTimestamp1() throws Exception {
+<<<<<<< HEAD:dss-pades-pdfbox/src/androidTest/java/eu/europa/esig/dss/pades/InfiniteLoopDSS621Test.java
         assertTimeout(ofMillis(25000), () -> {
         	DSSDocument signDocument = new InMemoryDocument(TestUtils.getResourceAsStream(FILE_PATH));
+=======
+        assertTimeout(ofMillis(6000), () -> {
+        	DSSDocument signDocument = new InMemoryDocument(getClass().getResourceAsStream(FILE_PATH));
+>>>>>>> release-5.13.1:dss-pades-pdfbox/src/test/java/eu/europa/esig/dss/pades/InfiniteLoopDSS621Test.java
     		final CommonCertificateVerifier certificateVerifier = new CommonCertificateVerifier();
 			certificateVerifier.setAIASource(null); // Error 404 on DER policy
 
@@ -242,9 +247,13 @@ public class InfiniteLoopDSS621Test {
 
 					logger.debug("SIGNATURE VALUE : " + signatureValue);
 
+<<<<<<< HEAD:dss-pades-pdfbox/src/androidTest/java/eu/europa/esig/dss/pades/InfiniteLoopDSS621Test.java
 					String algorithmFull = encryptionAlgorithm.getName() + "/ECB/PKCS1Padding";
 
 					Cipher cipher = Cipher.getInstance(algorithmFull, CryptoProvider.BCProvider);
+=======
+					Cipher cipher = Cipher.getInstance(encryptionAlgorithm.getName(),"SunJCE");
+>>>>>>> release-5.13.1:dss-pades-pdfbox/src/test/java/eu/europa/esig/dss/pades/InfiniteLoopDSS621Test.java
 					cipher.init(Cipher.DECRYPT_MODE, signerCertificate);
 					byte[] decrypted = cipher.doFinal(encryptedInfoOctedString.getOctets());
 

@@ -20,8 +20,6 @@
  */
 package eu.europa.esig.dss.service.ocsp;
 
-import com.signerry.dss.test.TestUtils;
-
 import eu.europa.esig.dss.enumerations.RevocationOrigin;
 import eu.europa.esig.dss.model.x509.CertificateToken;
 import eu.europa.esig.dss.model.x509.extension.AuthorityInformationAccess;
@@ -34,8 +32,6 @@ import eu.europa.esig.dss.spi.DSSUtils;
 import eu.europa.esig.dss.spi.client.jdbc.JdbcCacheConnector;
 import eu.europa.esig.dss.spi.x509.revocation.RevocationToken;
 import eu.europa.esig.dss.spi.x509.revocation.ocsp.OCSPToken;
-
-import org.apache.hc.client5.http.utils.Hex;
 import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,8 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Collections;
@@ -54,6 +48,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -66,14 +61,16 @@ public class JdbcCacheOcspSourceTest {
 	private static final Logger LOG = LoggerFactory.getLogger(JdbcCacheOcspSourceTest.class);
 	
 	private JdbcCacheOCSPSource ocspSource = new MockJdbcCacheOCSPSource();
-
+	
+	private JdbcDataSource dataSource = new JdbcDataSource();
+	
 	private OCSPToken storedRevocationToken = null;
 	private Date requestTime = null;
 	
 	@BeforeEach
 	public void setUp() throws SQLException {
-		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
-		JdbcCacheConnector jdbcCacheConnector = new JdbcCacheConnector(connection);
+		dataSource.setUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+		JdbcCacheConnector jdbcCacheConnector = new JdbcCacheConnector(dataSource);
 		ocspSource.setJdbcCacheConnector(jdbcCacheConnector);
 		assertFalse(ocspSource.isTableExists());
 		ocspSource.initTable();
@@ -84,8 +81,8 @@ public class JdbcCacheOcspSourceTest {
 	public void test() throws Exception {
 		OCSPToken revocationToken;
 		
-		CertificateToken certificateToken = DSSUtils.loadCertificate(TestUtils.getResourceAsStream("ec.europa.eu.crt"));
-		CertificateToken rootToken = DSSUtils.loadCertificate(TestUtils.getResourceAsStream("CALT.crt"));
+		CertificateToken certificateToken = DSSUtils.loadCertificate(new File("src/test/resources/ec.europa.eu.crt"));
+		CertificateToken rootToken = DSSUtils.loadCertificate(new File("src/test/resources/CALT.crt"));
 		revocationToken = ocspSource.getRevocationToken(certificateToken, rootToken);
 		assertNull(revocationToken);
 		
@@ -103,13 +100,13 @@ public class JdbcCacheOcspSourceTest {
 		assertEquals(revocationToken.getAbbreviation(), savedRevocationToken.getAbbreviation());
 		assertEquals(revocationToken.getCreationDate(), savedRevocationToken.getCreationDate());
 		assertEquals(revocationToken.getDSSIdAsString(), savedRevocationToken.getDSSIdAsString());
-		assertEquals(Hex.encodeHexString(revocationToken.getEncoded()), Hex.encodeHexString(savedRevocationToken.getEncoded()));
-		assertEquals(Hex.encodeHexString(revocationToken.getIssuerX500Principal().getEncoded()), Hex.encodeHexString(savedRevocationToken.getIssuerX500Principal().getEncoded()));
+		assertArrayEquals(revocationToken.getEncoded(), savedRevocationToken.getEncoded());
+		assertArrayEquals(revocationToken.getIssuerX500Principal().getEncoded(), savedRevocationToken.getIssuerX500Principal().getEncoded());
 		assertEquals(revocationToken.getNextUpdate(), savedRevocationToken.getNextUpdate());
 		assertEquals(RevocationOrigin.CACHED, savedRevocationToken.getExternalOrigin());
 		assertNotEquals(revocationToken.getExternalOrigin(), savedRevocationToken.getExternalOrigin());
 		assertEquals(revocationToken.getProductionDate(), savedRevocationToken.getProductionDate());
-		assertEquals(Hex.encodeHexString(revocationToken.getPublicKeyOfTheSigner().getEncoded()), Hex.encodeHexString(savedRevocationToken.getPublicKeyOfTheSigner().getEncoded()));
+		assertArrayEquals(revocationToken.getPublicKeyOfTheSigner().getEncoded(), savedRevocationToken.getPublicKeyOfTheSigner().getEncoded());
 		assertEquals(revocationToken.getReason(), savedRevocationToken.getReason());
 		assertEquals(revocationToken.getRelatedCertificateId(), savedRevocationToken.getRelatedCertificateId());
 		assertEquals(revocationToken.getRevocationDate(), savedRevocationToken.getRevocationDate());

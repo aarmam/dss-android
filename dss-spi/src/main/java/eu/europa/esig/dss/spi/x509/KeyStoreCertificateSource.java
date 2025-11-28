@@ -38,7 +38,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.security.KeyStore.PasswordProtection;
 import java.security.cert.Certificate;
 import java.util.Enumeration;
 import java.util.List;
@@ -57,17 +56,29 @@ public class KeyStoreCertificateSource extends CommonCertificateSource {
 	private KeyStore keyStore;
 
 	/** A password to the KeyStore */
-	private PasswordProtection passwordProtection;
+	private char[] passwordProtection;
 
 	/**
 	 * Constructor for KeyStoreCertificateSource.
-	 * 
 	 * This constructor allows to create a new empty keystore.
 	 * 
 	 * @param ksType     the keystore type
 	 * @param ksPassword the keystore password
+	 * @deprecated since DSS 5.13. Use {@code new KeyStoreCertificateSource(String ksType, char[] ksPassword)}
 	 */
+	@Deprecated
 	public KeyStoreCertificateSource(final String ksType, final String ksPassword) {
+		this((InputStream) null, ksType, ksPassword.toCharArray());
+	}
+
+	/**
+	 * Constructor for KeyStoreCertificateSource.
+	 * This constructor allows to create a new empty keystore.
+	 *
+	 * @param ksType     the keystore type
+	 * @param ksPassword the keystore password
+	 */
+	public KeyStoreCertificateSource(final String ksType, final char[] ksPassword) {
 		this((InputStream) null, ksType, ksPassword);
 	}
 
@@ -78,8 +89,22 @@ public class KeyStoreCertificateSource extends CommonCertificateSource {
 	 * @param ksType     the keystore type
 	 * @param ksPassword the keystore password
 	 * @throws IOException if the file not exists
+	 * @deprecated since DSS 5.13. Use {@code new KeyStoreCertificateSource(String ksFilePath, String ksType, char[] ksPassword)}
 	 */
+	@Deprecated
 	public KeyStoreCertificateSource(final String ksFilePath, final String ksType, final String ksPassword) throws IOException {
+		this(new File(ksFilePath), ksType, ksPassword.toCharArray());
+	}
+
+	/**
+	 * Constructor for KeyStoreCertificateSource.
+	 *
+	 * @param ksFilePath the keystore filepath
+	 * @param ksType     the keystore type
+	 * @param ksPassword the keystore password
+	 * @throws IOException if the file not exists
+	 */
+	public KeyStoreCertificateSource(final String ksFilePath, final String ksType, final char[] ksPassword) throws IOException {
 		this(new File(ksFilePath), ksType, ksPassword);
 	}
 
@@ -94,8 +119,26 @@ public class KeyStoreCertificateSource extends CommonCertificateSource {
 	 *            the keystore password
 	 * @throws IOException
 	 *             if the file not exists
+	 * @deprecated since DSS 5.13. Use {@code new KeyStoreCertificateSource(File ksFile, String ksType, char[] ksPassword)}
 	 */
+	@Deprecated
 	public KeyStoreCertificateSource(final File ksFile, final String ksType, final String ksPassword) throws IOException {
+		this(Files.newInputStream(ksFile.toPath()), ksType, ksPassword.toCharArray());
+	}
+
+	/**
+	 * Constructor for KeyStoreCertificateSource with <code>CertificatePool</code>.
+	 *
+	 * @param ksFile
+	 *            the keystore file
+	 * @param ksType
+	 *            the keystore type
+	 * @param ksPassword
+	 *            the keystore password
+	 * @throws IOException
+	 *             if the file not exists
+	 */
+	public KeyStoreCertificateSource(final File ksFile, final String ksType, final char[] ksPassword) throws IOException {
 		this(Files.newInputStream(ksFile.toPath()), ksType, ksPassword);
 	}
 
@@ -108,18 +151,40 @@ public class KeyStoreCertificateSource extends CommonCertificateSource {
 	 *            the keystore type
 	 * @param ksPassword
 	 *            the keystore password
+	 * @deprecated since DSS 5.13. Use {@code new KeyStoreCertificateSource(InputStream ksStream, String ksType, char[] ksPassword)}
 	 */
+	@Deprecated
 	public KeyStoreCertificateSource(final InputStream ksStream, final String ksType, final String ksPassword) {
+		initKeystore(ksStream, ksType, ksPassword.toCharArray());
+	}
+
+	/**
+	 * The default constructor for KeyStoreCertificateSource.
+	 *
+	 * @param ksStream
+	 *            the inputstream with the keystore (can be null to create a new keystore)
+	 * @param ksType
+	 *            the keystore type
+	 * @param ksPassword
+	 *            the keystore password
+	 */
+	public KeyStoreCertificateSource(final InputStream ksStream, final String ksType, final char[] ksPassword) {
 		initKeystore(ksStream, ksType, ksPassword);
 	}
 
-	private void initKeystore(final InputStream ksStream, final String ksType, final String ksPassword) {
+	private void initKeystore(final InputStream ksStream, final String ksType, final char[] ksPassword) {
 		try (InputStream is = ksStream) {
+<<<<<<< HEAD
 			keyStore = KeyStore.getInstance(ksType, CryptoProvider.BCProvider);
 
 			final char[] password = (ksPassword == null) ? null : ksPassword.toCharArray();
 			keyStore.load(is, password);
 			passwordProtection = new PasswordProtection(password);
+=======
+			keyStore = KeyStore.getInstance(ksType);
+			keyStore.load(is, ksPassword);
+			passwordProtection = ksPassword;
+>>>>>>> release-5.13.1
 			extractCertificates();
 		} catch (GeneralSecurityException | IOException e) {
 			throw new DSSException("Unable to initialize the keystore", e);
@@ -240,7 +305,7 @@ public class KeyStoreCertificateSource extends CommonCertificateSource {
 	 */
 	public void store(OutputStream os) {
 		try {
-			keyStore.store(os, passwordProtection.getPassword());
+			keyStore.store(os, passwordProtection);
 		} catch (GeneralSecurityException | IOException e) {
 			throw new DSSException("Unable to store the keystore", e);
 		}

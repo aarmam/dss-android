@@ -20,13 +20,11 @@
  */
 package eu.europa.esig.dss.tsl.job.mra;
 
-import eu.europa.esig.dss.DomUtils;
-import eu.europa.esig.dss.definition.DSSNamespace;
-import eu.europa.esig.dss.definition.xmldsig.XMLDSigNamespace;
 import eu.europa.esig.dss.diagnostic.CertificateWrapper;
 import eu.europa.esig.dss.diagnostic.DiagnosticData;
 import eu.europa.esig.dss.diagnostic.SignatureWrapper;
-import eu.europa.esig.dss.diagnostic.TrustedServiceWrapper;
+import eu.europa.esig.dss.diagnostic.TrustServiceWrapper;
+import eu.europa.esig.dss.diagnostic.jaxb.XmlQualifier;
 import eu.europa.esig.dss.enumerations.Indication;
 import eu.europa.esig.dss.enumerations.MRAEquivalenceContext;
 import eu.europa.esig.dss.enumerations.SignatureLevel;
@@ -63,12 +61,14 @@ import eu.europa.esig.dss.validation.CertificateVerifier;
 import eu.europa.esig.dss.validation.DocumentValidator;
 import eu.europa.esig.dss.validation.SignedDocumentValidator;
 import eu.europa.esig.dss.validation.reports.Reports;
-import eu.europa.esig.dss.xades.DSSXMLUtils;
-import eu.europa.esig.dss.xades.TrustedListSignatureParametersBuilder;
 import eu.europa.esig.dss.xades.XAdESSignatureParameters;
-import eu.europa.esig.dss.xades.definition.XAdESNamespaces;
 import eu.europa.esig.dss.xades.signature.XAdESService;
+import eu.europa.esig.dss.xades.tsl.TrustedListV5SignatureParametersBuilder;
+import eu.europa.esig.dss.xml.common.definition.DSSNamespace;
+import eu.europa.esig.dss.xml.utils.DomUtils;
 import eu.europa.esig.trustedlist.enums.Assert;
+import eu.europa.esig.xades.definition.XAdESNamespace;
+import eu.europa.esig.xmldsig.definition.XMLDSigNamespace;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -113,7 +113,7 @@ public abstract class AbstractMRALOTLTest extends PKIFactoryAccess {
     @BeforeAll
     public static void init() {
         DomUtils.registerNamespace(XMLDSigNamespace.NS);
-        DomUtils.registerNamespace(XAdESNamespaces.XADES_132);
+        DomUtils.registerNamespace(XAdESNamespace.XADES_132);
         DomUtils.registerNamespace(TL_NAMESPACE);
         DomUtils.registerNamespace(MRA_NAMESPACE);
         DomUtils.registerNamespace(CONDITION_NAMESPACE);
@@ -177,10 +177,10 @@ public abstract class AbstractMRALOTLTest extends PKIFactoryAccess {
 
 
         signer = SIGNER_ZZ_TL_NAME;
-        DSSDocument tlToSign = new InMemoryDocument(DSSXMLUtils.serializeNode(tlDocument));
+        DSSDocument tlToSign = new InMemoryDocument(DomUtils.serializeNode(tlDocument));
 
         XAdESService service = new XAdESService(getOfflineCertificateVerifier());
-        XAdESSignatureParameters signatureParameters = new TrustedListSignatureParametersBuilder(getSigningCert(), tlToSign).build();
+        XAdESSignatureParameters signatureParameters = new TrustedListV5SignatureParametersBuilder(getSigningCert(), tlToSign).build();
         ToBeSigned dataToSign = service.getDataToSign(tlToSign, signatureParameters);
         SignatureValue signatureValue = getToken().sign(dataToSign, signatureParameters.getDigestAlgorithm(), getPrivateKeyEntry());
         DSSDocument signedTL = service.signDocument(tlToSign, signatureParameters, signatureValue);
@@ -212,10 +212,10 @@ public abstract class AbstractMRALOTLTest extends PKIFactoryAccess {
 
 
         signer = SIGNER_LOTL_NAME;
-        DSSDocument lotlToSign = new InMemoryDocument(DSSXMLUtils.serializeNode(lotlDocument));
+        DSSDocument lotlToSign = new InMemoryDocument(DomUtils.serializeNode(lotlDocument));
 
         XAdESService service = new XAdESService(getOfflineCertificateVerifier());
-        XAdESSignatureParameters signatureParameters = new TrustedListSignatureParametersBuilder(getSigningCert(), lotlToSign).build();
+        XAdESSignatureParameters signatureParameters = new TrustedListV5SignatureParametersBuilder(getSigningCert(), lotlToSign).build();
         ToBeSigned dataToSign = service.getDataToSign(lotlToSign, signatureParameters);
         SignatureValue signatureValue = getToken().sign(dataToSign, signatureParameters.getDigestAlgorithm(), getPrivateKeyEntry());
         DSSDocument signedLOTL = service.signDocument(lotlToSign, signatureParameters, signatureValue);
@@ -470,6 +470,25 @@ public abstract class AbstractMRALOTLTest extends PKIFactoryAccess {
             }
         }
 
+        Element trustServiceEquivalenceHistoryElement = DomUtils.getElement(mraInformation,
+                "./mra:TrustServiceEquivalenceInformation/mra:TrustServiceEquivalenceHistory/mra:TrustServiceEquivalenceHistoryInstance");
+        if (trustServiceEquivalenceHistoryElement != null) {
+            String trustServiceEquivalenceHistoryStatus = getTrustServiceEquivalenceHistoryStatus();
+            if (Utils.isStringNotEmpty(trustServiceEquivalenceHistoryStatus)) {
+                Element trustServiceEquivalenceStatusElement = DomUtils.getElement(trustServiceEquivalenceHistoryElement,
+                        "./mra:TrustServiceEquivalenceStatus");
+                setText(trustServiceEquivalenceStatusElement, trustServiceEquivalenceHistoryStatus);
+            }
+
+            Date trustServiceEquivalenceHistoryStatusStartingTime = getTrustServiceEquivalenceHistoryStatusStartingTime();
+            if (trustServiceEquivalenceHistoryStatusStartingTime != null) {
+                String timeString = DSSUtils.formatDateToRFC(trustServiceEquivalenceHistoryStatusStartingTime);
+                Element trustServiceEquivalenceStatusStartingTimeElement = DomUtils.getElement(trustServiceEquivalenceHistoryElement,
+                        "./mra:TrustServiceEquivalenceStatusStartingTime");
+                setText(trustServiceEquivalenceStatusStartingTimeElement, timeString);
+            }
+        }
+
     }
 
     protected String getTrustServiceLegalIdentifier() {
@@ -496,7 +515,15 @@ public abstract class AbstractMRALOTLTest extends PKIFactoryAccess {
         return null;
     }
 
+    protected String getTrustServiceEquivalenceHistoryStatus() {
+        return null;
+    }
+
     protected Date getTrustServiceEquivalenceStatusStartingTime() {
+        return null;
+    }
+
+    protected Date getTrustServiceEquivalenceHistoryStatusStartingTime() {
         return null;
     }
 
@@ -700,7 +727,7 @@ public abstract class AbstractMRALOTLTest extends PKIFactoryAccess {
             Element qcTypeElement = document.createElementNS(MRA_NAMESPACE.getUri(), "mra:QcType");
             qcStatementInfoElement.appendChild(qcTypeElement);
 
-            Element identifierElement = document.createElementNS(XAdESNamespaces.XADES_132.getUri(), "ns4:Identifier");
+            Element identifierElement = document.createElementNS(XAdESNamespace.XADES_132.getUri(), "ns4:Identifier");
             qcTypeElement.appendChild(identifierElement);
             identifierElement.setAttribute("Qualifier", "OIDAsURN");
             setText(identifierElement, qcStatementCondition.getType());
@@ -723,7 +750,7 @@ public abstract class AbstractMRALOTLTest extends PKIFactoryAccess {
     }
 
     private void addUrnOid(Document document, Element element, String oid) {
-        Element identifierElement = document.createElementNS(XAdESNamespaces.XADES_132.getUri(), "ns4:Identifier");
+        Element identifierElement = document.createElementNS(XAdESNamespace.XADES_132.getUri(), "ns4:Identifier");
         element.appendChild(identifierElement);
         identifierElement.setAttribute("Qualifier", "OIDAsURN");
         setText(identifierElement, oid);
@@ -839,12 +866,12 @@ public abstract class AbstractMRALOTLTest extends PKIFactoryAccess {
         List<CertificateWrapper> usedCertificates = diagnosticData.getUsedCertificates();
         assertTrue(Utils.isCollectionNotEmpty(usedCertificates));
         for (CertificateWrapper certificateWrapper : usedCertificates) {
-            List<TrustedServiceWrapper> trustedServices = certificateWrapper.getTrustedServices();
-            for (TrustedServiceWrapper trustedServiceWrapper : trustedServices) {
-                assertEquals(isEnactedMRA(), trustedServiceWrapper.isEnactedMRA());
+            List<TrustServiceWrapper> trustServices = certificateWrapper.getTrustServices();
+            for (TrustServiceWrapper trustServiceWrapper : trustServices) {
+                assertEquals(isEnactedMRA(), trustServiceWrapper.isEnactedMRA());
                 if (isEnactedMRA()) {
-                    assertNotNull(trustedServiceWrapper.getOriginalTCType());
-                    assertNotNull(trustedServiceWrapper.getOriginalTCStatus());
+                    assertNotNull(trustServiceWrapper.getOriginalTCType());
+                    assertNotNull(trustServiceWrapper.getOriginalTCStatus());
                 }
             }
         }
@@ -853,33 +880,46 @@ public abstract class AbstractMRALOTLTest extends PKIFactoryAccess {
     protected void verifySigningCertificate(DiagnosticData diagnosticData) {
         SignatureWrapper signature = diagnosticData.getSignatureById(diagnosticData.getFirstSignatureId());
         CertificateWrapper signingCertificate = signature.getSigningCertificate();
-        List<TrustedServiceWrapper> trustedServices = signingCertificate.getTrustedServices();
-        assertTrue(Utils.isCollectionNotEmpty(trustedServices));
+        List<TrustServiceWrapper> trustServices = signingCertificate.getTrustServices();
+        assertTrue(Utils.isCollectionNotEmpty(trustServices));
 
         boolean enactedMRAFound = false;
-        for (TrustedServiceWrapper trustedServiceWrapper : trustedServices) {
-            if (trustedServiceWrapper.isEnactedMRA()) {
+        for (TrustServiceWrapper trustServiceWrapper : trustServices) {
+            if (trustServiceWrapper.isEnactedMRA()) {
                 if (getTrustServiceLegalIdentifier() != null) {
-                    assertEquals(getTrustServiceLegalIdentifier(), trustedServiceWrapper.getMraTrustServiceLegalIdentifier());
+                    assertEquals(getTrustServiceLegalIdentifier(), trustServiceWrapper.getMraTrustServiceLegalIdentifier());
                 }
                 if (getTrustServiceTSLTypeListPointingPartyServiceTypeIdentifier() != null) {
-                    assertEquals(getTrustServiceTSLTypeListPointingPartyServiceTypeIdentifier(), trustedServiceWrapper.getType());
+                    assertEquals(getTrustServiceTSLTypeListPointingPartyServiceTypeIdentifier(), trustServiceWrapper.getType());
                 }
                 if (getTrustServiceTSLTypeListPointingPartyAdditionalServiceInformation() != null) {
-                    assertEquals(getTrustServiceTSLTypeListPointingPartyAdditionalServiceInformation(), trustedServiceWrapper.getAdditionalServiceInfos().iterator().next());
+                    assertEquals(getTrustServiceTSLTypeListPointingPartyAdditionalServiceInformation(), trustServiceWrapper.getAdditionalServiceInfos().iterator().next());
                 }
-                if (getTrustServiceEquivalenceStatusStartingTime() != null) {
+                if (getTrustServiceEquivalenceStatusStartingTime() != null && Utils.collectionSize(trustServices) == 1) {
                     assertEquals(DSSUtils.formatDateToRFC(getTrustServiceEquivalenceStatusStartingTime()),
-                            DSSUtils.formatDateToRFC(trustedServiceWrapper.getMraTrustServiceEquivalenceStatusStartingTime()));
+                            DSSUtils.formatDateToRFC(trustServiceWrapper.getMraTrustServiceEquivalenceStatusStartingTime()));
                 }
                 if (getTrustServiceTSLTypeListPointingPartyTrustServiceTSLStatusValidEquivalence() != null) {
-                    assertEquals(getTrustServiceTSLTypeListPointingPartyTrustServiceTSLStatusValidEquivalence(), trustedServiceWrapper.getStatus());
+                    assertEquals(getTrustServiceTSLTypeListPointingPartyTrustServiceTSLStatusValidEquivalence(), trustServiceWrapper.getStatus());
                 }
                 if (getQualifierEquivalenceMap() != null) {
                     for (Map.Entry<String, String> mapEntry : getQualifierEquivalenceMap().entrySet()) {
-                        if (trustedServiceWrapper.getOriginalCapturedQualifiers().contains(mapEntry.getKey())) {
-                            assertTrue(trustedServiceWrapper.getCapturedQualifiers().contains(mapEntry.getValue()));
+                        if (trustServiceWrapper.getOriginalCapturedQualifierUris().contains(mapEntry.getKey())) {
+                            assertTrue(trustServiceWrapper.getCapturedQualifierUris().contains(mapEntry.getValue()));
                         }
+                    }
+                }
+                if (Utils.isCollectionNotEmpty(trustServiceWrapper.getCapturedQualifiers())) {
+                    assertEquals(Utils.collectionSize(trustServiceWrapper.getCapturedQualifiers()), Utils.collectionSize(trustServiceWrapper.getCapturedQualifierUris()));
+                    assertEquals(Utils.collectionSize(trustServiceWrapper.getCapturedQualifiers()), Utils.collectionSize(trustServiceWrapper.getOriginalCapturedQualifiers()));
+                    assertEquals(Utils.collectionSize(trustServiceWrapper.getCapturedQualifiers()), Utils.collectionSize(trustServiceWrapper.getOriginalCapturedQualifierUris()));
+                    for (XmlQualifier qualifier : trustServiceWrapper.getCapturedQualifiers()) {
+                        assertNotNull(qualifier.getValue());
+                        assertTrue(qualifier.isCritical());
+                    }
+                    for (XmlQualifier qualifier : trustServiceWrapper.getOriginalCapturedQualifiers()) {
+                        assertNotNull(qualifier.getValue());
+                        assertTrue(qualifier.isCritical());
                     }
                 }
                 enactedMRAFound = true;

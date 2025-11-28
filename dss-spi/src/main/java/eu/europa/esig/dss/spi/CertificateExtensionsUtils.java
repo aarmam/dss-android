@@ -35,6 +35,7 @@ import eu.europa.esig.dss.model.x509.extension.CertificateExtensions;
 import eu.europa.esig.dss.model.x509.extension.CertificatePolicies;
 import eu.europa.esig.dss.model.x509.extension.CertificatePolicy;
 import eu.europa.esig.dss.model.x509.extension.ExtendedKeyUsages;
+import eu.europa.esig.dss.model.x509.extension.GeneralName;
 import eu.europa.esig.dss.model.x509.extension.GeneralSubtree;
 import eu.europa.esig.dss.model.x509.extension.InhibitAnyPolicy;
 import eu.europa.esig.dss.model.x509.extension.KeyUsage;
@@ -50,6 +51,7 @@ import eu.europa.esig.dss.utils.Utils;
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.ASN1String;
@@ -351,7 +353,11 @@ public class CertificateExtensionsUtils {
                     }
                     generalName.setValue(strValue);
                 } else if (value instanceof byte[]) {
+<<<<<<< HEAD
                     generalName.setValue("#" + Utils.toHex((byte[]) value));
+=======
+                    generalName.setValue(toHexEncoded((byte[]) value));
+>>>>>>> release-5.13.1
                 } else {
                     LOG.warn("Unable to load the alternative name. Reason : Unsupported value type!");
                     return null;
@@ -636,6 +642,7 @@ public class CertificateExtensionsUtils {
 
             org.bouncycastle.asn1.x509.GeneralName generalName = bcGeneralSubtree.getBase();
             GeneralNameType generalNameType = GeneralNameType.fromIndex(generalName.getTagNo());
+<<<<<<< HEAD
             generalSubtree.setGeneralNameType(generalNameType);
             generalSubtree.setMinimum(bcGeneralSubtree.getMinimum());
             generalSubtree.setMaximum(bcGeneralSubtree.getMaximum());
@@ -646,15 +653,72 @@ public class CertificateExtensionsUtils {
 
             } else if (generalNameType == null) {
                 LOG.warn("Unsupported GeneralName type of index'{}'!", generalName.getTagNo());
+=======
+            if (generalNameType == null) {
+                LOG.warn("Unsupported GeneralName type of index '{}'!", generalName.getTagNo());
+>>>>>>> release-5.13.1
                 continue;
-
-            } else {
-                LOG.warn("Unsupported GeneralName type '{}'! Base64-encoded value is returned.", generalNameType.getLabel());
-                generalSubtree.setValue(Utils.toBase64(DSSASN1Utils.getDEREncoded(generalName.getName())));
             }
+
+            generalSubtree.setGeneralNameType(generalNameType);
+            generalSubtree.setMinimum(bcGeneralSubtree.getMinimum());
+            generalSubtree.setMaximum(bcGeneralSubtree.getMaximum());
+            generalSubtree.setValue(getStringValue(generalNameType, generalName.getName()));
+
             result.add(generalSubtree);
         }
         return result;
+    }
+
+    private static String getStringValue(GeneralNameType generalNameType, ASN1Encodable generalNameValue) {
+        try {
+            switch (generalNameType) {
+                case OTHER_NAME:
+                case EDI_PARTY_NAME:
+                case X400_ADDRESS:
+                    return toHexEncoded(generalNameValue);
+
+                case RFC822_NAME:
+                case DNS_NAME:
+                case UNIFORM_RESOURCE_IDENTIFIER:
+                    if (generalNameValue instanceof ASN1String) {
+                        return ((ASN1String) generalNameValue).getString();
+                    } else {
+                        LOG.warn("String value is expected for a General Name of type '{}'. " +
+                                "Hex-encoded value is returned.", generalNameType);
+                        return toHexEncoded(generalNameValue);
+                    }
+
+                case DIRECTORY_NAME:
+                    X500Principal x500Principal = new X500Principal(DSSASN1Utils.getDEREncoded(generalNameValue));
+                    return new X500PrincipalHelper(x500Principal).getRFC2253();
+
+                case IP_ADDRESS:
+                    byte[] octets = ASN1OctetString.getInstance(generalNameValue).getOctets();
+                    return toHexEncoded(octets);
+
+                case REGISTERED_ID:
+                    return ASN1ObjectIdentifier.getInstance(generalNameValue).getId();
+
+                default:
+                    LOG.warn("Unsupported General Name of type '{}'. " +
+                            "Hex-encoded value is returned.", generalNameType);
+                    return toHexEncoded(generalNameValue);
+            }
+
+        } catch (Exception e) {
+            LOG.warn("An error occurred on extraction of General Name of Type '{}' : {}. " +
+                    "Hex-encoded value is returned.", generalNameType, e.getMessage());
+            return toHexEncoded(generalNameValue);
+        }
+    }
+
+    private static String toHexEncoded(ASN1Encodable asn1Encodable) {
+        return toHexEncoded(DSSASN1Utils.getDEREncoded(asn1Encodable));
+    }
+
+    private static String toHexEncoded(byte[] binaries) {
+        return "#" + Utils.toHex(binaries);
     }
 
     /**

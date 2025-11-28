@@ -22,6 +22,7 @@ package eu.europa.esig.dss.tsl.function.converter;
 
 import eu.europa.esig.dss.spi.tsl.MRA;
 import eu.europa.esig.dss.spi.tsl.ServiceEquivalence;
+import eu.europa.esig.dss.spi.util.MutableTimeDependentValues;
 import eu.europa.esig.trustedlist.jaxb.mra.MutualRecognitionAgreementInformationType;
 import eu.europa.esig.trustedlist.jaxb.mra.TrustServiceEquivalenceInformationType;
 
@@ -56,10 +57,9 @@ public class MRAConverter implements Function<MutualRecognitionAgreementInformat
 		}
 		result.setPointingContractingPartyLegislation(t.getPointingContractingPartyLegislation());
 		result.setPointedContractingPartyLegislation(t.getPointedContractingPartyLegislation());
-		List<ServiceEquivalence> serviceEquivalences = new ArrayList<>();
+		List<MutableTimeDependentValues<ServiceEquivalence>> serviceEquivalences = new ArrayList<>();
 
-		List<TrustServiceEquivalenceInformationType> trustServiceEquivalenceInformations = t
-				.getTrustServiceEquivalenceInformation();
+		List<TrustServiceEquivalenceInformationType> trustServiceEquivalenceInformations = t.getTrustServiceEquivalenceInformation();
 		for (TrustServiceEquivalenceInformationType trustServiceEquivalenceInformationType : trustServiceEquivalenceInformations) {
 			serviceEquivalences.add(converter.apply(trustServiceEquivalenceInformationType));
 		}

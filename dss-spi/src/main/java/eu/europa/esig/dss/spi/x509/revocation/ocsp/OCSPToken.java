@@ -57,7 +57,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.x500.X500Principal;
-import java.io.StringWriter;
 import java.security.PublicKey;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -342,7 +341,7 @@ public class OCSPToken extends RevocationToken<OCSP> {
 
 	@Override
 	public String toString(String indentStr) {
-		final StringWriter out = new StringWriter();
+		final StringBuilder out = new StringBuilder();
 		out.append(indentStr).append("OCSPToken[\n");
 		indentStr += "\t";
 		out.append(indentStr).append("Id: ").append(getDSSIdAsString()).append('\n');

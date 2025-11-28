@@ -27,8 +27,6 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.signerry.dss.test.TestUtils;
-
 public class SimpleCertificateReportFacadeTest {
 
 	@Test
@@ -49,7 +47,7 @@ public class SimpleCertificateReportFacadeTest {
 	private void createAndValidate(String filename) throws Exception {
 		SimpleCertificateReportFacade facade = SimpleCertificateReportFacade.newFacade();
 
-		XmlSimpleCertificateReport simpleCertificateReport = facade.unmarshall(TestUtils.getResourceAsStream( filename));
+		XmlSimpleCertificateReport simpleCertificateReport = facade.unmarshall(new File("src/test/resources/" + filename));
 		assertNotNull(simpleCertificateReport);
 
 		String htmlReport = facade.generateHtmlReport(simpleCertificateReport);

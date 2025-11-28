@@ -20,32 +20,26 @@
  */
 package eu.europa.esig.dss.xades.signature;
 
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.TimeZone;
-
-import eu.europa.esig.dss.xades.CanonicalizationMethod;
-
-import org.apache.xml.security.signature.Reference;
-import org.junit.jupiter.api.BeforeEach;
-
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.enumerations.SignatureLevel;
 import eu.europa.esig.dss.enumerations.SignaturePackaging;
 import eu.europa.esig.dss.model.DSSDocument;
-import static com.signerry.dss.test.TestUtils.getResourceAsFile;
 import eu.europa.esig.dss.model.FileDocument;
 import eu.europa.esig.dss.signature.DocumentSignatureService;
-import eu.europa.esig.dss.validation.timestamp.TimestampToken;
+import eu.europa.esig.dss.spi.x509.tsp.TimestampToken;
 import eu.europa.esig.dss.xades.XAdESSignatureParameters;
 import eu.europa.esig.dss.xades.XAdESTimestampParameters;
 import eu.europa.esig.dss.xades.reference.DSSReference;
 import eu.europa.esig.dss.xades.reference.XPath2FilterTransform;
+import org.apache.xml.security.signature.Reference;
+import org.junit.jupiter.api.BeforeEach;
+
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class XAdESLevelLTAXPath2FilterEnvelopingWithContentTstTest extends AbstractXAdESTestSignature {
-	
-	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
 	private DocumentSignatureService<XAdESSignatureParameters, XAdESTimestampParameters> service;
 	private XAdESSignatureParameters signatureParameters;
@@ -53,7 +47,7 @@ public class XAdESLevelLTAXPath2FilterEnvelopingWithContentTstTest extends Abstr
 
 	@BeforeEach
 	public void init() throws Exception {
-		documentToSign = new FileDocument(getResourceAsFile("sample-c14n-dss.xml"));
+		documentToSign = new FileDocument("src/test/resources/sample-c14n-dss.xml");
 
 		signatureParameters = new XAdESSignatureParameters();
 		signatureParameters.bLevel().setSigningDate(new Date());
@@ -62,10 +56,10 @@ public class XAdESLevelLTAXPath2FilterEnvelopingWithContentTstTest extends Abstr
 		signatureParameters.setSignaturePackaging(SignaturePackaging.ENVELOPING);
 		signatureParameters.setSignatureLevel(SignatureLevel.XAdES_BASELINE_LTA);
 		signatureParameters.setEmbedXML(true);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-		Date date = sdf.parse("2023-08-01 12:00");
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, -1);
+		Date date = calendar.getTime();
 
 		service = new XAdESService(getCompleteCertificateVerifier());
 		service.setTspSource(getGoodTsaByTime(date));

@@ -64,7 +64,7 @@ public class PAdESLevelLTASignRevokedSigWithPOETest extends AbstractPAdESTestVal
         signatureParameters.setCertificateChain(getCertificateChain());
         signatureParameters.setSignatureLevel(SignatureLevel.PAdES_BASELINE_LTA);
 
-        CertificateVerifier certificateVerifier = getCompleteCertificateVerifier();
+        CertificateVerifier certificateVerifier = getCompositeCertificateVerifier();
         certificateVerifier.addTrustedCertSources(getTrustedCertSource());
         certificateVerifier.setRevocationFallback(true);
         certificateVerifier.setAlertOnExpiredSignature(new LogOnStatusAlert());
@@ -73,7 +73,11 @@ public class PAdESLevelLTASignRevokedSigWithPOETest extends AbstractPAdESTestVal
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2024, Calendar.JANUARY, 1);
+<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/suite/PAdESLevelLTASignRevokedSigWithPOETest.java
         service.setTspSource(getGoodTsaByTime(calendar.getTime()));
+=======
+        service.setTspSource(getKeyStoreTSPSourceByNameAndTime(SELF_SIGNED_LONG_TSA, calendar.getTime()));
+>>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/suite/PAdESLevelLTASignRevokedSigWithPOETest.java
     }
 
     private CertificateSource getTrustedCertSource() {

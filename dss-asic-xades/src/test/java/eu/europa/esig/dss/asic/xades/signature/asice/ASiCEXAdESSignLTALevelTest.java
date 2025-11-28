@@ -38,7 +38,6 @@ import eu.europa.esig.dss.model.ToBeSigned;
 import eu.europa.esig.dss.test.AbstractPkiFactoryTestValidation;
 import eu.europa.esig.dss.utils.Utils;
 import eu.europa.esig.dss.validation.reports.Reports;
-import eu.europa.esig.dss.xades.XAdESTimestampParameters;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -49,16 +48,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.signerry.dss.test.TestUtils;
-
-public class ASiCEXAdESSignLTALevelTest extends AbstractPkiFactoryTestValidation<ASiCWithXAdESSignatureParameters, XAdESTimestampParameters> {
+public class ASiCEXAdESSignLTALevelTest extends AbstractPkiFactoryTestValidation {
 	
 	@Test
 	public void test() throws IOException {
 		
 		List<DSSDocument> documentsToSign = new ArrayList<>();
-		documentsToSign.add(new FileDocument(TestUtils.getResourceAsFile("signable/open-document.odt")));
-		documentsToSign.add(new FileDocument(TestUtils.getResourceAsFile("signable/test.txt")));
+		documentsToSign.add(new FileDocument("src/test/resources/signable/open-document.odt"));
+		documentsToSign.add(new FileDocument("src/test/resources/signable/test.txt"));
 
 		ASiCWithXAdESSignatureParameters signatureParameters = new ASiCWithXAdESSignatureParameters();
 		signatureParameters.setSigningCertificate(getSigningCert());

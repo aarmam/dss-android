@@ -128,7 +128,6 @@ public abstract class AbstractTestValidationExecutor {
 		try {
 			String json = om.writeValueAsString(reports.getDiagnosticDataJaxb());
 			assertNotNull(json);
-//			LOG.info(json);
 			XmlDiagnosticData diagnosticDataObject = om.readValue(json, XmlDiagnosticData.class);
 			assertNotNull(diagnosticDataObject);
 		} catch (Exception e) {
@@ -177,7 +176,6 @@ public abstract class AbstractTestValidationExecutor {
 		try {
 			String json = om.writeValueAsString(reports.getSimpleReportJaxb());
 			assertNotNull(json);
-//			LOG.info(json);
 			XmlSimpleReport simpleReportObject = om.readValue(json, XmlSimpleReport.class);
 			assertNotNull(simpleReportObject);
 		} catch (Exception e) {
@@ -190,7 +188,6 @@ public abstract class AbstractTestValidationExecutor {
 		try {
 			String xmlValidationReport = reports.getXmlValidationReport();
 			assertTrue(Utils.isStringNotBlank(xmlValidationReport));
-//			LOG.info(xmlValidationReport);
 			assertNotNull(ValidationReportFacade.newFacade().unmarshall(xmlValidationReport));
 		} catch (Exception e) {
 			LOG.error("Unable to unmarshall the ETSI Validation Report : " + e.getMessage(), e);
@@ -260,7 +257,7 @@ public abstract class AbstractTestValidationExecutor {
 	}
 
 	protected boolean checkMessageValuePresence(List<Message> messages, String messageValue) {
-		return messages.stream().map(m -> m.getValue()).collect(Collectors.toList()).contains(messageValue);
+		return messages.stream().map(Message::getValue).collect(Collectors.toList()).contains(messageValue);
 	}
 
 	protected List<Message> convert(List<eu.europa.esig.dss.detailedreport.jaxb.XmlMessage> messages) {

@@ -20,8 +20,6 @@
  */
 package eu.europa.esig.dss.cades.signature;
 
-import com.signerry.android.CryptoProvider;
-
 import eu.europa.esig.dss.cades.CAdESSignatureParameters;
 import eu.europa.esig.dss.cades.validation.CAdESSignature;
 import eu.europa.esig.dss.cades.validation.CMSDocumentValidator;
@@ -259,9 +257,10 @@ public class CAdESLevelBETSITS101733Test extends AbstractCAdESTestSignature {
 
 			logger.info("SIGNATURE VALUE : " + signatureValue);
 
-			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", CryptoProvider.BCProvider);
+			Cipher cipher = Cipher.getInstance("RSA", "SunJCE");
 			cipher.init(Cipher.DECRYPT_MODE, signerCertificate);
 			byte[] decrypted = cipher.doFinal(encryptedInfoOctedString.getOctets());
+
 			ASN1InputStream inputDecrypted = new ASN1InputStream(decrypted);
 
 			ASN1Sequence seqDecrypt = (ASN1Sequence) inputDecrypted.readObject();
@@ -274,9 +273,7 @@ public class CAdESLevelBETSITS101733Test extends AbstractCAdESTestSignature {
 			logger.info("Decrypted Base64 : " + decryptedDigestEncodeBase64);
 
 			byte[] encoded = signedInfo.getAuthenticatedAttributes().getEncoded();
-
-			MessageDigest messageDigest = MessageDigest.getInstance(DigestAlgorithm.SHA256.getName(), CryptoProvider.BCProvider);
-
+			MessageDigest messageDigest = MessageDigest.getInstance(DigestAlgorithm.SHA256.getName());
 			byte[] digestOfAuthenticatedAttributes = messageDigest.digest(encoded);
 
 			String computedDigestEncodeBase64 = Utils.toBase64(digestOfAuthenticatedAttributes);

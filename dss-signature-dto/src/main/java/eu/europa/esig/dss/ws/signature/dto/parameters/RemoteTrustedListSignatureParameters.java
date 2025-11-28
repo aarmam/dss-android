@@ -21,6 +21,8 @@
 package eu.europa.esig.dss.ws.signature.dto.parameters;
 
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
+import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
+import eu.europa.esig.dss.enumerations.MaskGenerationFunction;
 import eu.europa.esig.dss.ws.dto.RemoteCertificate;
 
 import java.io.Serializable;
@@ -41,6 +43,21 @@ public class RemoteTrustedListSignatureParameters implements Serializable {
     private RemoteCertificate signingCertificate;
 
     /**
+     * The encryption algorithm used for a signature creation by the current signing-certificate
+     */
+    private EncryptionAlgorithm encryptionAlgorithm;
+
+    /**
+     * The digest algorithm used to hash signed data on signing
+     */
+    private DigestAlgorithm digestAlgorithm;
+
+    /**
+     * The mask generation function used on signing
+     */
+    private MaskGenerationFunction maskGenerationFunction;
+
+    /**
      * The B-Level parameters
      */
     private RemoteBLevelParameters bLevelParameters = new RemoteBLevelParameters();
@@ -54,6 +71,11 @@ public class RemoteTrustedListSignatureParameters implements Serializable {
      * The DigestAlgorithm to be used for an Enveloped-signature reference
      */
     private DigestAlgorithm referenceDigestAlgorithm;
+
+    /**
+     * The TLVersion to be signed
+     */
+    private String tlVersion;
 
     /**
      * Default constructor instantiating object with null values
@@ -78,6 +100,60 @@ public class RemoteTrustedListSignatureParameters implements Serializable {
      */
     public void setSigningCertificate(RemoteCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
+    }
+
+    /**
+     * Gets the encryption algorithm used by the signing-certificate
+     *
+     * @return {@link EncryptionAlgorithm}
+     */
+    public EncryptionAlgorithm getEncryptionAlgorithm() {
+        return encryptionAlgorithm;
+    }
+
+    /**
+     * Sets the encryption algorithm used by the signing-certificate
+     *
+     * @param encryptionAlgorithm {@link EncryptionAlgorithm}
+     */
+    public void setEncryptionAlgorithm(EncryptionAlgorithm encryptionAlgorithm) {
+        this.encryptionAlgorithm = encryptionAlgorithm;
+    }
+
+    /**
+     * Gets a digest algorithm used on signing
+     *
+     * @return {@link DigestAlgorithm}
+     */
+    public DigestAlgorithm getDigestAlgorithm() {
+        return digestAlgorithm;
+    }
+
+    /**
+     * Sets a digest algorithm used on signing
+     *
+     * @param digestAlgorithm {@link DigestAlgorithm}
+     */
+    public void setDigestAlgorithm(DigestAlgorithm digestAlgorithm) {
+        this.digestAlgorithm = digestAlgorithm;
+    }
+
+    /**
+     * Gets a mask generation function, if used
+     *
+     * @return {@link MaskGenerationFunction}
+     */
+    public MaskGenerationFunction getMaskGenerationFunction() {
+        return maskGenerationFunction;
+    }
+
+    /**
+     * Sets a mask generation function, if used
+     *
+     * @param maskGenerationFunction {@link MaskGenerationFunction}
+     */
+    public void setMaskGenerationFunction(MaskGenerationFunction maskGenerationFunction) {
+        this.maskGenerationFunction = maskGenerationFunction;
     }
 
     /**
@@ -134,6 +210,26 @@ public class RemoteTrustedListSignatureParameters implements Serializable {
      */
     public void setReferenceDigestAlgorithm(DigestAlgorithm referenceDigestAlgorithm) {
         this.referenceDigestAlgorithm = referenceDigestAlgorithm;
+    }
+
+    /**
+     * Gets the XML Trusted List Version identifier to be signed
+     *
+     * @return {@link String}
+     */
+    public String getTlVersion() {
+        return tlVersion;
+    }
+
+    /**
+     * Sets the XML Trusted List Version identifier to be signed.
+     * This ensures the created signature corresponds to the requirements of the XML Trusted List version.
+     * NOTE: The value shall be an integer.
+     *
+     * @param tlVersion {@link String} the target XML Trusted List version integer
+     */
+    public void setTlVersion(String tlVersion) {
+        this.tlVersion = tlVersion;
     }
 
 }

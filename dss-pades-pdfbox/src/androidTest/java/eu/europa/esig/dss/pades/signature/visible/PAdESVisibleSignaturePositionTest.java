@@ -138,8 +138,9 @@ public class PAdESVisibleSignaturePositionTest extends AbstractTestVisualCompara
 	@Disabled
 	public void rotationTest() throws Exception {
 		SignatureImageParameters signatureImageParameters = createSignatureImageParameters();
+		SignatureFieldParameters fieldParameters = signatureImageParameters.getFieldParameters();
 
-		signatureImageParameters.setRotation(VisualSignatureRotation.NONE); // default
+		fieldParameters.setRotation(VisualSignatureRotation.NONE); // default
 		checkImageSimilarityPdf("normal", "check_custom_10_20.pdf");
 		checkImageSimilarityPdf("90", "check_custom_rotate_none_90_10_20.pdf");
 		checkImageSimilarityPdf("180", "check_custom_rotate_none_180_10_20.pdf");
@@ -147,7 +148,7 @@ public class PAdESVisibleSignaturePositionTest extends AbstractTestVisualCompara
 		checkImageSimilarityPdf("-270", "check_custom_rotate_none_90_10_20.pdf");
 		checkImageSimilarityPdf("-180", "check_custom_rotate_none_180_10_20.pdf");
 		checkImageSimilarityPdf("-90", "check_custom_rotate_none_270_10_20.pdf");
-		signatureImageParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
+		fieldParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
 		checkImageSimilarityPdf("normal", "check_custom_10_20.pdf");
 		checkImageSimilarityPdf("90", "check_custom_rotate_automatic_90_10_20.pdf");
 		checkImageSimilarityPdf("180", "check_custom_rotate_automatic_180_10_20.pdf");
@@ -155,7 +156,7 @@ public class PAdESVisibleSignaturePositionTest extends AbstractTestVisualCompara
 		checkImageSimilarityPdf("-270", "check_custom_rotate_automatic_90_10_20.pdf");
 		checkImageSimilarityPdf("-180", "check_custom_rotate_automatic_180_10_20.pdf");
 		checkImageSimilarityPdf("-90", "check_custom_rotate_automatic_270_10_20.pdf");
-		signatureImageParameters.setRotation(VisualSignatureRotation.ROTATE_270);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_270);
 		checkImageSimilarityPdf("normal", "check_custom_rotate270_10_20.pdf");
 		checkImageSimilarityPdf("90", "check_custom_rotate270_90_10_20.pdf");
 		checkImageSimilarityPdf("180", "check_custom_rotate270_180_10_20.pdf");
@@ -163,13 +164,13 @@ public class PAdESVisibleSignaturePositionTest extends AbstractTestVisualCompara
 		checkImageSimilarityPdf("-270", "check_custom_rotate270_90_10_20.pdf");
 		checkImageSimilarityPdf("-180", "check_custom_rotate270_180_10_20.pdf");
 		checkImageSimilarityPdf("-90", "check_custom_rotate270_270_10_20.pdf");
-		signatureImageParameters.setRotation(VisualSignatureRotation.ROTATE_180);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_180);
 		checkImageSimilarityPdf("normal", "check_custom_rotate180_10_20.pdf");
-		signatureImageParameters.setRotation(VisualSignatureRotation.ROTATE_90);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 		checkImageSimilarityPdf("normal", "check_custom_rotate90_10_20.pdf");
 
 		// check minolta scanner
-		signatureImageParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
+		fieldParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
 		checkImageSimilarityPdf("minoltaScan", "check_sun.pdf");
 		
 		/**
@@ -192,9 +193,9 @@ public class PAdESVisibleSignaturePositionTest extends AbstractTestVisualCompara
 		SignatureFieldParameters fieldParameters = new SignatureFieldParameters();
 		fieldParameters.setWidth(300);
 		fieldParameters.setHeight(200);
+		fieldParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
 		signatureImageParameters.setFieldParameters(fieldParameters);
 
-		signatureImageParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
 		checkImageSimilarityPdf("rotate90", "rotate90_top-left-signed.pdf");
 		
 		signatureImageParameters.setAlignmentHorizontal(VisualSignatureAlignmentHorizontal.CENTER);
@@ -218,7 +219,7 @@ public class PAdESVisibleSignaturePositionTest extends AbstractTestVisualCompara
 		for (VisualSignatureRotation rotation : VisualSignatureRotation.values()) {
 			for (VisualSignatureAlignmentHorizontal horizontal : VisualSignatureAlignmentHorizontal.values()) {
 				for (VisualSignatureAlignmentVertical vertical : VisualSignatureAlignmentVertical.values()) {
-					signatureImageParameters.setRotation(rotation);
+					signatureImageParameters.getFieldParameters().setRotation(rotation);
 					signatureImageParameters.setAlignmentHorizontal(horizontal);
 					signatureImageParameters.setAlignmentVertical(vertical);
 					String[] pdfs = new String[] { "normal", "90", "180", "270" };
@@ -250,7 +251,7 @@ public class PAdESVisibleSignaturePositionTest extends AbstractTestVisualCompara
 			 */
 	
 			SignatureImageParameters signatureImageParameters = createSignatureImageParameters();
-			signatureImageParameters.setRotation(VisualSignatureRotation.NONE);
+			signatureImageParameters.getFieldParameters().setRotation(VisualSignatureRotation.NONE);
 			
 			documentToSign = signablePdfs.get("minoltaScan");
 			testName = "rotateSunTest";
@@ -276,7 +277,7 @@ public class PAdESVisibleSignaturePositionTest extends AbstractTestVisualCompara
 			 */
 	
 			SignatureImageParameters signatureImageParameters = createSignatureImageParameters();
-			signatureImageParameters.setRotation(VisualSignatureRotation.NONE);
+			signatureImageParameters.getFieldParameters().setRotation(VisualSignatureRotation.NONE);
 			
 			documentToSign = signablePdfs.get("minoltaScan90");
 			testName = "rotateSun90TestNONE";
@@ -290,7 +291,7 @@ public class PAdESVisibleSignaturePositionTest extends AbstractTestVisualCompara
 			 * it will be same as with sun.pdf (not rotated) and rotation none
 			 */
 			signatureImageParameters = createSignatureImageParameters();
-			signatureImageParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
+			signatureImageParameters.getFieldParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
 			
 			documentToSign = signablePdfs.get("minoltaScan90");
 			testName = "rotateSun90TestAUTOMATIC";
@@ -304,7 +305,7 @@ public class PAdESVisibleSignaturePositionTest extends AbstractTestVisualCompara
 			 * it will be same as with sun.pdf (not rotated) and rotation none
 			 */
 			signatureImageParameters = createSignatureImageParameters();
-			signatureImageParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
+			signatureImageParameters.getFieldParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
 			
 			documentToSign = signablePdfs.get("minoltaScan");
 			testName = "rotateSunTestAUTOMATIC";

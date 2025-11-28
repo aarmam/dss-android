@@ -63,7 +63,7 @@ public class DSS1421BrokenTstTest extends AbstractASiCWithCAdESTestValidation {
 			CertificateWrapper timestampSigningCertificate = timestamp.getSigningCertificate();
 			assertNotNull(timestampSigningCertificate);
 			assertTrue(Utils.isCollectionNotEmpty(timestamp.getCertificateChain()));
-			if (TimestampType.ARCHIVE_TIMESTAMP.equals(timestamp.getType())) {
+			if (TimestampType.CONTAINER_TIMESTAMP.equals(timestamp.getType())) {
 				assertTrue(certificatesFromTimestamps.contains(timestampSigningCertificate));
 				assertEquals(ArchiveTimestampType.CAdES_DETACHED, timestamp.getArchiveTimestampType());
 				archiveTimestampCounter++;

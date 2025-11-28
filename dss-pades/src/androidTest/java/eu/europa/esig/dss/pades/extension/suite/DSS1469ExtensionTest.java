@@ -28,8 +28,6 @@ import eu.europa.esig.dss.model.InMemoryDocument;
 import eu.europa.esig.dss.pades.PAdESSignatureParameters;
 import eu.europa.esig.dss.pades.signature.PAdESService;
 import eu.europa.esig.dss.pades.validation.suite.AbstractPAdESTestValidation;
-import eu.europa.esig.dss.service.crl.OnlineCRLSource;
-import eu.europa.esig.dss.service.ocsp.OnlineOCSPSource;
 import eu.europa.esig.dss.spi.DSSUtils;
 import eu.europa.esig.dss.spi.client.http.DataLoader;
 import eu.europa.esig.dss.spi.client.http.MemoryDataLoader;
@@ -69,8 +67,13 @@ public class DSS1469ExtensionTest extends AbstractPAdESTestValidation {
 		dataMap.put(TSA_CA_URL, Utils.fromBase64(TSA_CA));
 		DataLoader dataLoader = new MemoryDataLoader(dataMap);
 		certificateVerifier.setAIASource(new DefaultAIASource(dataLoader));
+<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/extension/suite/DSS1469ExtensionTest.java
 		certificateVerifier.setCrlSource(new OnlineCRLSource());
 		certificateVerifier.setOcspSource(new OnlineOCSPSource());
+=======
+		certificateVerifier.setCrlSource(getCompositeCRLSource());
+		certificateVerifier.setOcspSource(getCompositeOCSPSource());
+>>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/extension/suite/DSS1469ExtensionTest.java
 		certificateVerifier.setAlertOnExpiredSignature(new LogOnStatusAlert());
 	}
 

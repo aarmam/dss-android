@@ -210,7 +210,7 @@ NOTE: The 'Native PDFBox Drawer' implementation supports only one of the followi
 
 Instead of computing a signature value, some signature creation providers implement a service returning a CMS or CAdES signature, enveloping the signed attributes and the user provided message-digest. This architecture may benefit the end-user, as only one request to the external server is required and there is no need to additionally request a signing-certificate or a certificate chain prior the signing.
 
-This design is also suitable for a PAdES signature creation, as the obtained CMS signature may be embedded into PDF with a prepared signature revision. Starting from the version 5.12, DSS exposes a few classes providing a possibility for users to benefit from the aforementioned architecture in order to create PAdES signatures.
+This design is also suitable for a PAdES signature creation, as the obtained CMS signature may be embedded into PDF with a prepared signature revision. Starting from the version `5.12`, DSS exposes a few classes providing a possibility for users to benefit from the aforementioned architecture in order to create PAdES signatures.
 
 The scheme below demonstrates the mechanism of PAdES creation using an external CMS provider:
 
@@ -274,7 +274,7 @@ The class `PdfPermissionsChecker` is responsible for configuration of the setup.
 * FieldMDP `/FieldMDP` (as per "12.8.2.4 FieldMDP" of ISO 32000-1 <<R06>>) - defines permission issued for modifications within form fields (including signature fields).
 * Signature Lock dictionary `/Lock` (as per "12.7.4.5 Signature fields" of ISO 32000-1 <<R06>>) - defines permission for a particular signature field.
 
-NOTE: ETSI EN 319 142-1 (cf. <<R03>>) and ISO 32000-2 (cf. <<R26>>) allow augmentation of signatures having modification restriction dictionaries, thus supporting the long-term validity preservation mechanism for PDF signatures (e.g. for certification signatures). Therefore, DSS does not invalidate those signatures, nor restricts their augmentation.
+NOTE: ETSI EN 319 142-1 (cf. <<R03>>) and ISO 32000-2 (cf. <<R27>>) allow augmentation of signatures having modification restriction dictionaries, thus supporting the long-term validity preservation mechanism for PDF signatures (e.g. for certification signatures). Therefore, DSS does not invalidate those signatures, nor restricts their augmentation.
 
 A configured instance of the class should be provided to the used `IPdfObjFactory`. The behaviour has to be defined with a `StatusAlert` (see <<Alerts>> for more information):
 
@@ -336,6 +336,8 @@ A JWS signature can be represented in different forms which are supported by the
 ----
 include::{sourcetestdir}/eu/europa/esig/dss/cookbook/example/sign/SignXmlJadesBTest.java[tags=serialization]
 ----
+
+NOTE: While `COMPACT_SERIALIZATION` signature type does not support augmentation, it is possible to change a format of existing signature to allow its extension. For that, provide a target JWS signature type within signature parameters on signature extension, for instance use `setJwsSerializationType(JWSSerializationType.JSON_SERIALIZATION)` to transform the signature to a `JSON_SERIALIZATION` type and augment it to the target level.
 
 ==== SigD header parameter
 

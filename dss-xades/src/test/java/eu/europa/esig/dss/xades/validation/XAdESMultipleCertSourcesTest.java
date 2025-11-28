@@ -34,8 +34,8 @@ import eu.europa.esig.dss.model.DSSDocument;
 import static com.signerry.dss.test.TestUtils.getResourceAsFile;
 import eu.europa.esig.dss.model.FileDocument;
 import eu.europa.esig.dss.validation.AdvancedSignature;
-import eu.europa.esig.dss.validation.SignatureCertificateSource;
-import eu.europa.esig.dss.validation.timestamp.TimestampToken;
+import eu.europa.esig.dss.spi.SignatureCertificateSource;
+import eu.europa.esig.dss.spi.x509.tsp.TimestampToken;
 
 import java.util.List;
 

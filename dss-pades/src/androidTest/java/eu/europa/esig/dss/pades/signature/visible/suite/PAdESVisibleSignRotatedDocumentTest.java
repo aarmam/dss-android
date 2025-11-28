@@ -98,7 +98,6 @@ public class PAdESVisibleSignRotatedDocumentTest extends AbstractPAdESTestSignat
         this.documentToSign.setName("text_" + originalDocName + "_" + rotation.name() + ".pdf");
 
         SignatureImageParameters imageParameters = new SignatureImageParameters();
-        imageParameters.setRotation(rotation);
 
         SignatureImageTextParameters textParameters = new SignatureImageTextParameters();
         textParameters.setText("My signature");
@@ -110,6 +109,7 @@ public class PAdESVisibleSignRotatedDocumentTest extends AbstractPAdESTestSignat
         fieldParameters.setOriginY(50);
         fieldParameters.setHeight(50);
         fieldParameters.setWidth(100);
+        fieldParameters.setRotation(rotation);
         imageParameters.setFieldParameters(fieldParameters);
 
         signatureParameters.setImageParameters(imageParameters);
@@ -128,15 +128,21 @@ public class PAdESVisibleSignRotatedDocumentTest extends AbstractPAdESTestSignat
         this.documentToSign.setName("image_" + originalDocName + "_" + rotation.name() + ".pdf");
 
         SignatureImageParameters imageParameters = new SignatureImageParameters();
+<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESVisibleSignRotatedDocumentTest.java
         imageParameters.setBackgroundColor(DSSColor.PINK);
         imageParameters.setRotation(rotation);
         imageParameters.setImage(new InMemoryDocument(TestUtils.getResourceAsStream("signature-image.png")));
+=======
+        imageParameters.setBackgroundColor(Color.PINK);
+        imageParameters.setImage(new InMemoryDocument(PAdESVisibleSignRotatedDocumentTest.class.getResourceAsStream("/signature-image.png")));
+>>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESVisibleSignRotatedDocumentTest.java
 
         SignatureFieldParameters fieldParameters = new SignatureFieldParameters();
         fieldParameters.setOriginX(100);
         fieldParameters.setOriginY(50);
         fieldParameters.setHeight(50);
         fieldParameters.setWidth(100);
+        fieldParameters.setRotation(rotation);
         imageParameters.setFieldParameters(fieldParameters);
 
         signatureParameters.setImageParameters(imageParameters);

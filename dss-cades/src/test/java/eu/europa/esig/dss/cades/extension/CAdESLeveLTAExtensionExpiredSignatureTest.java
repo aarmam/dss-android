@@ -53,7 +53,7 @@ public class CAdESLeveLTAExtensionExpiredSignatureTest extends AbstractCAdESTest
     public void init() {
         document = new FileDocument(TestUtils.getResourceAsFile("validation/Signature-C-CZ_SIX-1.p7m"));
 
-        certificateVerifier = getCompleteCertificateVerifier();
+        certificateVerifier = getOfflineCertificateVerifier();
         certificateVerifier.setCheckRevocationForUntrustedChains(true);
         certificateVerifier.setAlertOnMissingRevocationData(new SilentOnStatusAlert());
 

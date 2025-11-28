@@ -42,11 +42,15 @@ import eu.europa.esig.dss.pades.validation.suite.DSS2513LTTest;
 import eu.europa.esig.dss.pades.validation.suite.DSS2513Test;
 import eu.europa.esig.dss.pades.validation.suite.DSS2601Test;
 import eu.europa.esig.dss.pades.validation.suite.DSS2821Test;
+import eu.europa.esig.dss.pades.validation.suite.DSS3111Test;
 import eu.europa.esig.dss.pades.validation.suite.PAdESEndEntityCertIssuedByNotCACertTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESEnvelopingOtherPdfTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESExtendedToTLevelTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESInfiniteLoopTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESInvalidDigestAlgorithmTest;
+import eu.europa.esig.dss.pades.validation.suite.PAdESLevelLTAWithCopiedDocTstTest;
+import eu.europa.esig.dss.pades.validation.suite.PAdESLevelTWithDuplicatedDocTstTest;
+import eu.europa.esig.dss.pades.validation.suite.PAdESLevelTWithDuplicatedSigTstTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESMultipleFieldSignatureReferenceTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESMultiplePagesAnnotationsOverlapTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESOCSPSigningCertificateTest;
@@ -57,6 +61,7 @@ import eu.europa.esig.dss.pades.validation.suite.PAdESSimpleCorruptedTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESSimpleValidationTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESSpoofingAttackReplacementTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESTimestampWithOrphanRefsTest;
+import eu.europa.esig.dss.pades.validation.suite.PAdESTwoSigWithCopiedTstTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESWithAddedPageTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESWithCrossCertificateOCSPsTest;
 import eu.europa.esig.dss.pades.validation.suite.PAdESWithDssVriAndCertRefTest;
@@ -93,6 +98,7 @@ import eu.europa.esig.dss.pades.validation.suite.dss818.DSS818CRYTest;
 import eu.europa.esig.dss.pades.validation.suite.dss818.DSS818SKTest;
 import eu.europa.esig.dss.pades.validation.suite.dss917.DSS917CorruptedTest;
 import eu.europa.esig.dss.pades.validation.suite.dss917.DSS917Test;
+import eu.europa.esig.dss.pades.validation.suite.evidencerecord.PAdESLevelLTWithXmlEvidenceRecordValidationTest;
 import eu.europa.esig.dss.pades.validation.suite.revocation.PAdESDssAndVriTest;
 import eu.europa.esig.dss.pades.validation.suite.revocation.PAdESFiveSignaturesDocTest;
 import eu.europa.esig.dss.pades.validation.suite.revocation.PAdESMultiSignedDocRevocTest;
@@ -119,7 +125,9 @@ import org.junit.platform.suite.api.Suite;
 		PAdESWithEnvelopingCMSTest.class, PAdESWithEnvelopingEmptyContentCMSTest.class, DSS2601Test.class, PAdESWithEofCRTest.class,
 		PdfPkcs7SubFilterValidAndInvalidTest.class, PAdESWithUnsupportedSignatureAlgorithmTest.class, DSS2821Test.class,
 		PAdESWithVRITimeStampTest.class, PAdESWithVRITimeTest.class, PAdESWithSpoofingAttackTest.class, PAdESSpoofingAttackReplacementTest.class,
-		PAdESEndEntityCertIssuedByNotCACertTest.class })
+		PAdESEndEntityCertIssuedByNotCACertTest.class, DSS3111Test.class, PAdESLevelLTWithXmlEvidenceRecordValidationTest.class,
+		PAdESLevelTWithDuplicatedSigTstTest.class, PAdESLevelTWithDuplicatedDocTstTest.class, PAdESLevelLTAWithCopiedDocTstTest.class,
+		PAdESTwoSigWithCopiedTstTest.class })
 public class PdfBoxPAdESValidationSuiteTest {
 
 }

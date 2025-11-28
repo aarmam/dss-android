@@ -102,8 +102,13 @@ public class PAdESExistingSignatureFieldTest extends AbstractPAdESTestSignature 
         SignatureImageParameters imageParameters = signatureParameters.getImageParameters();
         imageParameters.setImage(PNG_IMAGE);
         imageParameters.setImageScaling(ImageScaling.ZOOM_AND_CENTER);
+<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESExistingSignatureFieldTest.java
         imageParameters.setBackgroundColor(DSSColor.PINK);
         imageParameters.setRotation(VisualSignatureRotation.ROTATE_90);
+=======
+        imageParameters.setBackgroundColor(Color.PINK);
+        imageParameters.getFieldParameters().setRotation(VisualSignatureRotation.ROTATE_90);
+>>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESExistingSignatureFieldTest.java
 
         super.signAndVerify();
     }

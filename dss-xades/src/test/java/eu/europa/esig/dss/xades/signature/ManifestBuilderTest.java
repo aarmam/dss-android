@@ -20,9 +20,7 @@
  */
 package eu.europa.esig.dss.xades.signature;
 
-import static com.signerry.dss.test.TestUtils.getResourceAsFile;
-
-import eu.europa.esig.dss.definition.xmldsig.XMLDSigElement;
+import eu.europa.esig.xmldsig.definition.XMLDSigElement;
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.enumerations.MimeTypeEnum;
 import eu.europa.esig.dss.model.DSSDocument;
@@ -48,10 +46,10 @@ public class ManifestBuilderTest {
 	@Test
 	public void testBuildManifest() throws IOException {
 		List<DSSDocument> documents = new ArrayList<>();
-		FileDocument file1 = new FileDocument(getResourceAsFile("sample.png"));
+		FileDocument file1 = new FileDocument("src/test/resources/sample.png");
 		documents.add(file1);
-		documents.add(new FileDocument(getResourceAsFile("sample.txt")));
-		documents.add(new FileDocument(getResourceAsFile("sample.xml")));
+		documents.add(new FileDocument("src/test/resources/sample.txt"));
+		documents.add(new FileDocument("src/test/resources/sample.xml"));
 		ManifestBuilder builder = new ManifestBuilder("manifest", DigestAlgorithm.SHA512, documents);
 
 		DSSDocument document = builder.build();

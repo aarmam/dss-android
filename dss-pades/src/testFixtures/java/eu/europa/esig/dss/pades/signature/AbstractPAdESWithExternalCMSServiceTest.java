@@ -20,20 +20,6 @@
  */
 package eu.europa.esig.dss.pades.signature;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.signerry.dss.test.TestUtils;
-
-import org.bouncycastle.cms.CMSProcessableByteArray;
-import org.bouncycastle.cms.CMSSignedData;
-import org.bouncycastle.cms.CMSSignedDataGenerator;
-import org.bouncycastle.cms.SignerInfoGeneratorBuilder;
-import org.junit.jupiter.api.BeforeEach;
-
-import java.util.Date;
-
-import eu.europa.esig.dss.cades.CMSUtils;
 import eu.europa.esig.dss.cades.signature.CMSSignedDocument;
 import eu.europa.esig.dss.cades.signature.CustomContentSigner;
 import eu.europa.esig.dss.enumerations.SignatureAlgorithm;
@@ -49,6 +35,15 @@ import eu.europa.esig.dss.pades.signature.suite.AbstractPAdESTestSignature;
 import eu.europa.esig.dss.signature.DocumentSignatureService;
 import eu.europa.esig.dss.spi.DSSASN1Utils;
 import eu.europa.esig.dss.spi.DSSUtils;
+import eu.europa.esig.dss.spi.x509.CMSSignedDataBuilder;
+import org.bouncycastle.cms.CMSSignedData;
+import org.bouncycastle.cms.SignerInfoGenerator;
+import org.junit.jupiter.api.BeforeEach;
+
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractPAdESWithExternalCMSServiceTest extends AbstractPAdESTestSignature {
 
@@ -59,7 +54,7 @@ public abstract class AbstractPAdESWithExternalCMSServiceTest extends AbstractPA
 	@BeforeEach
 	public void init() throws Exception {
 		signingTime = new Date();
-		documentToSign = new InMemoryDocument(TestUtils.getResourceAsStream("sample.pdf"));
+		documentToSign = new InMemoryDocument(getClass().getResourceAsStream("/sample.pdf"));
 	}
 
 	@Override
@@ -99,26 +94,26 @@ public abstract class AbstractPAdESWithExternalCMSServiceTest extends AbstractPA
 		signatureParameters.setSignatureLevel(SignatureLevel.PAdES_BASELINE_B);
 		signatureParameters.setReason("DSS testing");
 
-		CMSProcessableByteArray content = new CMSProcessableByteArray(messageDigest.getValue());
-
-		PadesCMSSignedDataBuilder padesCMSSignedDataBuilder = new PadesCMSSignedDataBuilder(getOfflineCertificateVerifier());
+		PAdESSignerInfoGeneratorBuilder padesCMSSignedDataBuilder = new PAdESSignerInfoGeneratorBuilder(messageDigest);
 		SignatureAlgorithm signatureAlgorithm = signatureParameters.getSignatureAlgorithm();
 
 		CustomContentSigner customContentSigner = new CustomContentSigner(signatureAlgorithm.getJCEId());
-		SignerInfoGeneratorBuilder signerInfoGeneratorBuilder = padesCMSSignedDataBuilder.getSignerInfoGeneratorBuilder(signatureParameters, messageDigest);
+		SignerInfoGenerator signerInfoGenerator = padesCMSSignedDataBuilder.build(signatureParameters, customContentSigner);
 
-		CMSSignedDataGenerator generator = padesCMSSignedDataBuilder.createCMSSignedDataGenerator(signatureParameters, customContentSigner,
-				signerInfoGeneratorBuilder, null);
-
-		CMSUtils.generateDetachedCMSSignedData(generator, content);
+		CMSSignedDataBuilder cmsSignedDataBuilder = new CMSSignedDataBuilder()
+				.setSigningCertificate(signatureParameters.getSigningCertificate())
+				.setCertificateChain(signatureParameters.getCertificateChain())
+				.setGenerateWithoutCertificates(signatureParameters.isGenerateTBSWithoutCertificate())
+				.setEncapsulate(false);
+		cmsSignedDataBuilder.createCMSSignedData(signerInfoGenerator, new InMemoryDocument(messageDigest.getValue()));
 
 		SignatureValue signatureValue = getToken().sign(new ToBeSigned(customContentSigner.getOutputStream().toByteArray()),
 				signatureParameters.getDigestAlgorithm(), getPrivateKeyEntry());
 
 		customContentSigner = new CustomContentSigner(signatureAlgorithm.getJCEId(), signatureValue.getValue());
-		generator = padesCMSSignedDataBuilder.createCMSSignedDataGenerator(signatureParameters, customContentSigner, signerInfoGeneratorBuilder, null);
+		signerInfoGenerator = padesCMSSignedDataBuilder.build(signatureParameters, customContentSigner);
 
-		CMSSignedData cmsSignedData = CMSUtils.generateDetachedCMSSignedData(generator, content);
+		CMSSignedData cmsSignedData = cmsSignedDataBuilder.createCMSSignedData(signerInfoGenerator, new InMemoryDocument(messageDigest.getValue()));
 		return DSSASN1Utils.getDEREncoded(cmsSignedData);
 	}
 

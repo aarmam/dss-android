@@ -130,11 +130,6 @@ public class OpenDocumentSignWithReInitParametersTest extends AbstractOpenDocume
     }
 
     @Override
-    public void test(DSSDocument fileToTest) {
-        // skip
-    }
-
-    @Override
     public void signAndVerify() {
         // do nothing
     }

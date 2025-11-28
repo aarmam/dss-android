@@ -20,8 +20,6 @@
  */
 package eu.europa.esig.dss.asic.xades.signature.opendocument;
 
-import com.signerry.dss.test.TestUtils;
-
 import eu.europa.esig.dss.asic.common.ZipUtils;
 import eu.europa.esig.dss.asic.xades.ASiCWithXAdESSignatureParameters;
 import eu.europa.esig.dss.asic.xades.signature.ASiCWithXAdESService;
@@ -51,8 +49,8 @@ public class OpenDocumentLevelBWithExternalDataTest extends AbstractOpenDocument
 	private DocumentSignatureService<ASiCWithXAdESSignatureParameters, XAdESTimestampParameters> service;
 	private ASiCWithXAdESSignatureParameters signatureParameters;
 	
-	private static Stream<Arguments> externalData() {
-		File file = TestUtils.getResourceAsFile("signable/open-document-external-data.odt");
+	private static Stream<Arguments> data() {
+		File file = new File("src/test/resources/signable/open-document-external-data.odt");
 		List<Arguments> args = new ArrayList<>();
 		args.add(Arguments.of(new FileDocument(file)));
 		return args.stream();
@@ -60,7 +58,7 @@ public class OpenDocumentLevelBWithExternalDataTest extends AbstractOpenDocument
 	
 	@BeforeEach
 	public void init() {
-		fileToTest = new FileDocument(TestUtils.getResourceAsFile("signable/open-document-external-data.odt"));
+		fileToTest = new FileDocument(new File("src/test/resources/signable/open-document-external-data.odt"));
 
 		signatureParameters = new ASiCWithXAdESSignatureParameters();
 		signatureParameters.bLevel().setSigningDate(new Date());
@@ -73,11 +71,12 @@ public class OpenDocumentLevelBWithExternalDataTest extends AbstractOpenDocument
 		service.setTspSource(getGoodTsa());
 	}
 
-	@Override
 	@ParameterizedTest(name = "Validation {index} : {0}")
-	@MethodSource("externalData")
+	@MethodSource("data")
 	public void test(DSSDocument fileToTest) {
-		super.test(fileToTest);
+		this.fileToTest = fileToTest;
+
+		super.signAndVerify();
 	}
 
 	@Override

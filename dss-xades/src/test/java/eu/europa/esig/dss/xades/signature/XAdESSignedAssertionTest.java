@@ -20,33 +20,28 @@
  */
 package eu.europa.esig.dss.xades.signature;
 
-import com.signerry.dss.test.TestUtils;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import static com.signerry.dss.test.TestUtils.getResourceAsFile;
-import java.io.File;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.w3c.dom.Document;
-
-import eu.europa.esig.dss.DomUtils;
+import eu.europa.esig.dss.xml.utils.DomUtils;
 import eu.europa.esig.dss.diagnostic.DiagnosticData;
 import eu.europa.esig.dss.diagnostic.SignatureWrapper;
 import eu.europa.esig.dss.enumerations.SignatureLevel;
 import eu.europa.esig.dss.enumerations.SignaturePackaging;
 import eu.europa.esig.dss.model.DSSDocument;
-import static com.signerry.dss.test.TestUtils.getResourceAsFile;
 import eu.europa.esig.dss.model.FileDocument;
 import eu.europa.esig.dss.signature.DocumentSignatureService;
 import eu.europa.esig.dss.spi.DSSUtils;
-import eu.europa.esig.dss.validation.timestamp.TimestampToken;
+import eu.europa.esig.dss.spi.x509.tsp.TimestampToken;
 import eu.europa.esig.dss.xades.XAdESSignatureParameters;
 import eu.europa.esig.dss.xades.XAdESTimestampParameters;
+import org.junit.jupiter.api.BeforeEach;
+import org.w3c.dom.Document;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class XAdESSignedAssertionTest extends AbstractXAdESTestSignature {
 
@@ -62,8 +57,8 @@ public class XAdESSignedAssertionTest extends AbstractXAdESTestSignature {
 		service = new XAdESService(getCompleteCertificateVerifier());
 		service.setTspSource(getGoodTsa());
 
-		documentToSign = new FileDocument(getResourceAsFile("sample.xml"));
-		signedAssertion = new String(DSSUtils.toByteArray(TestUtils.getResourceAsStream("sample-saml-assertion.xml")));
+		documentToSign = new FileDocument(new File("src/test/resources/sample.xml"));
+		signedAssertion = new String(DSSUtils.toByteArray(getClass().getResourceAsStream("/sample-saml-assertion.xml")));
 
 		signingDate = new Date();
 		contentTimestamp = service.getContentTimestamp(documentToSign, getSignatureParameters());

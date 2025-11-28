@@ -20,15 +20,6 @@
  */
 package eu.europa.esig.dss.cades.validation;
 
-import com.signerry.dss.test.TestUtils;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.List;
-
-import jakarta.xml.bind.JAXBElement;
-
 import eu.europa.esig.dss.diagnostic.DiagnosticData;
 import eu.europa.esig.dss.diagnostic.SignatureWrapper;
 import eu.europa.esig.dss.model.DSSDocument;
@@ -38,11 +29,17 @@ import eu.europa.esig.validationreport.jaxb.SignatureAttributesType;
 import eu.europa.esig.validationreport.jaxb.SignatureValidationReportType;
 import eu.europa.esig.validationreport.jaxb.ValidationReportType;
 
+import javax.xml.bind.JAXBElement;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class MultipleCounterSignatureValidationTest extends AbstractCAdESTestValidation {
 
 	@Override
 	protected DSSDocument getSignedDocument() {
-		return new FileDocument(TestUtils.getResourceAsFile("validation/signedFile.pdf.p7s"));
+		return new FileDocument("src/test/resources/validation/signedFile.pdf.p7s");
 	}
 	
 	@Override
@@ -84,13 +81,10 @@ public class MultipleCounterSignatureValidationTest extends AbstractCAdESTestVal
 		int nbCounterSig = 0;
 		for (SignatureValidationReportType signatureValidationReportType : signatureValidationReports) {
 			SignatureAttributesType signatureAttributes = signatureValidationReportType.getSignatureAttributes();
-			List<Object> signingTimeOrSigningCertificateOrDataObjectFormat = signatureAttributes.getSigningTimeOrSigningCertificateOrDataObjectFormat();
-			for (Object attribute : signingTimeOrSigningCertificateOrDataObjectFormat) {
-				if (attribute instanceof JAXBElement) {
-					JAXBElement e = (JAXBElement) attribute;
-					if (e.getDeclaredType().equals(SACounterSignatureType.class)) {
-						nbCounterSig++;
-					}
+			List<JAXBElement<?>> signingTimeOrSigningCertificateOrDataObjectFormat = signatureAttributes.getSigningTimeOrSigningCertificateOrDataObjectFormat();
+			for (JAXBElement<?> attribute : signingTimeOrSigningCertificateOrDataObjectFormat) {
+				if (attribute.getDeclaredType().equals(SACounterSignatureType.class)) {
+					nbCounterSig++;
 				}
 			}
 		}

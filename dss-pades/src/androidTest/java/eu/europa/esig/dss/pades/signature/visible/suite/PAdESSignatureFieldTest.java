@@ -518,12 +518,12 @@ public class PAdESSignatureFieldTest extends PKIFactoryAccess {
 		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId(null);
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
 		DSSDocument signed = signAndValidate(doc90Degrees);
 		assertNotNull(signed);
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId("signature1");
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.NONE);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.NONE);
 		signed = signAndValidate(signed);
 		assertNotNull(signed);
 		//signed.save("target/doc90Degrees.pdf");
@@ -540,12 +540,12 @@ public class PAdESSignatureFieldTest extends PKIFactoryAccess {
 		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId(null);
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
 		signed = signAndValidate(doc180Degrees);
 		assertNotNull(signed);
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId("signature1");
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.NONE);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.NONE);
 		signed = signAndValidate(signed);
 		assertNotNull(signed);
 		//signed.save("target/doc180Degrees.pdf");
@@ -562,12 +562,12 @@ public class PAdESSignatureFieldTest extends PKIFactoryAccess {
 		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId(null);
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
 		signed = signAndValidate(doc270Degrees);
 		assertNotNull(signed);
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId("signature1");
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.NONE);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.NONE);
 		signed = signAndValidate(signed);
 		assertNotNull(signed);
 		//signed.save("target/doc270Degrees.pdf");
@@ -584,12 +584,12 @@ public class PAdESSignatureFieldTest extends PKIFactoryAccess {
 		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId(null);
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
 		signed = signAndValidate(docMinus90Degrees);
 		assertNotNull(signed);
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId("signature1");
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.NONE);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.NONE);
 		signed = signAndValidate(signed);
 		assertNotNull(signed);
 		//signed.save("target/docMinus90Degrees.pdf");
@@ -606,12 +606,12 @@ public class PAdESSignatureFieldTest extends PKIFactoryAccess {
 		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId(null);
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
 		signed = signAndValidate(docMinus180Degrees);
 		assertNotNull(signed);
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId("signature1");
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.NONE);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.NONE);
 		signed = signAndValidate(signed);
 		assertNotNull(signed);
 		//signed.save("target/docMinus180Degrees.pdf");
@@ -628,15 +628,96 @@ public class PAdESSignatureFieldTest extends PKIFactoryAccess {
 		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId(null);
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
 		signed = signAndValidate(docMinus270Degrees);
 		assertNotNull(signed);
 
 		signatureParameters.getImageParameters().getFieldParameters().setFieldId("signature1");
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.NONE);
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(VisualSignatureRotation.NONE);
 		signed = signAndValidate(signed);
 		assertNotNull(signed);
 		//signed.save("target/docMinus270Degrees.pdf");
+	}
+
+	@Test
+	public void noRotationFlagTest() throws IOException {
+		DSSDocument documentToSign = new InMemoryDocument(getClass().getResourceAsStream("/visualSignature/annots-no-rotate.pdf"));
+
+		SignatureFieldParameters fieldParameters = new SignatureFieldParameters();
+		fieldParameters.setPage(1);
+
+		fieldParameters.setOriginX(0);
+		fieldParameters.setOriginY(0);
+		fieldParameters.setWidth(40);
+		fieldParameters.setHeight(60);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_270);
+
+		DSSDocument noRotate90Degrees = service.addNewSignatureField(documentToSign, fieldParameters);
+		assertNotNull(noRotate90Degrees);
+
+		Exception exception = assertThrows(AlertException.class,
+				() -> service.addNewSignatureField(noRotate90Degrees, fieldParameters));
+		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
+
+		fieldParameters.setOriginX(20);
+		fieldParameters.setOriginY(20);
+		fieldParameters.setWidth(40);
+		fieldParameters.setHeight(20);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_270);
+
+		exception = assertThrows(AlertException.class,
+				() -> service.addNewSignatureField(documentToSign, fieldParameters));
+		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
+
+		fieldParameters.setPage(2);
+
+		fieldParameters.setOriginX(280);
+		fieldParameters.setOriginY(60);
+		fieldParameters.setWidth(80);
+		fieldParameters.setHeight(40);
+		fieldParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
+
+		DSSDocument noRotate180Degrees = service.addNewSignatureField(noRotate90Degrees, fieldParameters);
+		assertNotNull(noRotate180Degrees);
+
+		exception = assertThrows(AlertException.class,
+				() -> service.addNewSignatureField(noRotate180Degrees, fieldParameters));
+		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
+
+		fieldParameters.setOriginX(280);
+		fieldParameters.setOriginY(100);
+		fieldParameters.setWidth(80);
+		fieldParameters.setHeight(40);
+		fieldParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
+
+		exception = assertThrows(AlertException.class,
+				() -> service.addNewSignatureField(noRotate90Degrees, fieldParameters));
+		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
+
+		fieldParameters.setPage(3);
+
+		fieldParameters.setOriginX(412);
+		fieldParameters.setOriginY(300);
+		fieldParameters.setWidth(40);
+		fieldParameters.setHeight(80);
+		fieldParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
+
+		DSSDocument noRotate270Degrees = service.addNewSignatureField(noRotate180Degrees, fieldParameters);
+		assertNotNull(noRotate270Degrees);
+
+		exception = assertThrows(AlertException.class,
+				() -> service.addNewSignatureField(noRotate270Degrees, fieldParameters));
+		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
+
+		fieldParameters.setOriginX(400);
+		fieldParameters.setOriginY(320);
+		fieldParameters.setWidth(40);
+		fieldParameters.setHeight(80);
+		fieldParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
+
+		exception = assertThrows(AlertException.class,
+				() -> service.addNewSignatureField(noRotate180Degrees, fieldParameters));
+		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
 	}
 
 	@Test
@@ -651,10 +732,10 @@ public class PAdESSignatureFieldTest extends PKIFactoryAccess {
 		fieldParameters.setOriginY(100);
 		fieldParameters.setHeight(50);
 		fieldParameters.setWidth(100);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 
 		signatureParameters.getImageParameters().setTextParameters(textParameters);
 		signatureParameters.getImageParameters().setFieldParameters(fieldParameters);
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.ROTATE_90);
 
 		DSSDocument doc90Degrees = signAndValidate(documentToSign);
 		assertNotNull(doc90Degrees);
@@ -663,7 +744,7 @@ public class PAdESSignatureFieldTest extends PKIFactoryAccess {
 				() -> signAndValidate(doc90Degrees));
 		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
 
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.ROTATE_180);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_180);
 
 		DSSDocument doc180Degrees = signAndValidate(doc90Degrees);
 		assertNotNull(doc180Degrees);
@@ -672,7 +753,7 @@ public class PAdESSignatureFieldTest extends PKIFactoryAccess {
 				() -> signAndValidate(doc180Degrees));
 		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
 
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.ROTATE_270);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_270);
 
 		DSSDocument doc270Degrees = signAndValidate(doc180Degrees);
 		assertNotNull(doc270Degrees);
@@ -681,13 +762,13 @@ public class PAdESSignatureFieldTest extends PKIFactoryAccess {
 				() -> signAndValidate(doc270Degrees));
 		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
 
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.NONE);
+		fieldParameters.setRotation(VisualSignatureRotation.NONE);
 
 		exception = assertThrows(AlertException.class,
 				() -> signAndValidate(doc270Degrees));
 		assertEquals("The new signature field position overlaps with an existing annotation!", exception.getMessage());
 
-		signatureParameters.getImageParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
+		fieldParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
 
 		exception = assertThrows(AlertException.class,
 				() -> signAndValidate(doc270Degrees));

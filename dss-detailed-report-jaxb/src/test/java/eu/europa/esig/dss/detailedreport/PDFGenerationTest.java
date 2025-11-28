@@ -21,8 +21,6 @@
 package eu.europa.esig.dss.detailedreport;
 
 import eu.europa.esig.dss.detailedreport.jaxb.XmlDetailedReport;
-import com.signerry.dss.test.TestUtils;
-
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
@@ -81,24 +79,31 @@ public class PDFGenerationTest {
 	public void generateSigAndTstDetailedReport() throws Exception {
 		createAndValidate("dr-sig-and-tst.xml");
 	}
+
+	@Test
+	public void generateSigAndErDetailedReport() throws Exception {
+		createAndValidate("dr-sig-lt-and-er.xml");
+	}
+
+	@Test
+	public void generateErDetailedReport() throws Exception {
+		createAndValidate("dr-er.xml");
+	}
 	
 	private void createAndValidate(String filename) throws Exception {
 		DetailedReportFacade facade = DetailedReportFacade.newFacade();
 
-		File file = TestUtils.getResourceAsFile(filename);
-
-		File pdfReport = TestUtils.getTmpFile("report.pdf");
-
+		File file = new File("src/test/resources/" + filename);
 		XmlDetailedReport detailedReport = facade.unmarshall(file);
 		String detailedReportString = facade.marshall(detailedReport);
 
-		try (FileOutputStream fos = new FileOutputStream(pdfReport)) {
-
+		try (FileOutputStream fos = new FileOutputStream("target/report.pdf")) {
 			Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, fos);
 			Result result = new SAXResult(fop.getDefaultHandler());
 			facade.generatePdfReport(detailedReport, result);
 		}
 		
+		File pdfReport = new File("target/report.pdf");
 		assertTrue(pdfReport.exists());
 		assertTrue(pdfReport.delete(), "Cannot delete PDF document (IO error)");
 		assertFalse(pdfReport.exists());
@@ -107,7 +112,7 @@ public class PDFGenerationTest {
 			Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, baos);
 			Result result = new SAXResult(fop.getDefaultHandler());
 			facade.generatePdfReport(detailedReportString, result);
-			assertTrue(baos.toByteArray().length >= 0);
+			assertTrue(baos.toByteArray().length > 0);
 		}
 		
 	}

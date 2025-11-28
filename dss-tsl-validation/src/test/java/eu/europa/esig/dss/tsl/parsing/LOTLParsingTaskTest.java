@@ -29,19 +29,19 @@ import eu.europa.esig.dss.tsl.function.OfficialJournalSchemeInformationURI;
 import eu.europa.esig.dss.tsl.function.TLPredicateFactory;
 import eu.europa.esig.dss.tsl.function.XMLOtherTSLPointer;
 import eu.europa.esig.dss.tsl.source.LOTLSource;
+import eu.europa.esig.dss.utils.Utils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.signerry.dss.test.TestUtils;
 
 public class LOTLParsingTaskTest {
 
@@ -54,21 +54,27 @@ public class LOTLParsingTaskTest {
 
 	private static DSSDocument TL;
 
+	private static List<Integer> DEFAULT_ACCEPTED_TL_VERSION;
+
 	@BeforeAll
-	public static void init() throws IOException {
-		LOTL = new FileDocument(TestUtils.getResourceAsFile("eu-lotl.xml"));
-		LOTL_NO_SIG = new FileDocument(TestUtils.getResourceAsFile("eu-lotl-no-sig.xml"));
-		LOTL_NOT_PARSEABLE = new FileDocument(TestUtils.getResourceAsFile("eu-lotl-not-parseable.xml"));
-		LOTL_PIVOT = new FileDocument(TestUtils.getResourceAsFile("eu-lotl-pivot.xml"));
+	static void init() {
+		LOTL = new FileDocument("src/test/resources/eu-lotl.xml");
+		LOTL_NO_SIG = new FileDocument("src/test/resources/eu-lotl-no-sig.xml");
+		LOTL_NOT_PARSEABLE = new FileDocument("src/test/resources/eu-lotl-not-parseable.xml");
+		LOTL_PIVOT = new FileDocument("src/test/resources/eu-lotl-pivot.xml");
 
-		LOTL_MRA = new FileDocument(TestUtils.getResourceAsFile("mra-lotl.xml"));
+		LOTL_MRA = new FileDocument("src/test/resources/mra-lotl.xml");
 
-		TL = new FileDocument(TestUtils.getResourceAsFile("ie-tl.xml"));
+		TL = new FileDocument("src/test/resources/ie-tl.xml");
+
+		DEFAULT_ACCEPTED_TL_VERSION = Arrays.asList(5, 6);
 	}
 
 	@Test
-	public void parseLOTLDefault() {
-		LOTLParsingTask task = new LOTLParsingTask(LOTL, new LOTLSource());
+	void parseLOTLDefault() {
+		LOTLSource lotlSource = new LOTLSource();
+		lotlSource.setTLVersions(DEFAULT_ACCEPTED_TL_VERSION);
+		LOTLParsingTask task = new LOTLParsingTask(LOTL, lotlSource);
 		LOTLParsingResult result = task.get();
 		assertNotNull(result);
 		assertNotNull(result.getIssueDate());
@@ -86,16 +92,31 @@ public class LOTLParsingTaskTest {
 		assertEquals("EU", result.getTerritory());
 
 		OtherTSLPointer otherTSLPointer = result.getLotlPointers().get(0);
-		assertEquals(8, otherTSLPointer.getCertificates().size());
-		assertEquals("https://ec.europa.eu/tools/lotl/eu-lotl.xml", otherTSLPointer.getLocation());
+		assertEquals(8, otherTSLPointer.getSdiCertificates().size());
+		assertEquals("https://ec.europa.eu/tools/lotl/eu-lotl.xml", otherTSLPointer.getTSLLocation());
+		assertEquals("EU", otherTSLPointer.getSchemeTerritory());
+		assertEquals("http://uri.etsi.org/TrstSvc/TrustedList/TSLType/EUlistofthelists", otherTSLPointer.getTslType());
+		assertEquals("application/vnd.etsi.tsl+xml", otherTSLPointer.getMimeType());
+		assertEquals(1, otherTSLPointer.getSchemeOperatorNames().size());
+		assertEquals("en", otherTSLPointer.getSchemeOperatorNames().keySet().iterator().next());
+		assertEquals(1, otherTSLPointer.getSchemeOperatorNames().get("en").size());
+		assertEquals("European Commission", otherTSLPointer.getSchemeOperatorNames().get("en").get(0));
+		assertEquals(1, otherTSLPointer.getSchemeTypeCommunityRules().size());
+		assertEquals("en", otherTSLPointer.getSchemeTypeCommunityRules().keySet().iterator().next());
+		assertEquals(1, otherTSLPointer.getSchemeTypeCommunityRules().get("en").size());
+		assertEquals("http://uri.etsi.org/TrstSvc/TrustedList/schemerules/EUlistofthelists", otherTSLPointer.getSchemeTypeCommunityRules().get("en").get(0));
 
 		assertNotNull(result.getDistributionPoints());
 		assertEquals(1, result.getDistributionPoints().size());
+
+		assertTrue(Utils.isCollectionEmpty(result.getStructureValidationMessages()));
 	}
 
 	@Test
-	public void parseLOTLNoSig() {
-		LOTLParsingTask task = new LOTLParsingTask(LOTL_NO_SIG, new LOTLSource());
+	void parseLOTLNoSig() {
+		LOTLSource lotlSource = new LOTLSource();
+		lotlSource.setTLVersions(DEFAULT_ACCEPTED_TL_VERSION);
+		LOTLParsingTask task = new LOTLParsingTask(LOTL_NO_SIG, lotlSource);
 		LOTLParsingResult result = task.get();
 		assertNotNull(result);
 		assertNotNull(result.getIssueDate());
@@ -114,17 +135,26 @@ public class LOTLParsingTaskTest {
 
 		assertNotNull(result.getDistributionPoints());
 		assertEquals(1, result.getDistributionPoints().size());
+
+		assertFalse(Utils.isCollectionEmpty(result.getStructureValidationMessages()));
+		assertTrue(result.getStructureValidationMessages().stream().anyMatch(r -> r.contains("No ds:Signature element is present!")));
 	}
 
 	private void checkOtherPointers(List<OtherTSLPointer> lotlPointers) {
 		for (OtherTSLPointer otherTSLPointerDTO : lotlPointers) {
 			assertNotNull(otherTSLPointerDTO);
-			assertNotNull(otherTSLPointerDTO.getLocation());
-			List<CertificateToken> certificates = otherTSLPointerDTO.getCertificates();
+			List<CertificateToken> certificates = otherTSLPointerDTO.getSdiCertificates();
 			assertNotNull(certificates);
 			for (CertificateToken certificateToken : certificates) {
 				assertNotNull(certificateToken);
 			}
+			assertNotNull(otherTSLPointerDTO.getTSLLocation());
+			assertNotNull(otherTSLPointerDTO.getSchemeTerritory());
+			assertNotNull(otherTSLPointerDTO.getTslType());
+			assertNotNull(otherTSLPointerDTO.getMimeType());
+			assertNotNull(otherTSLPointerDTO.getSchemeOperatorNames());
+			assertFalse(otherTSLPointerDTO.getSchemeOperatorNames().isEmpty());
+			assertFalse(otherTSLPointerDTO.getSchemeTypeCommunityRules().isEmpty());
 		}
 	}
 
@@ -260,8 +290,19 @@ public class LOTLParsingTaskTest {
 		assertEquals("IE", result.getTerritory());
 
 		OtherTSLPointer otherTSLPointer = result.getLotlPointers().get(0);
-		assertEquals(8, otherTSLPointer.getCertificates().size());
-		assertEquals("https://ec.europa.eu/tools/lotl/eu-lotl.xml", otherTSLPointer.getLocation());
+		assertEquals(8, otherTSLPointer.getSdiCertificates().size());
+		assertEquals("https://ec.europa.eu/tools/lotl/eu-lotl.xml", otherTSLPointer.getTSLLocation());
+		assertEquals("EU", otherTSLPointer.getSchemeTerritory());
+		assertEquals("http://uri.etsi.org/TrstSvc/TrustedList/TSLType/EUlistofthelists", otherTSLPointer.getTslType());
+		assertEquals("application/vnd.etsi.tsl+xml", otherTSLPointer.getMimeType());
+		assertEquals(1, otherTSLPointer.getSchemeOperatorNames().size());
+		assertEquals("en", otherTSLPointer.getSchemeOperatorNames().keySet().iterator().next());
+		assertEquals(1, otherTSLPointer.getSchemeOperatorNames().get("en").size());
+		assertEquals("European Commission", otherTSLPointer.getSchemeOperatorNames().get("en").get(0));
+		assertEquals(1, otherTSLPointer.getSchemeTypeCommunityRules().size());
+		assertEquals("en", otherTSLPointer.getSchemeTypeCommunityRules().keySet().iterator().next());
+		assertEquals(1, otherTSLPointer.getSchemeTypeCommunityRules().get("en").size());
+		assertEquals("http://uri.etsi.org/TrstSvc/TrustedList/schemerules/EUlistofthelists", otherTSLPointer.getSchemeTypeCommunityRules().get("en").get(0));
 	}
 
 	@Test
@@ -298,7 +339,7 @@ public class LOTLParsingTaskTest {
 	@Test
 	public void notParseable() {
 		LOTLParsingTask task = new LOTLParsingTask(LOTL_NOT_PARSEABLE, new LOTLSource());
-		DSSException exception = assertThrows(DSSException.class, () -> task.get());
+		DSSException exception = assertThrows(DSSException.class, task::get);
 		assertTrue(exception.getMessage().contains("Unable to parse binaries"));
 	}
 

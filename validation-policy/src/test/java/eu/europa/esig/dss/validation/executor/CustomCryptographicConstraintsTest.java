@@ -104,7 +104,7 @@ public class CustomCryptographicConstraintsTest extends AbstractCryptographicCon
 		detailedReport = createDetailedReport();
 		revocationBasicBuildingBlock = detailedReport.getBasicBuildingBlockById(detailedReport.getRevocationIds().get(0));
 		assertEquals(Indication.INDETERMINATE, revocationBasicBuildingBlock.getSAV().getConclusion().getIndication());
-		assertEquals(Indication.INDETERMINATE, detailedReport.getTimestampValidationIndication(detailedReport.getTimestampIds().get(0)));
+		assertEquals(Indication.INDETERMINATE, detailedReport.getBasicTimestampValidationIndication(detailedReport.getTimestampIds().get(0)));
 		checkRevocationErrorPresence(detailedReport, MessageTag.ASCCM_DAA_ANS, true);
 		checkTimestampErrorPresence(detailedReport, MessageTag.ASCCM_DAA_ANS, true);
 
@@ -118,7 +118,7 @@ public class CustomCryptographicConstraintsTest extends AbstractCryptographicCon
 		checkErrorMessageAbsence(MessageTag.ASCCM_DAA_ANS);
 		revocationBasicBuildingBlock = detailedReport.getBasicBuildingBlockById(detailedReport.getRevocationIds().get(0));
 		assertEquals(Indication.PASSED, revocationBasicBuildingBlock.getSAV().getConclusion().getIndication());
-		assertEquals(Indication.PASSED, detailedReport.getTimestampValidationIndication(detailedReport.getTimestampIds().get(0)));
+		assertEquals(Indication.PASSED, detailedReport.getBasicTimestampValidationIndication(detailedReport.getTimestampIds().get(0)));
 		checkRevocationErrorPresence(detailedReport, MessageTag.ASCCM_DAA_ANS, false);
 		checkTimestampErrorPresence(detailedReport, MessageTag.ASCCM_DAA_ANS, false);
 		
@@ -230,8 +230,8 @@ public class CustomCryptographicConstraintsTest extends AbstractCryptographicCon
 		detailedReport = createDetailedReport();
 		revocationBasicBuildingBlock = detailedReport.getBasicBuildingBlockById(detailedReport.getRevocationIds().get(0));
 		assertEquals(Indication.INDETERMINATE, revocationBasicBuildingBlock.getSAV().getConclusion().getIndication());
-		assertEquals(Indication.INDETERMINATE, detailedReport.getTimestampValidationIndication(detailedReport.getTimestampIds().get(0)));
-		assertEquals(SubIndication.CRYPTO_CONSTRAINTS_FAILURE_NO_POE, detailedReport.getTimestampValidationSubIndication(detailedReport.getTimestampIds().get(0)));
+		assertEquals(Indication.INDETERMINATE, detailedReport.getBasicTimestampValidationIndication(detailedReport.getTimestampIds().get(0)));
+		assertEquals(SubIndication.CRYPTO_CONSTRAINTS_FAILURE_NO_POE, detailedReport.getBasicTimestampValidationSubIndication(detailedReport.getTimestampIds().get(0)));
 		checkRevocationErrorPresence(detailedReport, MessageTag.ASCCM_DAA_ANS, true);
 		checkTimestampErrorPresence(detailedReport, MessageTag.ASCCM_DAA_ANS, false);
 		
@@ -240,7 +240,7 @@ public class CustomCryptographicConstraintsTest extends AbstractCryptographicCon
 		detailedReport = createDetailedReport();
 		revocationBasicBuildingBlock = detailedReport.getBasicBuildingBlockById(detailedReport.getRevocationIds().get(0));
 		assertEquals(Indication.PASSED, revocationBasicBuildingBlock.getSAV().getConclusion().getIndication());
-		assertEquals(Indication.INDETERMINATE, detailedReport.getTimestampValidationIndication(detailedReport.getTimestampIds().get(0)));
+		assertEquals(Indication.INDETERMINATE, detailedReport.getBasicTimestampValidationIndication(detailedReport.getTimestampIds().get(0)));
 		checkRevocationErrorPresence(detailedReport, MessageTag.ASCCM_DAA_ANS, false);
 		checkTimestampErrorPresence(detailedReport, MessageTag.ASCCM_DAA_ANS, true);
 		

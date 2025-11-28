@@ -20,18 +20,16 @@
  */
 package eu.europa.esig.dss.xades.extension;
 
-import eu.europa.esig.dss.DomUtils;
+import eu.europa.esig.dss.xml.utils.XMLCanonicalizer;
+import eu.europa.esig.dss.xml.utils.DomUtils;
 import eu.europa.esig.dss.diagnostic.DiagnosticData;
 import eu.europa.esig.dss.enumerations.SignatureLevel;
 import eu.europa.esig.dss.enumerations.SignaturePackaging;
 import eu.europa.esig.dss.model.DSSDocument;
-import static com.signerry.dss.test.TestUtils.getResourceAsFile;
 import eu.europa.esig.dss.model.FileDocument;
 import eu.europa.esig.dss.model.InMemoryDocument;
 import eu.europa.esig.dss.spi.DSSUtils;
 import eu.europa.esig.dss.validation.SignedDocumentValidator;
-import eu.europa.esig.dss.xades.CanonicalizationMethod;
-import eu.europa.esig.dss.xades.DSSXMLUtils;
 import eu.europa.esig.dss.xades.XAdESSignatureParameters;
 import eu.europa.esig.dss.xades.signature.AbstractXAdESTestSignature;
 import eu.europa.esig.dss.xades.signature.XAdESService;
@@ -40,6 +38,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import javax.xml.crypto.dsig.CanonicalizationMethod;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DSS2589WithTLevelExtensionTest extends AbstractXAdESTestSignature {
 
-    private final static DSSDocument ORIGINAL_DOC = new FileDocument(getResourceAsFile("sample.xml"));
+    private final static DSSDocument ORIGINAL_DOC = new FileDocument("src/test/resources/sample.xml");
 
     private XAdESService service;
     private XAdESSignatureParameters signatureParameters;
@@ -84,7 +83,7 @@ public class DSS2589WithTLevelExtensionTest extends AbstractXAdESTestSignature {
         signatureNode = newDom.importNode(signatureNode, true);
         wrapper.appendChild(signatureNode);
 
-        DSSDocument wrappedSignatureDoc = new InMemoryDocument(DSSXMLUtils.serializeNode(newDom));
+        DSSDocument wrappedSignatureDoc = new InMemoryDocument(DomUtils.serializeNode(newDom));
         documentToSign = wrappedSignatureDoc;
 
         signatureParameters = initSignatureParameters();
@@ -125,12 +124,12 @@ public class DSS2589WithTLevelExtensionTest extends AbstractXAdESTestSignature {
             List<DSSDocument> originalDocuments = validator.getOriginalDocuments(sigId);
             assertEquals(1, originalDocuments.size());
             if (SignatureLevel.XAdES_BASELINE_B.equals(diagnosticData.getSignatureFormat(sigId)) &&
-                    Arrays.equals(DSSXMLUtils.canonicalize(CanonicalizationMethod.EXCLUSIVE, DSSUtils.toByteArray(ORIGINAL_DOC)),
-                    DSSXMLUtils.canonicalize(CanonicalizationMethod.EXCLUSIVE, DSSUtils.toByteArray(originalDocuments.get(0))))) {
+                    Arrays.equals(XMLCanonicalizer.createInstance(CanonicalizationMethod.EXCLUSIVE).canonicalize(DSSUtils.toByteArray(ORIGINAL_DOC)),
+                            XMLCanonicalizer.createInstance(CanonicalizationMethod.EXCLUSIVE).canonicalize(DSSUtils.toByteArray(originalDocuments.get(0))))) {
                 originalDocSigFound = true;
             } else if (SignatureLevel.XAdES_BASELINE_T.equals(diagnosticData.getSignatureFormat(sigId)) &&
-                    Arrays.equals(DSSXMLUtils.canonicalize(CanonicalizationMethod.EXCLUSIVE, DSSUtils.toByteArray(documentToSign)),
-                    DSSXMLUtils.canonicalize(CanonicalizationMethod.EXCLUSIVE, DSSUtils.toByteArray(originalDocuments.get(0))))) {
+                    Arrays.equals(XMLCanonicalizer.createInstance(CanonicalizationMethod.EXCLUSIVE).canonicalize(DSSUtils.toByteArray(documentToSign)),
+                            XMLCanonicalizer.createInstance(CanonicalizationMethod.EXCLUSIVE).canonicalize(DSSUtils.toByteArray(originalDocuments.get(0))))) {
                 sigDocSigFound = true;
             }
         }

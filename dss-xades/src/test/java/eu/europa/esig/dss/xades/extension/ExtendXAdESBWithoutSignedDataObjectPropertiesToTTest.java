@@ -59,7 +59,7 @@ public class ExtendXAdESBWithoutSignedDataObjectPropertiesToTTest extends PKIFac
 		calendar.add(Calendar.MONTH, -1);
 		Date tstTime = calendar.getTime();
 
-		XAdESService service = new XAdESService(getCompleteCertificateVerifier());
+		XAdESService service = new XAdESService(getOfflineCertificateVerifier());
 		service.setTspSource(getGoodTsaByTime(tstTime));
 
 		XAdESSignatureParameters parameters = new XAdESSignatureParameters();
@@ -81,7 +81,7 @@ public class ExtendXAdESBWithoutSignedDataObjectPropertiesToTTest extends PKIFac
 				new FileDocument(getResourceAsFile("validation/dss1135/politica_de_firma.pdf")));
 		signaturePolicyProvider.setSignaturePoliciesByUrl(signaturePoliciesByUrl);
 		validator.setSignaturePolicyProvider(signaturePolicyProvider);
-		validator.setCertificateVerifier(getCompleteCertificateVerifier());
+		validator.setCertificateVerifier(getOfflineCertificateVerifier());
 
 		Reports reports = validator.validateDocument();
 		SimpleReport simpleReport = reports.getSimpleReport();

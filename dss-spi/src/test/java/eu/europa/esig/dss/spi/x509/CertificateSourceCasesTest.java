@@ -35,8 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.signerry.dss.test.TestUtils;
-
 public class CertificateSourceCasesTest {
 
 	@Test
@@ -70,8 +68,8 @@ public class CertificateSourceCasesTest {
 		assertTrue(lcs.isTrusted(c1));
 		assertFalse(lcs.isTrusted(c2));
 
-		assertEquals(2, lcs.getCertificateSource(c1).size());
-		assertEquals(1, lcs.getCertificateSource(c2).size());
+		assertEquals(2, lcs.getCertificateSourceType(c1).size());
+		assertEquals(1, lcs.getCertificateSourceType(c2).size());
 	}
 
 	@Test
@@ -106,7 +104,7 @@ public class CertificateSourceCasesTest {
 		assertEquals(2, lcs.getByPublicKey(c1.getPublicKey()).size());
 		assertEquals(2, lcs.getByPublicKey(c2.getPublicKey()).size());
 
-		assertTrue(lcs.isTrusted(c1));
+		assertFalse(lcs.isTrusted(c1));
 		assertTrue(lcs.isTrusted(c2));
 
 		assertEquals(0, lcs.getBySki(null).size());
@@ -118,8 +116,8 @@ public class CertificateSourceCasesTest {
 	public void crossCertificatesSameSubject() {
 
 		// 2 cross certificates : same keypair + same subject
-		CertificateToken c1 = DSSUtils.loadCertificate(TestUtils.getResourceAsFile("belgiumrs2.crt"));
-		CertificateToken c2 = DSSUtils.loadCertificate(TestUtils.getResourceAsFile("belgiumrs2-signed.crt"));
+		CertificateToken c1 = DSSUtils.loadCertificate(new File("src/test/resources/belgiumrs2.crt"));
+		CertificateToken c2 = DSSUtils.loadCertificate(new File("src/test/resources/belgiumrs2-signed.crt"));
 
 		CommonCertificateSource ccc = new CommonCertificateSource();
 		ccc.addCertificate(c1);
@@ -130,22 +128,37 @@ public class CertificateSourceCasesTest {
 		assertEquals(2, ccc.getNumberOfCertificates());
 		assertEquals(1, ccc.getNumberOfEntities());
 		assertEquals(2, ccc.getBySubject(c1.getSubject()).size());
+		assertEquals(2, ccc.getBySubject(c2.getSubject()).size());
 		assertEquals(2, ccc.getBySki(DSSASN1Utils.computeSkiFromCert(c1)).size());
+		assertEquals(2, ccc.getBySki(DSSASN1Utils.computeSkiFromCert(c2)).size());
+
+		assertFalse(ccc.isTrusted(c1));
+		assertFalse(ccc.isTrusted(c2));
+
+		CommonTrustedCertificateSource ctcs = new CommonTrustedCertificateSource();
+		ctcs.addCertificate(c1);
 
 		ListCertificateSource lcs = new ListCertificateSource(ccc);
 		lcs.add(ccc);
+		lcs.add(ctcs);
 
 		assertEquals(2, lcs.getNumberOfCertificates());
 		assertEquals(1, lcs.getNumberOfEntities());
 		assertEquals(2, lcs.getBySubject(c1.getSubject()).size());
 		assertEquals(2, lcs.getBySki(DSSASN1Utils.computeSkiFromCert(c1)).size());
+		assertEquals(2, lcs.getBySki(DSSASN1Utils.computeSkiFromCert(c2)).size());
+		assertEquals(2, lcs.getByPublicKey(c1.getPublicKey()).size());
+		assertEquals(2, lcs.getByPublicKey(c2.getPublicKey()).size());
+
+		assertTrue(lcs.isTrusted(c1));
+		assertTrue(lcs.isTrusted(c2));
 	}
 
 	@Test
 	public void extractTLSKeystore() {
 		assertTimeout(ofMillis(30000), () -> {
-			KeyStoreCertificateSource kscs = new KeyStoreCertificateSource(TestUtils.getResourceAsFile("extract-tls.p12"),
-					"PKCS12", "ks-password");
+			KeyStoreCertificateSource kscs = new KeyStoreCertificateSource(new File("src/test/resources/extract-tls.p12"),
+					"PKCS12", "ks-password".toCharArray());
 	
 			CommonCertificateSource ccc = new CommonCertificateSource();
 	

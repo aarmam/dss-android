@@ -23,6 +23,7 @@ package eu.europa.esig.dss.service.ocsp;
 import eu.europa.esig.dss.enumerations.RevocationOrigin;
 import eu.europa.esig.dss.model.x509.CertificateToken;
 import eu.europa.esig.dss.model.x509.revocation.ocsp.OCSP;
+import eu.europa.esig.dss.spi.CertificateExtensionsUtils;
 import eu.europa.esig.dss.spi.DSSRevocationUtils;
 import eu.europa.esig.dss.spi.client.jdbc.query.SqlQuery;
 import eu.europa.esig.dss.spi.client.jdbc.query.SqlSelectQuery;
@@ -50,7 +51,7 @@ import java.util.List;
  *
  */
 public class JdbcCacheOCSPSource extends JdbcRevocationSource<OCSP> implements OCSPSource {
-	
+
 	private static final long serialVersionUID = 10480458323923489L;
 
 	/**
@@ -189,7 +190,12 @@ public class JdbcCacheOCSPSource extends JdbcRevocationSource<OCSP> implements O
 	public OCSPToken getRevocationToken(CertificateToken certificateToken, CertificateToken issuerCertificateToken, boolean forceRefresh) {
 		return (OCSPToken) super.getRevocationToken(certificateToken, issuerCertificateToken, forceRefresh);
 	}
-	
+
+	@Override
+	protected List<String> getRevocationAccessUrls(CertificateToken certificateToken) {
+		return CertificateExtensionsUtils.getOCSPAccessUrls(certificateToken);
+	}
+
 	@Override
 	protected String getRevocationTokenKey(CertificateToken certificateToken, String urlString) {
 		return DSSRevocationUtils.getOcspRevocationKey(certificateToken, urlString);

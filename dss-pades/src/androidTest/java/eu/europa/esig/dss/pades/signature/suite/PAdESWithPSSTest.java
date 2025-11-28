@@ -47,77 +47,91 @@ import com.signerry.dss.test.TestUtils;
 
 public class PAdESWithPSSTest extends AbstractPAdESTestSignature {
 
-	private DocumentSignatureService<PAdESSignatureParameters, PAdESTimestampParameters> service;
-	private PAdESSignatureParameters signatureParameters;
-	private DSSDocument documentToSign;
+    private DocumentSignatureService<PAdESSignatureParameters, PAdESTimestampParameters> service;
+    private PAdESSignatureParameters signatureParameters;
+    private DSSDocument documentToSign;
 
+<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/suite/PAdESWithPSSTest.java
 	@BeforeEach
 	public void init() throws Exception {
 		documentToSign = new InMemoryDocument(TestUtils.getResourceAsStream("sample.pdf"));
+=======
+    @BeforeEach
+    public void init() throws Exception {
+        documentToSign = new InMemoryDocument(getClass().getResourceAsStream("/sample.pdf"));
+>>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/suite/PAdESWithPSSTest.java
 
-		signatureParameters = new PAdESSignatureParameters();
-		signatureParameters.setSigningCertificate(getSigningCert());
-		signatureParameters.setCertificateChain(getCertificateChain());
-		signatureParameters.setSignatureLevel(SignatureLevel.PAdES_BASELINE_LTA);
-		signatureParameters.setDigestAlgorithm(DigestAlgorithm.SHA256);
-		signatureParameters.setMaskGenerationFunction(MaskGenerationFunction.MGF1);
+        signatureParameters = new PAdESSignatureParameters();
+        signatureParameters.setSigningCertificate(getSigningCert());
+        signatureParameters.setCertificateChain(getCertificateChain());
+        signatureParameters.setSignatureLevel(SignatureLevel.PAdES_BASELINE_LTA);
+        signatureParameters.setDigestAlgorithm(DigestAlgorithm.SHA256);
+        signatureParameters.setMaskGenerationFunction(MaskGenerationFunction.MGF1);
 
-		service = new PAdESService(getCompleteCertificateVerifier());
-		service.setTspSource(getPSSGoodTsa());
-	}
-	
-	@Override
-	protected void onDocumentSigned(byte[] byteArray) {
-		super.onDocumentSigned(byteArray);
+        service = new PAdESService(getCertificateVerifierWithMGF1());
+        service.setTspSource(getPSSGoodTsa());
+    }
 
-		InMemoryDocument doc = new InMemoryDocument(byteArray);
+//    @Override
+//    protected CertificateVerifier getCertificateVerifierWithMGF1() {
+//        CertificateVerifier certificateVerifier = super.getCertificateVerifierWithMGF1();
+//        certificateVerifier.setOcspSource(new );
+//        certificateVerifier.setCrlSource(null);
+//        return certificateVerifier;
+//    }
 
-		SignedDocumentValidator validator = getValidator(doc);
+    @Override
+    protected void onDocumentSigned(byte[] byteArray) {
+        super.onDocumentSigned(byteArray);
 
-		Reports reports = validator.validateDocument();
+        InMemoryDocument doc = new InMemoryDocument(byteArray);
 
-		DiagnosticData diagnosticData = reports.getDiagnosticData();
-		verifyDiagnosticData(diagnosticData);
-		
-		Set<SignatureWrapper> allSignatures = diagnosticData.getAllSignatures();
-		for(SignatureWrapper wrapper: allSignatures) {
-			assertEquals(MaskGenerationFunction.MGF1, wrapper.getMaskGenerationFunction());
-		}
-		
-		List<CertificateWrapper> usedCertificates = diagnosticData.getUsedCertificates();
-		for(CertificateWrapper wrapper: usedCertificates) {
-			assertEquals(MaskGenerationFunction.MGF1, wrapper.getMaskGenerationFunction());
-		}
-		
-		Set<RevocationWrapper> allRevocationData = diagnosticData.getAllRevocationData();
-		for(RevocationWrapper wrapper : allRevocationData) {
-			assertEquals(MaskGenerationFunction.MGF1, wrapper.getMaskGenerationFunction());
-		}
-		
-		List<TimestampWrapper> timestampList = diagnosticData.getTimestampList();
-		for(TimestampWrapper wrapper : timestampList) {
-			assertEquals(MaskGenerationFunction.MGF1, wrapper.getMaskGenerationFunction());
-		}
-	}
+        SignedDocumentValidator validator = getValidator(doc);
 
-	@Override
-	protected DocumentSignatureService<PAdESSignatureParameters, PAdESTimestampParameters> getService() {
-		return service;
-	}
+        Reports reports = validator.validateDocument();
 
-	@Override
-	protected PAdESSignatureParameters getSignatureParameters() {
-		return signatureParameters;
-	}
+        DiagnosticData diagnosticData = reports.getDiagnosticData();
+        verifyDiagnosticData(diagnosticData);
 
-	@Override
-	protected DSSDocument getDocumentToSign() {
-		return documentToSign;
-	}
+        Set<SignatureWrapper> allSignatures = diagnosticData.getAllSignatures();
+        for (SignatureWrapper wrapper : allSignatures) {
+            assertEquals(MaskGenerationFunction.MGF1, wrapper.getMaskGenerationFunction());
+        }
 
-	@Override
-	protected String getSigningAlias() {
-		return PSS_GOOD_USER;
-	}
+        List<CertificateWrapper> usedCertificates = diagnosticData.getUsedCertificates();
+        for (CertificateWrapper wrapper : usedCertificates) {
+            assertEquals(MaskGenerationFunction.MGF1, wrapper.getMaskGenerationFunction());
+        }
+
+        Set<RevocationWrapper> allRevocationData = diagnosticData.getAllRevocationData();
+        for (RevocationWrapper wrapper : allRevocationData) {
+            assertEquals(MaskGenerationFunction.MGF1, wrapper.getMaskGenerationFunction());
+        }
+
+        List<TimestampWrapper> timestampList = diagnosticData.getTimestampList();
+        for (TimestampWrapper wrapper : timestampList) {
+            assertEquals(MaskGenerationFunction.MGF1, wrapper.getMaskGenerationFunction());
+        }
+    }
+
+    @Override
+    protected DocumentSignatureService<PAdESSignatureParameters, PAdESTimestampParameters> getService() {
+        return service;
+    }
+
+    @Override
+    protected PAdESSignatureParameters getSignatureParameters() {
+        return signatureParameters;
+    }
+
+    @Override
+    protected DSSDocument getDocumentToSign() {
+        return documentToSign;
+    }
+
+    @Override
+    protected String getSigningAlias() {
+        return PSS_GOOD_USER;
+    }
 
 }

@@ -22,12 +22,12 @@ package eu.europa.esig.dss.xades.validation;
 
 import eu.europa.esig.dss.diagnostic.DiagnosticData;
 import eu.europa.esig.dss.exception.IllegalInputException;
-import eu.europa.esig.dss.jaxb.common.DocumentBuilderFactoryBuilder;
-import eu.europa.esig.dss.jaxb.common.XmlDefinerUtils;
 import eu.europa.esig.dss.model.DSSDocument;
 import static com.signerry.dss.test.TestUtils.getResourceAsFile;
 import eu.europa.esig.dss.model.FileDocument;
 import eu.europa.esig.dss.validation.SignedDocumentValidator;
+import eu.europa.esig.dss.xml.common.DocumentBuilderFactoryBuilder;
+import eu.europa.esig.dss.xml.common.XmlDefinerUtils;
 import org.junit.jupiter.api.Test;
 
 import static com.signerry.dss.test.TestUtils.getResourceAsFile;

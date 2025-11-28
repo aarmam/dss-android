@@ -115,10 +115,16 @@ public class PAdESVisibleZoomRotationTest extends AbstractPAdESTestSignature {
 	    fieldParameters.setOriginY(50);
 	    fieldParameters.setWidth(100);
 	    fieldParameters.setHeight(300);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 	    imageParameters.setFieldParameters(fieldParameters);
+<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESVisibleZoomRotationTest.java
 	    imageParameters.setBackgroundColor(DSSColor.PINK);
 		
 		imageParameters.setRotation(VisualSignatureRotation.ROTATE_90);
+=======
+	    imageParameters.setBackgroundColor(Color.PINK);
+
+>>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESVisibleZoomRotationTest.java
 		signatureParameters.setImageParameters(imageParameters);
 
 		super.signAndVerify();
@@ -134,12 +140,12 @@ public class PAdESVisibleZoomRotationTest extends AbstractPAdESTestSignature {
 	    fieldParameters.setOriginY(50);
 	    fieldParameters.setWidth(100);
 	    fieldParameters.setHeight(300);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 	    imageParameters.setFieldParameters(fieldParameters);
 		imageParameters.setBackgroundColor(DSSColor.PINK);
 		imageParameters.setImageScaling(ImageScaling.ZOOM_AND_CENTER);
 		
 		imageParameters.setZoom(200);
-		imageParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 		signatureParameters.setImageParameters(imageParameters);
 
 		Exception exception = assertThrows(AlertException.class, () -> super.signAndVerify());

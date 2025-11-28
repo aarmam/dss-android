@@ -21,8 +21,8 @@
 			<Id>ANY_POLICY</Id>
 			<Id>NO_POLICY</Id>
 		</AcceptablePolicies>
-		<PolicyAvailable Level="FAIL"/>
-		<PolicyHashMatch Level="FAIL"/>
+		<PolicyAvailable Level="INFORM" />
+		<PolicyHashMatch Level="WARN" />
 		<AcceptableFormats Level="FAIL">
 			<Id>*</Id>
 		</AcceptableFormats>
@@ -285,6 +285,13 @@
 			<Cryptographic/>
 		</BasicSignatureConstraints>
 	</Revocation>
+	<EvidenceRecord>
+		<DataObjectExistence Level="FAIL" />
+		<DataObjectIntact Level="FAIL" />
+		<DataObjectFound Level="FAIL" />
+		<DataObjectGroup Level="WARN" />
+		<Cryptographic />
+	</EvidenceRecord>
 	<Cryptographic Level="FAIL">
 		<AcceptableEncryptionAlgo>
 			<Algo>RSA</Algo>
@@ -359,6 +366,9 @@
 		<TLFreshness Unit="HOURS" Value="6" Level="WARN"/>
 		<TLNotExpired Level="WARN"/>
 		<TLWellSigned Level="WARN"/>
-		<TLVersion value="5" Level="FAIL"/>
+		<TLVersion Level="FAIL">
+			<Id>5</Id>
+			<Id>6</Id>
+		</TLVersion>
 	</eIDAS>
 </ConstraintsParameters>

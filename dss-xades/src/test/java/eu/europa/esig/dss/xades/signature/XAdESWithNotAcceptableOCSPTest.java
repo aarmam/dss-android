@@ -32,7 +32,9 @@ import eu.europa.esig.dss.model.DSSDocument;
 import static com.signerry.dss.test.TestUtils.getResourceAsFile;
 import eu.europa.esig.dss.model.FileDocument;
 import eu.europa.esig.dss.signature.DocumentSignatureService;
+import eu.europa.esig.dss.test.pki.crl.UnknownPkiCRLSource;
 import eu.europa.esig.dss.utils.Utils;
+import eu.europa.esig.dss.validation.CertificateVerifier;
 import eu.europa.esig.dss.xades.XAdESSignatureParameters;
 import eu.europa.esig.dss.xades.XAdESTimestampParameters;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +67,14 @@ public class XAdESWithNotAcceptableOCSPTest extends AbstractXAdESTestSignature {
 		signingAlias = OCSP_SKIP_USER_WITH_CRL;
 		initSignatureParameters();
 	}
-	
+	@Override
+	protected CertificateVerifier getCompleteCertificateVerifier() {
+		CertificateVerifier certificateVerifier = super.getCompleteCertificateVerifier();
+		certificateVerifier.setOcspSource(null);
+		certificateVerifier.setCrlSource(new UnknownPkiCRLSource(getCertEntityRepository()));
+		return certificateVerifier;
+	}
+
 	private void initSignatureParameters() {
 		signatureParameters = new XAdESSignatureParameters();
 		signatureParameters.bLevel().setSigningDate(new Date());

@@ -20,20 +20,8 @@
  */
 package eu.europa.esig.dss.xades.validation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import static com.signerry.dss.test.TestUtils.getResourceAsFile;
-import java.io.File;
-import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import eu.europa.esig.dss.DomUtils;
-import eu.europa.esig.dss.definition.xmldsig.XMLDSigPaths;
+import eu.europa.esig.dss.xml.utils.XMLCanonicalizer;
+import eu.europa.esig.dss.xml.utils.DomUtils;
 import eu.europa.esig.dss.diagnostic.DiagnosticData;
 import eu.europa.esig.dss.diagnostic.SignatureWrapper;
 import eu.europa.esig.dss.diagnostic.SignerDataWrapper;
@@ -41,15 +29,24 @@ import eu.europa.esig.dss.diagnostic.jaxb.XmlSignatureDigestReference;
 import eu.europa.esig.dss.diagnostic.jaxb.XmlSignatureScope;
 import eu.europa.esig.dss.enumerations.SignatureScopeType;
 import eu.europa.esig.dss.model.DSSDocument;
-import static com.signerry.dss.test.TestUtils.getResourceAsFile;
 import eu.europa.esig.dss.model.FileDocument;
 import eu.europa.esig.dss.spi.DSSUtils;
 import eu.europa.esig.dss.utils.Utils;
-import eu.europa.esig.dss.xades.DSSXMLUtils;
+import eu.europa.esig.xmldsig.definition.XMLDSigPath;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import java.io.File;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class XAdESSignatureIdentifierTest extends AbstractXAdESTestValidation {
 	
-	private static DSSDocument document = new FileDocument(getResourceAsFile("validation/valid-xades.xml"));
+	private static DSSDocument document = new FileDocument(new File("src/test/resources/validation/valid-xades.xml"));
 
 	@Override
 	protected DSSDocument getSignedDocument() {
@@ -79,10 +76,10 @@ public class XAdESSignatureIdentifierTest extends AbstractXAdESTestValidation {
 		assertNotNull(signatureDigestReference);
 
 		Document documentDom = DomUtils.buildDOM(document);
-		NodeList nodeList = DomUtils.getNodeList(documentDom, XMLDSigPaths.SIGNATURE_PATH);
+		NodeList nodeList = DomUtils.getNodeList(documentDom, XMLDSigPath.SIGNATURE_PATH);
 		assertEquals(1, nodeList.getLength());
 		Element signatureElement = (Element) nodeList.item(0);
-		byte[] canonicalizedSignatureElement = DSSXMLUtils.canonicalizeSubtree(signatureDigestReference.getCanonicalizationMethod(), signatureElement);
+		byte[] canonicalizedSignatureElement = XMLCanonicalizer.createInstance(signatureDigestReference.getCanonicalizationMethod()).canonicalize(signatureElement);
 		byte[] digest = DSSUtils.digest(signatureDigestReference.getDigestMethod(), canonicalizedSignatureElement);
 		
 		String signatureReferenceDigestValue = Utils.toBase64(signatureDigestReference.getDigestValue());

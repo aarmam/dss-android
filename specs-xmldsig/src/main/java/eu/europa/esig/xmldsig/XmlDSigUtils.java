@@ -20,6 +20,7 @@
  */
 package eu.europa.esig.xmldsig;
 
+import eu.europa.esig.dss.jaxb.common.XSDAbstractUtils;
 import eu.europa.esig.xmldsig.jaxb.ObjectFactory;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -55,6 +56,9 @@ public final class XmlDSigUtils extends XSDAbstractUtils {
 	/** JAXBContext */
 	private JAXBContext jc;
 
+	/**
+	 * Empty constructor
+	 */
 	private XmlDSigUtils() {
 		// empty
 	}

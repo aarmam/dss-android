@@ -20,8 +20,6 @@
  */
 package eu.europa.esig.dss.tsl.job.mra;
 
-import com.signerry.dss.test.TestUtils;
-
 import eu.europa.esig.dss.model.DSSDocument;
 import eu.europa.esig.dss.model.FileDocument;
 
@@ -29,7 +27,7 @@ public class MRAWithCustomCertificateContentContextTest extends MRALOTLTest {
 
     @Override
     protected DSSDocument getOriginalLOTL() {
-        return new FileDocument(TestUtils.getResourceAsFile("mra-zz-lotl-custom-equivalence-context.xml"));
+        return new FileDocument("src/test/resources/mra-zz-lotl-custom-equivalence-context.xml");
     }
 
 }

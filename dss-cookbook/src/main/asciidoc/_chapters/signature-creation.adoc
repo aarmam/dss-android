@@ -99,30 +99,30 @@ The vertical column specifies available signature profiles and their extensions.
 <<<
 
 .File formats and Signature types conformance
-[%header,cols="12*^.^", orientation=landscape]
+[%header,cols="13*^.^", orientation=landscape]
 |===
-  3+|Signature profiles                                        |XML                            |JSON                           |PDF                            |Binary                         |Digest                         |Multiple files                 |Multiple signatures            |Counter signature              |Stand-alone timestamp
-.10+|XAdES   .4+|Enveloping  |Base64 encoded                   |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-                             |Embed XML                        |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |XML only                       |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-                             |Manifest                         |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-                             |Canonicalization                 |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |XML only                       |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-             .4+|Enveloped   |enveloped transformation         |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-                             |based on XPath                   |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-                             |based on Filter2                 |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-                             |Canonicalization                 |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |XML only                       |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-              2+|Detached                                      |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-              2+|Internally Detached                           |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |XML only                       |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-.2+|CAdES     2+|Enveloping                                    |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-              2+|Detached                                      |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-|PAdES        2+|Enveloped                                     |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"]
-.6+|JAdES    .3+|Enveloping  |Compact Serialization            |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]
-                             |Flattened JSON Serialization     |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-                             |JSON Serialization               |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-             .3+|Detached    |Compact Serialization            |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |SigD only                      |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]
-                             |Flattened JSON Serialization     |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |SigD only                      |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-                             |JSON Serialization               |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |SigD only                      |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
-.2+|ASiC        |ASiCS       |CAdES / XAdES                    |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"]
-                |ASiCE       |CAdES / XAdES                    |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"]
+  3+|Signature profiles                                        |XML                            |JSON                           |PDF                            |Binary                         |Digest                         |Multiple files                 |Multiple signatures            |Augmentation BASELINE-T+       |Counter signature              |Stand-alone timestamp
+.10+|XAdES   .4+|Enveloping  |Base64 encoded                   |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+                             |Embed XML                        |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |XML only                       |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+                             |Manifest                         |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+                             |Canonicalization                 |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |XML only                       |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+             .4+|Enveloped   |enveloped transformation         |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+                             |based on XPath                   |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+                             |based on Filter2                 |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+                             |Canonicalization                 |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |XML only                       |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+              2+|Detached                                      |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+              2+|Internally Detached                           |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |XML only                       |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+.2+|CAdES     2+|Enveloping                                    |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+              2+|Detached                                      |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+|PAdES        2+|Enveloped                                     |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"]
+.6+|JAdES    .3+|Enveloping  |Compact Serialization            |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]
+                             |Flattened JSON Serialization     |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+                             |JSON Serialization               |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+             .3+|Detached    |Compact Serialization            |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |SigD only                      |icon:times-circle[role="red"]  |icon:check-circle[role="red"]  |icon:times-circle[role="red"]  |icon:times-circle[role="red"]
+                             |Flattened JSON Serialization     |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |SigD only                      |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+                             |JSON Serialization               |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |SigD only                      |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]
+.2+|ASiC        |ASiCS       |CAdES / XAdES                    |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"]
+                |ASiCE       |CAdES / XAdES                    |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:times-circle[role="red"]  |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"] |icon:check-circle[role="lime"]
 |===
 
 [.portrait]
@@ -136,52 +136,64 @@ In the next table, XAdES also applies to ASiC with embedded XAdES signatures and
 
 NOTE: SmartCards/HSMs don't allow signing with all digest algorithms. Please refer to your SmartCard/HSM provider.
 
-[cols="13*^"]
+[cols="14*^"]
 .Supported algorithms
 |=====
-| | SHA-1 | SHA-224 | SHA-256 | SHA-384 | SHA-512 | SHA3-224 | SHA3-256 | SHA3-384 | SHA3-512 | MD2 | MD5 | RIPEMD160
+| | SHA-1 | SHA-224 | SHA-256 | SHA-384 | SHA-512 | SHA3-224 | SHA3-256 | SHA3-384 | SHA3-512 | SHAKE256-512 | MD2 | MD5 | RIPEMD160
 
-13+|*RSA*
+14+|*RSA*
 
-| XAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | icon:check-circle[role="lime"] | icon:check-circle[role="lime"]
+| XAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | | icon:check-circle[role="lime"] | icon:check-circle[role="lime"]
 
-| CAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"]
+| CAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"]
 
-| JAdES | | | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | |
+| JAdES | | | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | | |
 
-13+|*RSA-PSS*
+14+|*RSA-PSS*
 
-| XAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | |
+| XAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | |
 
-| CAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | |
+| CAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | |
 
-| JAdES | | | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | |
+| JAdES | | | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | | |
 
-13+|*ECDSA*
+14+|*ECDSA*
 
-| XAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | | icon:check-circle[role="lime"]
+| XAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | | | icon:check-circle[role="lime"]
 
-| CAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | |
+| CAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | |
 
-| JAdES | | | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | |
+| JAdES | | | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | | |
 
-13+|*Ed25519*
+14+|*Ed25519*
 
-| CAdES | | | | | icon:check-circle[role="lime"] | | | | | | |
+| XAdES | | | | | icon:check-circle[role="lime"] | | | | | | | |
 
-13+|*DSA*
+| CAdES | | | | | icon:check-circle[role="lime"] | | | | | | | |
 
-| XAdES | icon:check-circle[role="lime"] | | icon:check-circle[role="lime"] | | | | | | | | |
+| JAdES | | | | | icon:check-circle[role="lime"] | | | | | | | |
 
-| CAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | |
+14+|*Ed448*
 
-13+|*HMAC*
+| XAdES | | | | | | | | | | icon:check-circle[role="lime"] | | |
 
-| XAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | | icon:check-circle[role="lime"]
+| CAdES | | | | | | | | | | icon:check-circle[role="lime"] | | |
 
-| CAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | |
+| JAdES | | | | | | | | | | icon:check-circle[role="lime"] | | |
 
-| JAdES | | | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | |
+14+|*DSA*
+
+| XAdES | icon:check-circle[role="lime"] | | icon:check-circle[role="lime"] | | | | | | | | | |
+
+| CAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | |
+
+14+|*HMAC*
+
+| XAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | | | icon:check-circle[role="lime"]
+
+| CAdES | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | |
+
+| JAdES | | | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | icon:check-circle[role="lime"] | | | | | | | |
 |=====
 
 [[DSSDocuments]]
@@ -310,7 +322,7 @@ As you can see, it is easy to add another implementation of the `SignatureTokenC
 
 ==== Key management
 
-Since DSS 5.12, the framework offers a functionality of filtering key entries to be accessed from a `SignatureTokenConnection` interface. The filtering is done within `SignatureTokenConnection#getKeys` method with a help of `DSSKeyEntryPredicate` interface. Unless the predicate is configured, DSS will return all available keys by default.
+Since DSS `5.12`, the framework offers a functionality of filtering key entries to be accessed from a `SignatureTokenConnection` interface. The filtering is done within `SignatureTokenConnection#getKeys` method with a help of `DSSKeyEntryPredicate` interface. Unless the predicate is configured, DSS will return all available keys by default.
 
 An example of a basic usage of the `DSSKeyEntryPredicate` implementation is provided below:
 
@@ -529,6 +541,8 @@ Unsigned attributes are not obligatory and can be added after the signature crea
                                                                |_class XAdESSignatureParameters_ +
                                                                 *#setReferences*                                        |SignedInfo/Reference                 |/                                        |/                                                          |/
 .5+|B-Level      .5+|Signed attributes                         |_class XAdESSignatureParameters_ +
+                                                                *#setDataObjectFormatList*                              |DataObjectFormat                     |/                                        |/                                                          |/
+                                                               |_class XAdESSignatureParameters_ +
                                                                 *#setSignedAdESObject*                                  |Object                               |/                                        |/                                                          |/
                                                                |_class CAdESSignatureParameters_ +
                                                                 *#setContentHintsType* +
@@ -538,9 +552,9 @@ Unsigned attributes are not obligatory and can be added after the signature crea
                                                                 *#setContentIdentifierSuffix*                           |/                                    |content-identifier                       |/                                                          |/
                                                                |_class PAdESSignatureParameters_ +
                                                                 *#setReason*                                            |/                                    |/                                        |/Reason                                                    |/
-                                                               |_class PAdESSignatureParameters_ +
+.6+|B-Level      .6+|Signed attributes                         |_class PAdESSignatureParameters_ +
                                                                 *#setContentSize*                                       |/                                    |/                                        |/Contents (length)                                         |/
-.5+|B-Level      .5+|Signed attributes                         |_class PAdESSignatureParameters_ +
+                                                               |_class PAdESSignatureParameters_ +
                                                                 *#setFilter*                                            |/                                    |/                                        |/Filter                                                    |/
                                                                |_class PAdESSignatureParameters_ +
                                                                 *#setSubFilter*                                         |/                                    |/                                        |/SubFilter                                                 |/
@@ -557,17 +571,19 @@ Unsigned attributes are not obligatory and can be added after the signature crea
                                                                |_class JAdESSignatureParameters_ +
                                                                 *#setIncludeKeyIdentifier*                              |/                                    |/                                        |/                                                          |kid
                                                                |_class JAdESSignatureParameters_ +
+                                                                *#setX509Url*                                           |/                                    |/                                        |/                                                          |x5u
+                                                               |_class JAdESSignatureParameters_ +
                                                                 *#setSigningCertificateDigestMethod* +
                                                                 *(DigestAlgorithm.SHA256)*                              |/                                    |/                                        |/                                                          |x5t#S256
-                                                               |_class JAdESSignatureParameters_ +
+.3+|B-Level      .3+|Signed attributes                         |_class JAdESSignatureParameters_ +
                                                                 *#setSigDMechanism*                                     |/                                    |/                                        |/                                                          |sigD
-.5+|B-Level      .2+|Signed attributes                         |_class JAdESSignatureParameters_ +
+                                                               |_class JAdESSignatureParameters_ +
                                                                 *#setBase64UrlEncodedPayload*                           |/                                    |/                                        |/                                                          |b64
                                                                |_class DSSDocument_ (for signer document) +
                                                                 *#setMimeType*                                          |DataObjectFormat/MimeType            |mime-type                                |/                                                          |cty
 
 
-                 .3+|Unsigned attributes                       |_class *AdESService_ +
+.3+|B-Level      .3+|Unsigned attributes                       |_class *AdESService_ +
                                                                 **#getDataToBeCounterSigned** +
                                                                 **#counterSignSignature**                               |CounterSignature                     |countersignature                         |/                                                          |cSig
                                                                |_class *AdESService_ +
@@ -726,6 +742,7 @@ DSS allows defining canonicalization algorithms to be used on signature or times
 include::{sourcetestdir}/eu/europa/esig/dss/cookbook/example/snippets/Snippets.java[tags=demoCanonicalization]
 ----
 
+[[References]]
 ====== References
 
 In order to compute digest for original document(s) in a custom way, a class `DSSReference` can be used to define a `ds:Reference` element's content:
@@ -736,7 +753,33 @@ In order to compute digest for original document(s) in a custom way, a class `DS
 include::{sourcetestdir}/eu/europa/esig/dss/cookbook/example/sign/SignXmlXadesBWithTransformsTest.java[tags=demoReference]
 ----
 
+WARNING: The parameter modifies default behavior on ds:Reference's computation and its incorrect definition may cause production of invalid signatures. The parameter is recommended to be used only by experienced users.
+
 For more information about `DSSReference` configuration, please refer the section <<RefTransformations>>.
+
+====== Data Object Format
+
+Since version `5.13` DSS provides a possibility to identify signed data objects in a customized way by setting a configuration for created `DataObjectFormat` signed elements. The individual configuration can be achieved by providing a list of `DSSDataObjectFormat` objects corresponding the signed data objects within the `XAdESSignatureParameters`:
+
+[source,java,indent=0]
+.DSSDataObjectFormat definition
+----
+include::{sourcetestdir}/eu/europa/esig/dss/cookbook/example/sign/SignXmlXadesBWithTransformsTest.java[tags=demoDataObjectFormat]
+----
+
+WARNING: The parameter modifies default behavior the xades:DataObjectFormat elements are created. It is up to the implementor to ensure the validity of the defined configuration. The parameter is recommended to be used only by experienced users.
+
+====== Objects
+
+It is possible to provide a list of custom data objects to be incorporated within a created signature as `ds:Object` elements (which is similar to signed data objects in `ENVELOPING` XAdES signature packaging). For this a list of `DSSObject` objects should be provided within the used `XAdESSignatureParameters` instance:
+
+[source,java,indent=0]
+.DSSObject definition
+----
+include::{sourcetestdir}/eu/europa/esig/dss/cookbook/example/sign/SignXmlXadesBWithTransformsTest.java[tags=demoObjects]
+----
+
+NOTE: The provided objects are not signed by default. To sign the data, the corresponding configuration can be achieved with a help of <<References>> parameter. Such configuration is considered as advanced and not covered within the documentation.
 
 ===== PAdES
 The framework allows creation of PDF files with visible signature as specified in ETSI EN 319 142 (cf. <<R03>>) and allows the insertion of a visible signature to an existing field.

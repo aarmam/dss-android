@@ -640,6 +640,7 @@ public class DefaultVsNativeDrawerComparatorTest extends AbstractTestVisualCompa
 	}
 	
 	private void testRotation(VisualSignatureRotation visualSignatureRotation) throws IOException {
+<<<<<<< HEAD:dss-pades-pdfbox/src/androidTest/java/eu/europa/esig/dss/pades/signature/visible/DefaultVsNativeDrawerComparatorTest.java
 		SignatureImageParameters parameters = signatureParameters.getImageParameters();
 		parameters.setRotation(visualSignatureRotation);
 		signatureParameters.setImageParameters(parameters);
@@ -650,6 +651,16 @@ public class DefaultVsNativeDrawerComparatorTest extends AbstractTestVisualCompa
 		compareDoc("visualSignature/test_-90.pdf");
 		compareDoc("visualSignature/test_-180.pdf");
 		compareDoc("visualSignature/test_-270.pdf");
+=======
+		signatureParameters.getImageParameters().getFieldParameters().setRotation(visualSignatureRotation);
+		compareDoc("/visualSignature/test.pdf");
+		compareDoc("/visualSignature/test_90.pdf");
+		compareDoc("/visualSignature/test_180.pdf");
+		compareDoc("/visualSignature/test_270.pdf");
+		compareDoc("/visualSignature/test_-90.pdf");
+		compareDoc("/visualSignature/test_-180.pdf");
+		compareDoc("/visualSignature/test_-270.pdf");
+>>>>>>> release-5.13.1:dss-pades-pdfbox/src/test/java/eu/europa/esig/dss/pades/signature/visible/DefaultVsNativeDrawerComparatorTest.java
 	}
 	
 	private void compareDoc(String docPath) throws IOException {
@@ -752,9 +763,9 @@ public class DefaultVsNativeDrawerComparatorTest extends AbstractTestVisualCompa
 		fieldParameters.setOriginY(50);
 		fieldParameters.setWidth(100);
 		fieldParameters.setHeight(300);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 		imageParameters.setFieldParameters(fieldParameters);
-		
-		imageParameters.setRotation(VisualSignatureRotation.ROTATE_90);
+
 		signatureParameters.setImageParameters(imageParameters);
 
 		drawAndCompareExplicitly(1);
@@ -771,10 +782,10 @@ public class DefaultVsNativeDrawerComparatorTest extends AbstractTestVisualCompa
 		fieldParameters.setOriginY(50);
 		fieldParameters.setWidth(100);
 		fieldParameters.setHeight(300);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 		imageParameters.setFieldParameters(fieldParameters);
 		
 		imageParameters.setZoom(150);
-		imageParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 		signatureParameters.setImageParameters(imageParameters);
 
 		drawAndCompareExplicitly(1);
@@ -920,11 +931,16 @@ public class DefaultVsNativeDrawerComparatorTest extends AbstractTestVisualCompa
 		fieldParameters.setOriginY(50);
 		fieldParameters.setWidth(200);
 		fieldParameters.setHeight(300);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 
 		imageParameters.setFieldParameters(fieldParameters);
 		imageParameters.setImageScaling(ImageScaling.ZOOM_AND_CENTER);
+<<<<<<< HEAD:dss-pades-pdfbox/src/androidTest/java/eu/europa/esig/dss/pades/signature/visible/DefaultVsNativeDrawerComparatorTest.java
 		imageParameters.setBackgroundColor(DSSColor.YELLOW);
 		imageParameters.setRotation(VisualSignatureRotation.ROTATE_90);
+=======
+		imageParameters.setBackgroundColor(Color.YELLOW);
+>>>>>>> release-5.13.1:dss-pades-pdfbox/src/test/java/eu/europa/esig/dss/pades/signature/visible/DefaultVsNativeDrawerComparatorTest.java
 
 		SignatureImageTextParameters textParameters = new SignatureImageTextParameters();
 		textParameters.setText("Signature");
@@ -982,11 +998,16 @@ public class DefaultVsNativeDrawerComparatorTest extends AbstractTestVisualCompa
 		fieldParameters.setOriginY(50);
 		fieldParameters.setWidth(200);
 		fieldParameters.setHeight(300);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 		imageParameters.setFieldParameters(fieldParameters);
 
 		imageParameters.setImageScaling(ImageScaling.ZOOM_AND_CENTER);
+<<<<<<< HEAD:dss-pades-pdfbox/src/androidTest/java/eu/europa/esig/dss/pades/signature/visible/DefaultVsNativeDrawerComparatorTest.java
 		imageParameters.setBackgroundColor(DSSColor.PINK);
 		imageParameters.setRotation(VisualSignatureRotation.ROTATE_90);
+=======
+		imageParameters.setBackgroundColor(Color.PINK);
+>>>>>>> release-5.13.1:dss-pades-pdfbox/src/test/java/eu/europa/esig/dss/pades/signature/visible/DefaultVsNativeDrawerComparatorTest.java
 		signatureParameters.setImageParameters(imageParameters);
 
 		drawAndCompareVisually(1);
@@ -1231,13 +1252,13 @@ public class DefaultVsNativeDrawerComparatorTest extends AbstractTestVisualCompa
 		SignatureImageParameters imageParameters = new SignatureImageParameters();
 		imageParameters.setImage(new InMemoryDocument(TestUtils.getResourceAsStream("small-red.jpg"), "small-red.jpg", MimeTypeEnum.JPEG));
 		imageParameters.setImageScaling(ImageScaling.ZOOM_AND_CENTER);
-		imageParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 
 		SignatureFieldParameters fieldParameters = new SignatureFieldParameters();
 		fieldParameters.setOriginX(100);
 		fieldParameters.setOriginY(50);
 		fieldParameters.setWidth(200);
 		fieldParameters.setHeight(40);
+		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 		imageParameters.setFieldParameters(fieldParameters);
 
 		SignatureImageTextParameters textParameters = new SignatureImageTextParameters();
@@ -1294,7 +1315,7 @@ public class DefaultVsNativeDrawerComparatorTest extends AbstractTestVisualCompa
 		service = new PAdESService(getOfflineCertificateVerifier());
 
 		SignatureImageParameters imageParameters = new SignatureImageParameters();
-		imageParameters.setRotation(VisualSignatureRotation.AUTOMATIC);
+		imageParameters.getFieldParameters().setRotation(VisualSignatureRotation.AUTOMATIC);
 
 		SignatureImageTextParameters textParameters = new SignatureImageTextParameters();
 		textParameters.setText("My Signature");

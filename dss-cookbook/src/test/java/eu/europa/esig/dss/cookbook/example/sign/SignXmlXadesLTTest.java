@@ -45,6 +45,7 @@ import eu.europa.esig.dss.xades.signature.XAdESService;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * How to sign with XAdES-BASELINE-LT
@@ -108,13 +109,14 @@ public class SignXmlXadesLTTest extends CookbookTools {
 			CommonsDataLoader commonsHttpDataLoader = new CommonsDataLoader();
 			OCSPDataLoader ocspDataLoader = new OCSPDataLoader();
 
-			KeyStoreCertificateSource keyStoreCertificateSource = new KeyStoreCertificateSource(new File("src/main/resources/keystore.p12"), "PKCS12",
-					"dss-password");
+			KeyStoreCertificateSource keyStoreCertificateSource = new KeyStoreCertificateSource(
+					new File("src/main/resources/keystore.p12"), "PKCS12", getPassword());
 			
 			LOTLSource lotlSource = new LOTLSource();
 			lotlSource.setUrl("https://ec.europa.eu/tools/lotl/eu-lotl.xml");
 			lotlSource.setCertificateSource(keyStoreCertificateSource);
 			lotlSource.setPivotSupport(true);
+			lotlSource.setTLVersions(Arrays.asList(5, 6));
 
 			TrustedListsCertificateSource tslCertificateSource = new TrustedListsCertificateSource();
 			
@@ -173,6 +175,10 @@ public class SignXmlXadesLTTest extends CookbookTools {
 
 			testFinalDocument(signedDocument);
 		}
+	}
+
+	private char[] getPassword() {
+		return "dss-password".toCharArray();
 	}
 
 }

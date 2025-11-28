@@ -37,7 +37,7 @@ import eu.europa.esig.dss.model.DSSDocument;
 import static com.signerry.dss.test.TestUtils.getResourceAsFile;
 import eu.europa.esig.dss.model.FileDocument;
 import eu.europa.esig.dss.validation.AdvancedSignature;
-import eu.europa.esig.dss.validation.SignatureCertificateSource;
+import eu.europa.esig.dss.spi.SignatureCertificateSource;
 
 public class RefsOnlyTimestampTest extends AbstractXAdESTestValidation {
 

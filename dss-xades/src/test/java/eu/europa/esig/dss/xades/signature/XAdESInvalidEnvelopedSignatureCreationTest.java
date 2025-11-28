@@ -20,6 +20,7 @@
  */
 package eu.europa.esig.dss.xades.signature;
 
+import eu.europa.esig.dss.xml.utils.XMLCanonicalizer;
 import eu.europa.esig.dss.enumerations.SignatureLevel;
 import eu.europa.esig.dss.enumerations.SignaturePackaging;
 import eu.europa.esig.dss.exception.IllegalInputException;
@@ -28,7 +29,6 @@ import static com.signerry.dss.test.TestUtils.getResourceAsFile;
 import eu.europa.esig.dss.model.FileDocument;
 import eu.europa.esig.dss.model.InMemoryDocument;
 import eu.europa.esig.dss.signature.DocumentSignatureService;
-import eu.europa.esig.dss.xades.DSSXMLUtils;
 import eu.europa.esig.dss.xades.XAdESSignatureParameters;
 import eu.europa.esig.dss.xades.XAdESTimestampParameters;
 import eu.europa.esig.dss.xades.reference.CanonicalizationTransform;
@@ -100,7 +100,7 @@ public class XAdESInvalidEnvelopedSignatureCreationTest extends AbstractXAdESTes
         final List<DSSTransform> dssTransformList = new ArrayList<>();
         DSSTransform xpathTransform = new XPath2FilterEnvelopedSignatureTransform(signatureParameters.getXmldsigNamespace());
         dssTransformList.add(xpathTransform);
-        dssTransformList.add(new CanonicalizationTransform(signatureParameters.getXmldsigNamespace(), DSSXMLUtils.DEFAULT_DSS_C14N_METHOD));
+        dssTransformList.add(new CanonicalizationTransform(signatureParameters.getXmldsigNamespace(), XMLCanonicalizer.DEFAULT_DSS_C14N_METHOD));
 
         reference.setTransforms(dssTransformList);
         signatureParameters.setReferences(Arrays.asList(reference));

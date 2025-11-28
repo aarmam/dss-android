@@ -20,6 +20,7 @@
  */
 package eu.europa.esig.dss.pades.validation.suite.revocation;
 
+<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/validation/suite/revocation/PAdESMultiSignedDocRevocTest.java
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -27,6 +28,8 @@ import com.signerry.dss.test.TestUtils;
 
 import java.util.List;
 
+=======
+>>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/validation/suite/revocation/PAdESMultiSignedDocRevocTest.java
 import eu.europa.esig.dss.diagnostic.DiagnosticData;
 import eu.europa.esig.dss.diagnostic.SignatureWrapper;
 import eu.europa.esig.dss.diagnostic.TimestampWrapper;
@@ -37,6 +40,11 @@ import eu.europa.esig.dss.model.DSSDocument;
 import eu.europa.esig.dss.model.InMemoryDocument;
 import eu.europa.esig.dss.pades.validation.suite.AbstractPAdESTestValidation;
 import eu.europa.esig.dss.validation.AdvancedSignature;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PAdESMultiSignedDocRevocTest extends AbstractPAdESTestValidation {
 
@@ -73,12 +81,13 @@ public class PAdESMultiSignedDocRevocTest extends AbstractPAdESTestValidation {
 		assertEquals("Signature1", signatureOne.getFirstFieldName());
 		
 		SignatureWrapper signatureTwo = signatures.get(1);
-		assertEquals(2, signatureTwo.foundRevocations().getRelatedRevocationData().size());
-		assertEquals(2, signatureTwo.foundRevocations().getRelatedRevocationsByType(RevocationType.CRL).size());
+		// no DSS dict after the second signature
+		assertEquals(0, signatureTwo.foundRevocations().getRelatedRevocationData().size());
+		assertEquals(0, signatureTwo.foundRevocations().getRelatedRevocationsByType(RevocationType.CRL).size());
 		assertEquals(0, signatureTwo.foundRevocations().getRelatedRevocationsByType(RevocationType.OCSP).size());
 		assertEquals(0, signatureTwo.foundRevocations().getRelatedRevocationsByTypeAndOrigin(RevocationType.CRL, RevocationOrigin.REVOCATION_VALUES).size());
 		assertEquals(0, signatureTwo.foundRevocations().getRelatedRevocationsByTypeAndOrigin(RevocationType.CRL, RevocationOrigin.TIMESTAMP_VALIDATION_DATA).size());
-		assertEquals(2, signatureTwo.foundRevocations().getRelatedRevocationsByTypeAndOrigin(RevocationType.CRL, RevocationOrigin.DSS_DICTIONARY).size());
+		assertEquals(0, signatureTwo.foundRevocations().getRelatedRevocationsByTypeAndOrigin(RevocationType.CRL, RevocationOrigin.DSS_DICTIONARY).size());
 
 		assertEquals(0, signatureTwo.foundRevocations().getRelatedRevocationRefs().size());
 		assertEquals(0, signatureTwo.foundRevocations().getOrphanRevocationRefs().size());
