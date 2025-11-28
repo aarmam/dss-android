@@ -81,6 +81,13 @@ repositories {
             password = System.getenv("GPR_API_KEY")
         }
     }
+    maven {
+        url = uri("https://maven.pkg.github.com/aarmam/packages")
+        credentials {
+            username = System.getenv("GPR_USER")
+            password = System.getenv("GPR_API_KEY")
+        }
+    }
     mavenCentral()
     google()
     maven { url "file://${project.rootDir}/dependencies/" }
