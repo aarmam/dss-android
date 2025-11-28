@@ -26,17 +26,7 @@ import eu.europa.esig.dss.enumerations.MaskGenerationFunction;
 import eu.europa.esig.dss.model.BLevelParameters;
 import eu.europa.esig.dss.model.DSSDocument;
 import eu.europa.esig.dss.model.x509.CertificateToken;
-<<<<<<< HEAD
-import eu.europa.esig.dss.xades.reference.CanonicalizationTransform;
-import eu.europa.esig.dss.xades.reference.DSSReference;
-import eu.europa.esig.dss.xades.reference.DSSTransform;
-import eu.europa.esig.dss.xades.reference.EnvelopedSignatureTransform;
-
-import java.util.ArrayList;
-import java.util.List;
-=======
 import eu.europa.esig.dss.xades.tsl.TrustedListV5SignatureParametersBuilder;
->>>>>>> release-5.13.1
 
 /**
  * Creates Signature parameters for a Trusted List creation

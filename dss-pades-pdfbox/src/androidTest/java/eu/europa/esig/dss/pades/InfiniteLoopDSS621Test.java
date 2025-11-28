@@ -37,11 +37,8 @@ import eu.europa.esig.dss.utils.Utils;
 import eu.europa.esig.dss.validation.CommonCertificateVerifier;
 import eu.europa.esig.dss.validation.SignaturePolicyProvider;
 import eu.europa.esig.dss.validation.reports.Reports;
-
-import com.signerry.android.CryptoProvider;
-import com.signerry.dss.test.TestUtils;
-import com.tom_roush.pdfbox.pdmodel.PDDocument;
-import com.tom_roush.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Integer;
@@ -60,7 +57,6 @@ import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.asn1.x509.DigestInfo;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.util.encoders.Hex;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,17 +82,12 @@ public class InfiniteLoopDSS621Test {
 
 	private static final Logger logger = LoggerFactory.getLogger(InfiniteLoopDSS621Test.class);
 
-	private static final String FILE_PATH = "validation/pades-5-signatures-and-1-document-timestamp.pdf";
+	private static final String FILE_PATH = "/validation/pades-5-signatures-and-1-document-timestamp.pdf";
 
 	@Test
 	public void testReadTimestamp1() throws Exception {
-<<<<<<< HEAD:dss-pades-pdfbox/src/androidTest/java/eu/europa/esig/dss/pades/InfiniteLoopDSS621Test.java
-        assertTimeout(ofMillis(25000), () -> {
-        	DSSDocument signDocument = new InMemoryDocument(TestUtils.getResourceAsStream(FILE_PATH));
-=======
         assertTimeout(ofMillis(6000), () -> {
         	DSSDocument signDocument = new InMemoryDocument(getClass().getResourceAsStream(FILE_PATH));
->>>>>>> release-5.13.1:dss-pades-pdfbox/src/test/java/eu/europa/esig/dss/pades/InfiniteLoopDSS621Test.java
     		final CommonCertificateVerifier certificateVerifier = new CommonCertificateVerifier();
 			certificateVerifier.setAIASource(null); // Error 404 on DER policy
 
@@ -151,8 +142,8 @@ public class InfiniteLoopDSS621Test {
 	@Test
 	public void manualTest() throws Exception {
 
-		PDDocument document = PDDocument.load(TestUtils.getResourceAsStream(FILE_PATH));
-		try (InputStream is = TestUtils.getResourceAsStream(FILE_PATH)) {
+		PDDocument document = PDDocument.load(getClass().getResourceAsStream(FILE_PATH));
+		try (InputStream is = getClass().getResourceAsStream(FILE_PATH)) {
 			byte[] pdfBytes = Utils.toByteArray(is);
 
 			List<PDSignature> signatures = document.getSignatureDictionaries();
@@ -165,7 +156,7 @@ public class InfiniteLoopDSS621Test {
 
 				logger.debug("Byte range : " + Arrays.toString(pdSignature.getByteRange()));
 
-				Utils.write(contents, new FileOutputStream(TestUtils.getTmpFile("sig" + (++idx) + ".p7s")));
+				Utils.write(contents, new FileOutputStream("target/sig" + (++idx) + ".p7s"));
 
 				ASN1InputStream asn1sInput = new ASN1InputStream(contents);
 				ASN1Sequence asn1Seq = (ASN1Sequence) asn1sInput.readObject();
@@ -247,13 +238,7 @@ public class InfiniteLoopDSS621Test {
 
 					logger.debug("SIGNATURE VALUE : " + signatureValue);
 
-<<<<<<< HEAD:dss-pades-pdfbox/src/androidTest/java/eu/europa/esig/dss/pades/InfiniteLoopDSS621Test.java
-					String algorithmFull = encryptionAlgorithm.getName() + "/ECB/PKCS1Padding";
-
-					Cipher cipher = Cipher.getInstance(algorithmFull, CryptoProvider.BCProvider);
-=======
 					Cipher cipher = Cipher.getInstance(encryptionAlgorithm.getName(),"SunJCE");
->>>>>>> release-5.13.1:dss-pades-pdfbox/src/test/java/eu/europa/esig/dss/pades/InfiniteLoopDSS621Test.java
 					cipher.init(Cipher.DECRYPT_MODE, signerCertificate);
 					byte[] decrypted = cipher.doFinal(encryptedInfoOctedString.getOctets());
 

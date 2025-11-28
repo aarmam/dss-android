@@ -28,13 +28,9 @@ import eu.europa.esig.dss.model.DSSException;
 import eu.europa.esig.dss.model.Digest;
 import eu.europa.esig.dss.spi.DSSUtils;
 import eu.europa.esig.dss.spi.client.http.DSSFileLoader;
-<<<<<<< HEAD
-import eu.europa.esig.dss.xades.CanonicalizationMethod;
-import eu.europa.esig.dss.xades.DSSXMLUtils;
-=======
->>>>>>> release-5.13.1
 import org.w3c.dom.Document;
 
+import javax.xml.crypto.dsig.CanonicalizationMethod;
 import java.util.Objects;
 import java.util.function.Supplier;
 

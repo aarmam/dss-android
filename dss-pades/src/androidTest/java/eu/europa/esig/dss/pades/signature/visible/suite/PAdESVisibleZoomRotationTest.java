@@ -20,7 +20,6 @@
  */
 package eu.europa.esig.dss.pades.signature.visible.suite;
 
-import eu.europa.esig.dss.DSSColor;
 import eu.europa.esig.dss.alert.exception.AlertException;
 import eu.europa.esig.dss.enumerations.ImageScaling;
 import eu.europa.esig.dss.enumerations.MimeTypeEnum;
@@ -38,20 +37,19 @@ import eu.europa.esig.dss.signature.DocumentSignatureService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.Color;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.signerry.dss.test.TestUtils;
-
 public class PAdESVisibleZoomRotationTest extends AbstractPAdESTestSignature {
 
 	private final DSSDocument RED_CROSS_IMAGE = new InMemoryDocument(
-			TestUtils.getResourceAsStream("small-red.jpg"), "small-red.jpg", MimeTypeEnum.JPEG);
+			getClass().getResourceAsStream("/small-red.jpg"), "small-red.jpg", MimeTypeEnum.JPEG);
 
 	private final DSSDocument PNG_IMAGE = new InMemoryDocument(
-			TestUtils.getResourceAsStream("signature-image.png"), "signature-image.png", MimeTypeEnum.PNG);
+			getClass().getResourceAsStream("/signature-image.png"), "signature-image.png", MimeTypeEnum.PNG);
 
 	private DocumentSignatureService<PAdESSignatureParameters, PAdESTimestampParameters> service;
 	private PAdESSignatureParameters signatureParameters;
@@ -59,7 +57,7 @@ public class PAdESVisibleZoomRotationTest extends AbstractPAdESTestSignature {
 
 	@BeforeEach
 	public void init() throws Exception {
-		documentToSign = new InMemoryDocument(TestUtils.getResourceAsStream("sample.pdf"));
+		documentToSign = new InMemoryDocument(getClass().getResourceAsStream("/sample.pdf"));
 
 		signatureParameters = new PAdESSignatureParameters();
 		signatureParameters.bLevel().setSigningDate(new Date());
@@ -117,14 +115,8 @@ public class PAdESVisibleZoomRotationTest extends AbstractPAdESTestSignature {
 	    fieldParameters.setHeight(300);
 		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 	    imageParameters.setFieldParameters(fieldParameters);
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESVisibleZoomRotationTest.java
-	    imageParameters.setBackgroundColor(DSSColor.PINK);
-		
-		imageParameters.setRotation(VisualSignatureRotation.ROTATE_90);
-=======
 	    imageParameters.setBackgroundColor(Color.PINK);
 
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESVisibleZoomRotationTest.java
 		signatureParameters.setImageParameters(imageParameters);
 
 		super.signAndVerify();
@@ -142,7 +134,7 @@ public class PAdESVisibleZoomRotationTest extends AbstractPAdESTestSignature {
 	    fieldParameters.setHeight(300);
 		fieldParameters.setRotation(VisualSignatureRotation.ROTATE_90);
 	    imageParameters.setFieldParameters(fieldParameters);
-		imageParameters.setBackgroundColor(DSSColor.PINK);
+		imageParameters.setBackgroundColor(Color.PINK);
 		imageParameters.setImageScaling(ImageScaling.ZOOM_AND_CENTER);
 		
 		imageParameters.setZoom(200);

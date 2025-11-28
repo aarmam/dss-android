@@ -20,17 +20,11 @@
  */
 package eu.europa.esig.dss.xml.common;
 
-<<<<<<< HEAD:dss-jaxb-common/src/main/java/eu/europa/esig/dss/jaxb/common/SchemaFactoryBuilder.java
-import com.signerry.android.AndroidUtils;
-=======
 import eu.europa.esig.dss.xml.common.exception.SecurityConfigurationException;
->>>>>>> release-5.13.1:dss-xml-common/src/main/java/eu/europa/esig/dss/xml/common/SchemaFactoryBuilder.java
 
-import javax.xml.XMLConstants;
+import com.signerry.android.XMLConstants;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.validation.SchemaFactory;
-
-import eu.europa.esig.dss.jaxb.common.exception.SecurityConfigurationException;
 
 /**
  * Builds a {@code SchemaFactory}
@@ -44,8 +38,8 @@ public class SchemaFactoryBuilder extends AbstractFactoryBuilder<SchemaFactory> 
 	 */
 	protected SchemaFactoryBuilder() {
 		enableFeature(XMLConstants.FEATURE_SECURE_PROCESSING);
-//		setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-//		setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+		setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+		setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
 	}
 	
 	/**
@@ -71,8 +65,7 @@ public class SchemaFactoryBuilder extends AbstractFactoryBuilder<SchemaFactory> 
 	
 	@Override
 	protected SchemaFactory instantiateFactory() {
-		SchemaFactory f = AndroidUtils.getService(SchemaFactory.class);
-		return f.newInstance(schemaLanguage);
+		return SchemaFactory.newInstance(schemaLanguage);
 	}
 
 	/**

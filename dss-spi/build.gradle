@@ -8,6 +8,7 @@ apply from: "../module-build.gradle"
 dependencies {
     api project(':dss-model')
     api project(':dss-android-compatibility')
+    api project(':dss-alert')
 
     api project(':dss-utils')
     api project(':dss-crl-parser')

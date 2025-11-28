@@ -20,30 +20,6 @@
  */
 package eu.europa.esig.dss.pdf.pdfbox;
 
-import android.graphics.Bitmap;
-
-import com.tom_roush.pdfbox.cos.COSArray;
-import com.tom_roush.pdfbox.cos.COSBase;
-import com.tom_roush.pdfbox.cos.COSDictionary;
-import com.tom_roush.pdfbox.cos.COSName;
-import com.tom_roush.pdfbox.cos.COSObject;
-import com.tom_roush.pdfbox.cos.COSStream;
-import com.tom_roush.pdfbox.pdmodel.PDDocument;
-import com.tom_roush.pdfbox.pdmodel.PDDocumentCatalog;
-import com.tom_roush.pdfbox.pdmodel.PDPage;
-import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
-import com.tom_roush.pdfbox.pdmodel.encryption.InvalidPasswordException;
-import com.tom_roush.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
-import com.tom_roush.pdfbox.pdmodel.interactive.annotation.PDAppearanceDictionary;
-import com.tom_roush.pdfbox.pdmodel.interactive.digitalsignature.PDPropBuild;
-import com.tom_roush.pdfbox.pdmodel.interactive.digitalsignature.PDPropBuildDataDict;
-import com.tom_roush.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
-import com.tom_roush.pdfbox.pdmodel.interactive.digitalsignature.SignatureInterface;
-import com.tom_roush.pdfbox.pdmodel.interactive.digitalsignature.SignatureOptions;
-import com.tom_roush.pdfbox.pdmodel.interactive.form.PDAcroForm;
-import com.tom_roush.pdfbox.pdmodel.interactive.form.PDField;
-import com.tom_roush.pdfbox.pdmodel.interactive.form.PDSignatureField;
-
 import eu.europa.esig.dss.enumerations.CertificationPermission;
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.enumerations.MimeTypeEnum;
@@ -77,9 +53,6 @@ import eu.europa.esig.dss.spi.x509.revocation.ocsp.OCSPToken;
 import eu.europa.esig.dss.utils.Utils;
 import eu.europa.esig.dss.validation.AdvancedSignature;
 import eu.europa.esig.dss.validation.ValidationData;
-<<<<<<< HEAD
-import eu.europa.esig.dss.validation.timestamp.TimestampToken;
-=======
 import eu.europa.esig.dss.spi.x509.tsp.TimestampToken;
 import org.apache.pdfbox.cos.COSArray;
 import org.apache.pdfbox.cos.COSBase;
@@ -102,7 +75,6 @@ import org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureOptions;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.apache.pdfbox.pdmodel.interactive.form.PDSignatureField;
->>>>>>> release-5.13.1
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -815,8 +787,9 @@ public class PdfBoxSignatureService extends AbstractPDFSignatureService {
 			if (newField != null) {
 				AnnotationBox fieldBox = newField.getAnnotationBox();
 				AnnotationBox box = fieldBox.toPdfPageCoordinates(pageBox.getHeight());
-				Bitmap page = reader.generateImageScreenshot(parameters.getImageParameters().getFieldParameters().getPage());
-				Bitmap annotationRepresentation = Bitmap.createBitmap (page,
+
+				BufferedImage page = reader.generateImageScreenshot(parameters.getImageParameters().getFieldParameters().getPage());
+				BufferedImage annotationRepresentation = page.getSubimage(
 						Math.round((box.getMaxX() - box.getWidth())), Math.round((box.getMaxY() - box.getHeight())),
 						Math.round(box.getWidth()), Math.round(box.getHeight()));
 				return ImageUtils.toDSSDocument(annotationRepresentation, instantiateResourcesHandler());
@@ -831,11 +804,6 @@ public class PdfBoxSignatureService extends AbstractPDFSignatureService {
 	@Override
 	protected PdfDocumentReader loadPdfDocumentReader(DSSDocument dssDocument, char[] passwordProtection)
 			throws IOException, eu.europa.esig.dss.pades.exception.InvalidPasswordException {
-
-		if(Thread.currentThread().isInterrupted()) {
-			throw new DSSException(new InterruptedException());
-		}
-
 		return new PdfBoxDocumentReader(dssDocument, getPasswordString(passwordProtection));
 	}
 

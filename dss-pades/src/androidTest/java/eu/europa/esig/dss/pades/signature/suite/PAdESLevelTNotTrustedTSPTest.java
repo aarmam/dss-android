@@ -34,8 +34,6 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.signerry.dss.test.TestUtils;
-
 public class PAdESLevelTNotTrustedTSPTest extends AbstractPAdESTestSignature {
 
     private DocumentSignatureService<PAdESSignatureParameters, PAdESTimestampParameters> service;
@@ -44,7 +42,7 @@ public class PAdESLevelTNotTrustedTSPTest extends AbstractPAdESTestSignature {
 
     @BeforeEach
     public void init() throws Exception {
-        documentToSign = new InMemoryDocument(TestUtils.getResourceAsStream("sample.pdf"));
+        documentToSign = new InMemoryDocument(getClass().getResourceAsStream("/sample.pdf"));
 
         signatureParameters = new PAdESSignatureParameters();
         signatureParameters.setSigningCertificate(getSigningCert());
@@ -54,11 +52,7 @@ public class PAdESLevelTNotTrustedTSPTest extends AbstractPAdESTestSignature {
         CertificateVerifier certificateVerifier = getCompleteCertificateVerifier();
 
         CommonTrustedCertificateSource trustedCertificateSource = new CommonTrustedCertificateSource();
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/suite/PAdESLevelTNotTrustedTSPTest.java
-        trustedCertificateSource.importAsTrusted(getTrustedCertificateSource());
-=======
         trustedCertificateSource.importAsTrusted(getGoodPKITrustAnchors());
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/suite/PAdESLevelTNotTrustedTSPTest.java
         certificateVerifier.setTrustedCertSources(trustedCertificateSource);
 
         service = new PAdESService(certificateVerifier);

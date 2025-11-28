@@ -43,7 +43,6 @@ import eu.europa.esig.dss.model.x509.extension.NameConstraints;
 import eu.europa.esig.dss.model.x509.extension.OCSPNoCheck;
 import eu.europa.esig.dss.model.x509.extension.PolicyConstraints;
 import eu.europa.esig.dss.model.x509.extension.QcStatements;
-import eu.europa.esig.dss.model.x509.extension.GeneralName;
 import eu.europa.esig.dss.model.x509.extension.SubjectAlternativeNames;
 import eu.europa.esig.dss.model.x509.extension.SubjectKeyIdentifier;
 import eu.europa.esig.dss.model.x509.extension.ValidityAssuredShortTerm;
@@ -353,11 +352,7 @@ public class CertificateExtensionsUtils {
                     }
                     generalName.setValue(strValue);
                 } else if (value instanceof byte[]) {
-<<<<<<< HEAD
-                    generalName.setValue("#" + Utils.toHex((byte[]) value));
-=======
                     generalName.setValue(toHexEncoded((byte[]) value));
->>>>>>> release-5.13.1
                 } else {
                     LOG.warn("Unable to load the alternative name. Reason : Unsupported value type!");
                     return null;
@@ -642,21 +637,8 @@ public class CertificateExtensionsUtils {
 
             org.bouncycastle.asn1.x509.GeneralName generalName = bcGeneralSubtree.getBase();
             GeneralNameType generalNameType = GeneralNameType.fromIndex(generalName.getTagNo());
-<<<<<<< HEAD
-            generalSubtree.setGeneralNameType(generalNameType);
-            generalSubtree.setMinimum(bcGeneralSubtree.getMinimum());
-            generalSubtree.setMaximum(bcGeneralSubtree.getMaximum());
-
-            if (GeneralNameType.DIRECTORY_NAME.equals(generalNameType)) {
-                X500Principal x500Principal = new X500Principal(DSSASN1Utils.getDEREncoded(generalName.getName()));
-                generalSubtree.setValue(new X500PrincipalHelper(x500Principal).getRFC2253());
-
-            } else if (generalNameType == null) {
-                LOG.warn("Unsupported GeneralName type of index'{}'!", generalName.getTagNo());
-=======
             if (generalNameType == null) {
                 LOG.warn("Unsupported GeneralName type of index '{}'!", generalName.getTagNo());
->>>>>>> release-5.13.1
                 continue;
             }
 

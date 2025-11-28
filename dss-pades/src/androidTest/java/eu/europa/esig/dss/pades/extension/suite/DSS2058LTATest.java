@@ -20,14 +20,9 @@
  */
 package eu.europa.esig.dss.pades.extension.suite;
 
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/extension/suite/DSS2058LTATest.java
-import com.signerry.dss.test.TestUtils;
-
-=======
 import eu.europa.esig.dss.pki.x509.tsp.PKITSPSource;
 import eu.europa.esig.dss.spi.x509.tsp.CompositeTSPSource;
 import eu.europa.esig.dss.spi.x509.tsp.TSPSource;
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/extension/suite/DSS2058LTATest.java
 import org.junit.jupiter.api.Tag;
 
 import eu.europa.esig.dss.model.DSSDocument;
@@ -44,7 +39,7 @@ public class DSS2058LTATest extends AbstractDSS2058 {
 
 	@Override
 	protected DSSDocument getDocumentToExtend() {
-		return new InMemoryDocument(TestUtils.getResourceAsStream("validation/dss-2058/dss-2058-LTA-test.pdf"));
+		return new InMemoryDocument(DSS2058LTATest.class.getResourceAsStream("/validation/dss-2058/dss-2058-LTA-test.pdf"));
 	}
 	@Override
 	protected TSPSource getCompositeTsa() {

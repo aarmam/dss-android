@@ -20,13 +20,7 @@
  */
 package eu.europa.esig.xades.definition;
 
-<<<<<<< HEAD:dss-xades/src/main/java/eu/europa/esig/dss/xades/definition/XAdESNamespaces.java
-import eu.europa.esig.dss.DomUtils;
-import eu.europa.esig.dss.definition.DSSNamespace;
-
-=======
 import eu.europa.esig.dss.xml.common.definition.DSSNamespace;
->>>>>>> release-5.13.1:specs-xades/src/main/java/eu/europa/esig/xades/definition/XAdESNamespace.java
 
 /**
  * Defines a list of used XAdES namespaces

@@ -263,11 +263,6 @@ public class DetailedReportMessageCollector {
 		if (timestampArchivalData == null || MessageType.ERROR != type || !Indication.PASSED.equals(timestampArchivalData.getConclusion().getIndication())) {
 			addMessages(result, getMessages(type, timestampBasic));
 		}
-<<<<<<< HEAD
-
-		List<Message> result = new ArrayList<>();
-		addMessages(result, getMessages(type, conclusion));
-=======
 		addMessages(result, getMessages(type, timestampArchivalData));
 		return result;
 	}
@@ -277,7 +272,6 @@ public class DetailedReportMessageCollector {
 
 		XmlValidationProcessEvidenceRecord validationProcessEvidenceRecord = xmlEvidenceRecord.getValidationProcessEvidenceRecord();
 		addMessages(result, getMessages(type, validationProcessEvidenceRecord));
->>>>>>> release-5.13.1
 		return result;
 	}
 

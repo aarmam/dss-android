@@ -20,9 +20,6 @@
  */
 package eu.europa.esig.dss.pades.signature.visible.suite;
 
-import com.signerry.dss.test.TestUtils;
-import eu.europa.esig.dss.DSSColor;
-
 import eu.europa.esig.dss.enumerations.ImageScaling;
 import eu.europa.esig.dss.enumerations.MimeTypeEnum;
 import eu.europa.esig.dss.enumerations.SignatureLevel;
@@ -47,10 +44,10 @@ import java.util.Date;
 public class PAdESExistingSignatureFieldTest extends AbstractPAdESTestSignature {
 
     private final DSSDocument RED_CROSS_IMAGE = new InMemoryDocument(
-            TestUtils.getResourceAsStream("small-red.jpg"), "small-red.jpg", MimeTypeEnum.JPEG);
+            getClass().getResourceAsStream("/small-red.jpg"), "small-red.jpg", MimeTypeEnum.JPEG);
 
     private final DSSDocument PNG_IMAGE = new InMemoryDocument(
-            TestUtils.getResourceAsStream("signature-image.png"), "signature-image.png", MimeTypeEnum.PNG);
+            getClass().getResourceAsStream("/signature-image.png"), "signature-image.png", MimeTypeEnum.PNG);
 
     private DocumentSignatureService<PAdESSignatureParameters, PAdESTimestampParameters> service;
     private PAdESSignatureParameters signatureParameters;
@@ -58,7 +55,7 @@ public class PAdESExistingSignatureFieldTest extends AbstractPAdESTestSignature 
 
     @BeforeEach
     public void init() throws Exception {
-        documentToSign = new InMemoryDocument(TestUtils.getResourceAsStream("doc.pdf"));
+        documentToSign = new InMemoryDocument(getClass().getResourceAsStream("/doc.pdf"));
 
         signatureParameters = new PAdESSignatureParameters();
         signatureParameters.bLevel().setSigningDate(new Date());
@@ -83,7 +80,7 @@ public class PAdESExistingSignatureFieldTest extends AbstractPAdESTestSignature 
         SignatureImageParameters imageParameters = signatureParameters.getImageParameters();
         imageParameters.setImage(RED_CROSS_IMAGE);
         imageParameters.setImageScaling(ImageScaling.CENTER);
-        imageParameters.setBackgroundColor(DSSColor.PINK);
+        imageParameters.setBackgroundColor(Color.PINK);
 
         super.signAndVerify();
     }
@@ -102,13 +99,8 @@ public class PAdESExistingSignatureFieldTest extends AbstractPAdESTestSignature 
         SignatureImageParameters imageParameters = signatureParameters.getImageParameters();
         imageParameters.setImage(PNG_IMAGE);
         imageParameters.setImageScaling(ImageScaling.ZOOM_AND_CENTER);
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESExistingSignatureFieldTest.java
-        imageParameters.setBackgroundColor(DSSColor.PINK);
-        imageParameters.setRotation(VisualSignatureRotation.ROTATE_90);
-=======
         imageParameters.setBackgroundColor(Color.PINK);
         imageParameters.getFieldParameters().setRotation(VisualSignatureRotation.ROTATE_90);
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESExistingSignatureFieldTest.java
 
         super.signAndVerify();
     }

@@ -121,10 +121,6 @@ public class CertificateNameConstraintsCheck extends ChainItem<XmlSubXCV> {
              */
             // perform validation only for the current certificate to support flexible validation policy
             if (i == 0) {
-<<<<<<< HEAD
-                final Map<String, String> certDN = toDNMap(cert.getCertificateDN());
-                final List<Map<String, String>> subAltNames = getSubjectAlternativeNamesDNList(cert.getSubjectAlternativeNames());
-=======
                 final String certDN = cert.getCertificateDN();
                 final List<XmlGeneralName> subAltNames = cert.getSubjectAlternativeNames();
                 /*
@@ -137,7 +133,6 @@ public class CertificateNameConstraintsCheck extends ChainItem<XmlSubXCV> {
                 if (!containsRFC822SubjectAlternativeName(subAltNames)) {
                     subAltNames.addAll(getEmailAddressDNIfPresent(certDN));
                 }
->>>>>>> release-5.13.1
 
                 if (permittedSubtrees != null) {
                     Set<XmlGeneralName> dnGeneralNames = permittedSubtrees.get(GeneralNameType.DIRECTORY_NAME);
@@ -298,50 +293,15 @@ public class CertificateNameConstraintsCheck extends ChainItem<XmlSubXCV> {
         return null;
     }
 
-<<<<<<< HEAD
-    private List<Map<String, String>> getSubjectAlternativeNamesDNList(List<XmlGeneralName> subjectAlternativeNames) {
-        List<Map<String, String>> result = new ArrayList<>();
-        for (XmlGeneralName generalName : subjectAlternativeNames) {
-            if (GeneralNameType.DIRECTORY_NAME.equals(generalName.getType())) {
-                result.add(toDNMap(generalName.getValue()));
-            } else if (LOG.isDebugEnabled()) {
-                LOG.debug("The GeneralName of type '{}' is skipped.", generalName.getType());
-            }
-        }
-        return result;
-    }
-
-    private boolean isWithinDNSubtrees(Map<String, String> certDN, Set<Map<String, String>> permittedSubtrees) {
-        for (Map<String, String> permittedSubtree : permittedSubtrees) {
-            if (isWithinDNSubtree(certDN, permittedSubtree)) {
-=======
     private boolean isWithinSubtrees(XmlGeneralName generalName, Set<XmlGeneralName> permittedSubtrees) {
         for (XmlGeneralName permittedSubtree : permittedSubtrees) {
             if (isWithinSubtree(generalName, permittedSubtree)) {
->>>>>>> release-5.13.1
                 return true;
             }
         }
         return false;
     }
 
-<<<<<<< HEAD
-    private Set<Map<String, String>> toGeneralSubtreeMapSet(List<XmlGeneralSubtree> generalSubtrees) {
-        Set<Map<String, String>> result = new HashSet<>();
-        for (XmlGeneralSubtree xmlGeneralSubtree : generalSubtrees) {
-            if (GeneralNameType.DIRECTORY_NAME == xmlGeneralSubtree.getType()) {
-                if (xmlGeneralSubtree.getMinimum() != null && xmlGeneralSubtree.getMinimum().intValue() != 0) {
-                    LOG.warn("'Minimum' field of GeneralSubtree is not supported! The value is skipped.");
-                }
-                if (xmlGeneralSubtree.getMaximum() != null) {
-                    LOG.warn("'Maximum' field of GeneralSubtree is not supported! The value is skipped.");
-                }
-                Map<String, String> dnMap = toDNMap(xmlGeneralSubtree.getValue());
-                if (Utils.isMapNotEmpty(dnMap)) {
-                    result.add(dnMap);
-                } else {
-                    LOG.warn("Unable to build a DN map for general subtree with value '{}'", xmlGeneralSubtree.getValue());
-=======
     private boolean isWithinDNSubtrees(String certDN, Set<XmlGeneralName> permittedSubtrees) {
         if (Utils.isStringEmpty(certDN) && Utils.isCollectionEmpty(permittedSubtrees)) {
             return true;
@@ -384,7 +344,6 @@ public class CertificateNameConstraintsCheck extends ChainItem<XmlSubXCV> {
                             intersection.add(currentGeneralName);
                         }
                     }
->>>>>>> release-5.13.1
                 }
             } else {
                 intersection.addAll(currentGeneralNames);

@@ -9,6 +9,7 @@ dependencies {
     api project(':dss-enumerations')
     api project(':dss-alert')
     api project(':dss-android-compatibility')
+    api project(':dss-xml-common')
     implementation 'org.slf4j:slf4j-api:1.7.35'
 
     

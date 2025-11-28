@@ -20,12 +20,6 @@
  */
 package eu.europa.esig.dss.model.x509;
 
-import com.signerry.android.CryptoProvider;
-
-import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
-import org.bouncycastle.crypto.util.PublicKeyFactory;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
 import eu.europa.esig.dss.enumerations.KeyUsageBit;
 import eu.europa.esig.dss.enumerations.SignatureAlgorithm;
 import eu.europa.esig.dss.enumerations.SignatureValidity;
@@ -35,20 +29,13 @@ import eu.europa.esig.dss.model.identifier.EntityIdentifier;
 import eu.europa.esig.dss.model.identifier.TokenIdentifier;
 
 import javax.security.auth.x500.X500Principal;
-
-import java.io.IOException;
 import java.math.BigInteger;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PublicKey;
-import java.security.Security;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -101,37 +88,9 @@ public class CertificateToken extends Token {
         this.x509Certificate = x509Certificate;
         this.entityKey = new EntityIdentifier(x509Certificate.getPublicKey());
 
-<<<<<<< HEAD
-	/**
-	 * Returns the public key associated with the certificate.<br>
-	 * To get the encryption algorithm used with this public key call getAlgorithm() method.<br>
-	 * RFC 2459:<br>
-	 * 4.1.2.7 Subject Public Key Info
-	 * This field is used to carry the public key and identify the algorithm with which the key is used. The algorithm
-	 * is
-	 * identified using the AlgorithmIdentifier structure specified in section 4.1.1.2. The object identifiers for the
-	 * supported algorithms and the methods for encoding the public key materials (public key and parameters) are
-	 * specified in section 7.3.
-	 *
-	 * @return the public key of the certificate
-	 */
-	public PublicKey getPublicKey() {
-		return this.x509Certificate.getPublicKey();
-	}
-	
-	/**
-	 * Returns the expiration date of the certificate.
-	 *
-	 * @return the expiration date (notAfter)
-	 */
-	public Date getNotAfter() {
-		return x509Certificate.getNotAfter();
-	}
-=======
         // The Algorithm OID is used and not the name {@code x509Certificate.getSigAlgName()}
         this.signatureAlgorithm = SignatureAlgorithm.forOidAndParams(x509Certificate.getSigAlgOID(), x509Certificate.getSigAlgParams());
     }
->>>>>>> release-5.13.1
 
     @Override
     public String getAbbreviation() {
@@ -165,37 +124,6 @@ public class CertificateToken extends Token {
         return x509Certificate.getPublicKey();
     }
 
-<<<<<<< HEAD
-	/**
-	 * Checks if the certificate is self-signed.
-	 * 
-	 * "Self-signed certificates are self-issued certificates where the digital signature may be verified by the public
-	 * key bound into the certificate. Self-signed certificates are used to convey a public key for use to begin
-	 * certification paths." [RFC5280]
-	 *
-	 * @return true if the certificate is a self-sign
-	 */
-	@Override
-	public boolean isSelfSigned() {
-		if (selfSigned == null) {
-			selfSigned = isSelfIssued();
-
-			if (selfSigned) {
-				try {
-					x509Certificate.verify(x509Certificate.getPublicKey(), CryptoProvider.BCProvider);
-
-					selfSigned = true;
-					signatureValidity = SignatureValidity.VALID;
-				} catch (Exception e) {
-					selfSigned = false;
-				}
-			}
-		} else if (selfSigned) {
-			signatureValidity = SignatureValidity.VALID;
-		}
-		return selfSigned;
-	}
-=======
     /**
      * Returns the expiration date of the certificate.
      *
@@ -204,7 +132,6 @@ public class CertificateToken extends Token {
     public Date getNotAfter() {
         return x509Certificate.getNotAfter();
     }
->>>>>>> release-5.13.1
 
     /**
      * Returns the issuance date of the certificate.
@@ -298,20 +225,6 @@ public class CertificateToken extends Token {
         return n1.equals(n2);
     }
 
-<<<<<<< HEAD
-	@Override
-	protected SignatureValidity checkIsSignedBy(final PublicKey publicKey) {
-		signatureValidity = SignatureValidity.INVALID;
-		signatureInvalidityReason = "";
-		try {
-			x509Certificate.verify(publicKey, CryptoProvider.BCProvider);
-			signatureValidity = SignatureValidity.VALID;
-		} catch (Exception e) {
-			signatureInvalidityReason = e.getClass().getSimpleName() + " : " + e.getMessage();
-		}
-		return signatureValidity;
-	}
-=======
     /**
      * This method returns true if the given token is equivalent.
      *
@@ -323,7 +236,6 @@ public class CertificateToken extends Token {
         PublicKey tokenPublicKey = token.getPublicKey();
         return Arrays.equals(currentPublicKey.getEncoded(), tokenPublicKey.getEncoded());
     }
->>>>>>> release-5.13.1
 
     /**
      * Gets the enclosed X509 Certificate.

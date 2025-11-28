@@ -20,26 +20,16 @@
  */
 package eu.europa.esig.dss.xml.utils;
 
-<<<<<<< HEAD:dss-xades/src/main/java/eu/europa/esig/dss/xades/SantuarioInitializer.java
-import com.signerry.android.AndroidUtils;
-import com.signerry.android.CryptoProvider;
-
-import eu.europa.esig.dss.spi.DSSSecurityProvider;
-=======
->>>>>>> release-5.13.1:dss-xml-utils/src/main/java/eu/europa/esig/dss/xml/utils/SantuarioInitializer.java
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.keyresolver.KeyResolver;
-import org.apache.xml.security.parser.XMLParserImpl;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * Customized Initialization of Santuario.
@@ -124,17 +114,6 @@ public class SantuarioInitializer {
 		SignatureAlgorithm.registerDefaultAlgorithms();
 
 		//
-<<<<<<< HEAD:dss-xades/src/main/java/eu/europa/esig/dss/xades/SantuarioInitializer.java
-		// Set the default JCE algorithms
-		//
-		JCEMapper.setProviderId(CryptoProvider.BCProvider);
-		JCEMapper.registerDefaultAlgorithms();
-
-		XMLParserImpl.setCustomDocumentBuilderFactory(AndroidUtils.getService(DocumentBuilderFactory.class));
-
-		//
-=======
->>>>>>> release-5.13.1:dss-xml-utils/src/main/java/eu/europa/esig/dss/xml/utils/SantuarioInitializer.java
 		// Set the default c14n algorithms
 		//
 		Canonicalizer.registerDefaultAlgorithms();
@@ -143,8 +122,6 @@ public class SantuarioInitializer {
 		// Register the default key resolvers
 		//
 		KeyResolver.registerDefaultResolvers();
-
-
 	}
 
 }

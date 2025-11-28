@@ -20,15 +20,6 @@
  */
 package eu.europa.esig.dss.xades.signature;
 
-<<<<<<< HEAD
-import static eu.europa.esig.dss.xades.definition.XMLSignature.XMLNS;
-
-import eu.europa.esig.dss.DomUtils;
-import eu.europa.esig.dss.definition.xmldsig.XMLDSigAttribute;
-import eu.europa.esig.dss.definition.xmldsig.XMLDSigElement;
-import eu.europa.esig.dss.definition.xmldsig.XMLDSigPaths;
-=======
->>>>>>> release-5.13.1
 import eu.europa.esig.dss.enumerations.TimestampedObjectType;
 import eu.europa.esig.dss.exception.IllegalInputException;
 import eu.europa.esig.dss.model.DSSDocument;
@@ -59,6 +50,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static javax.xml.crypto.dsig.XMLSignature.XMLNS;
 
 /**
  * The XAdES CounterSignatureBuilder used to create a counter signature 

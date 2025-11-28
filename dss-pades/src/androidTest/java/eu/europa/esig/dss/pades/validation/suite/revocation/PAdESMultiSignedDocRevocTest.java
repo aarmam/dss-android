@@ -20,16 +20,6 @@
  */
 package eu.europa.esig.dss.pades.validation.suite.revocation;
 
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/validation/suite/revocation/PAdESMultiSignedDocRevocTest.java
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import com.signerry.dss.test.TestUtils;
-
-import java.util.List;
-
-=======
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/validation/suite/revocation/PAdESMultiSignedDocRevocTest.java
 import eu.europa.esig.dss.diagnostic.DiagnosticData;
 import eu.europa.esig.dss.diagnostic.SignatureWrapper;
 import eu.europa.esig.dss.diagnostic.TimestampWrapper;
@@ -50,7 +40,7 @@ public class PAdESMultiSignedDocRevocTest extends AbstractPAdESTestValidation {
 
 	@Override
 	protected DSSDocument getSignedDocument() {
-		return new InMemoryDocument(TestUtils.getResourceAsStream("validation/Signature-P-SK-6.pdf"));
+		return new InMemoryDocument(getClass().getResourceAsStream("/validation/Signature-P-SK-6.pdf"));
 	}
 	
 	@Override

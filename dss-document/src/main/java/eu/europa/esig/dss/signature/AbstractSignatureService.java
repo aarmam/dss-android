@@ -20,8 +20,6 @@
  */
 package eu.europa.esig.dss.signature;
 
-import com.signerry.android.CryptoProvider;
-
 import eu.europa.esig.dss.AbstractSignatureParameters;
 import eu.europa.esig.dss.FileNameBuilder;
 import eu.europa.esig.dss.enumerations.SignatureAlgorithm;
@@ -55,15 +53,11 @@ import java.util.Objects;
 public abstract class AbstractSignatureService<SP extends SerializableSignatureParameters, TP extends SerializableTimestampParameters>
         implements DocumentSignatureService<SP, TP> {
 
-<<<<<<< HEAD
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractSignatureService.class);
-=======
     static {
         Security.addProvider(DSSSecurityProvider.getSecurityProvider());
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractSignatureService.class);
->>>>>>> release-5.13.1
 
     /** The CertificateVerifier used for a certificate chain validation */
     protected final CertificateVerifier certificateVerifier;
@@ -196,18 +190,6 @@ public abstract class AbstractSignatureService<SP extends SerializableSignatureP
         throw new UnsupportedOperationException("Unsupported operation for this file format");
     }
 
-<<<<<<< HEAD
-		try {
-			Signature signature = Signature.getInstance(signatureValue.getAlgorithm().getJCEId(), CryptoProvider.BCProvider);
-			signature.initVerify(signingCertificate.getPublicKey());
-			signature.update(toBeSigned.getBytes());
-			return signature.verify(signatureValue.getValue());
-		} catch (GeneralSecurityException e) {
-			LOG.error("Unable to verify the signature value : {}", e.getMessage());
-			return false;
-		}
-	}
-=======
     @Override
     public boolean isValidSignatureValue(ToBeSigned toBeSigned, SignatureValue signatureValue, CertificateToken signingCertificate) {
         Objects.requireNonNull(toBeSigned, "ToBeSigned cannot be null!");
@@ -225,6 +207,5 @@ public abstract class AbstractSignatureService<SP extends SerializableSignatureP
         }
     }
 
->>>>>>> release-5.13.1
 }
 

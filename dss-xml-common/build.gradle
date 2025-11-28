@@ -1,0 +1,7 @@
+apply from: '../module-build.gradle'
+
+dependencies {
+    api project(':dss-enumerations')
+    api project(':dss-alert')
+    api project(':dss-android-compatibility')
+}

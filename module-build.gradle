@@ -13,6 +13,9 @@ android {
         }
     }
 
+    compileSdkVersion 33
+    buildToolsVersion "34.0.0"
+
     defaultConfig {
         testFixtures {
             enable = true
@@ -27,7 +30,6 @@ android {
         }
 
         minSdkVersion 26
-        compileSdkVersion 33
         targetSdkVersion 31
         multiDexEnabled true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

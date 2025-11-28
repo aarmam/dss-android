@@ -20,14 +20,9 @@
  */
 package eu.europa.esig.dss.spi.x509;
 
-import com.signerry.android.CryptoProvider;
-
 import eu.europa.esig.dss.model.DSSException;
 import eu.europa.esig.dss.model.x509.CertificateToken;
-import eu.europa.esig.dss.spi.DSSSecurityProvider;
 import eu.europa.esig.dss.spi.DSSUtils;
-
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -174,17 +169,9 @@ public class KeyStoreCertificateSource extends CommonCertificateSource {
 
 	private void initKeystore(final InputStream ksStream, final String ksType, final char[] ksPassword) {
 		try (InputStream is = ksStream) {
-<<<<<<< HEAD
-			keyStore = KeyStore.getInstance(ksType, CryptoProvider.BCProvider);
-
-			final char[] password = (ksPassword == null) ? null : ksPassword.toCharArray();
-			keyStore.load(is, password);
-			passwordProtection = new PasswordProtection(password);
-=======
 			keyStore = KeyStore.getInstance(ksType);
 			keyStore.load(is, ksPassword);
 			passwordProtection = ksPassword;
->>>>>>> release-5.13.1
 			extractCertificates();
 		} catch (GeneralSecurityException | IOException e) {
 			throw new DSSException("Unable to initialize the keystore", e);

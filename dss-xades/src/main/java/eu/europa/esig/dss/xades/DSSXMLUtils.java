@@ -68,10 +68,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-<<<<<<< HEAD
-import javax.xml.transform.OutputKeys;
-=======
->>>>>>> release-5.13.1
 import javax.xml.transform.Source;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
@@ -479,21 +475,7 @@ public final class DSSXMLUtils {
 	 */
 	@Deprecated
 	public static byte[] canonicalize(final String canonicalizationMethod, final byte[] toCanonicalizeBytes) throws DSSException {
-<<<<<<< HEAD
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-			if(Thread.currentThread().isInterrupted()) {
-				throw new InterruptedException();
-			}
-
-			final Canonicalizer c14n = Canonicalizer.getInstance(getCanonicalizationMethod(canonicalizationMethod));
-			c14n.canonicalize(toCanonicalizeBytes, baos, true);
-			return baos.toByteArray();
-		} catch (Exception e) {
-			throw new DSSException("Cannot canonicalize the binaries", e);
-		}
-=======
 		return XMLCanonicalizer.createInstance(canonicalizationMethod).canonicalize(toCanonicalizeBytes);
->>>>>>> release-5.13.1
 	}
 
 	/**
@@ -509,21 +491,7 @@ public final class DSSXMLUtils {
 	 */
 	@Deprecated
 	public static byte[] canonicalizeSubtree(final String canonicalizationMethod, final Node node) {
-<<<<<<< HEAD
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-
-			if(Thread.currentThread().isInterrupted()) {
-				throw new InterruptedException();
-			}
-			final Canonicalizer c14n = Canonicalizer.getInstance(getCanonicalizationMethod(canonicalizationMethod));
-			c14n.canonicalizeSubtree(node, baos);
-			return baos.toByteArray();
-		} catch (Exception e) {
-			throw new DSSException("Cannot canonicalize the subtree", e);
-		}
-=======
 		return XMLCanonicalizer.createInstance(canonicalizationMethod).canonicalize(node);
->>>>>>> release-5.13.1
 	}
 	
 	/**

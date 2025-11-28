@@ -43,8 +43,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.signerry.dss.test.TestUtils;
-
 public class PDFSignatureServiceTest {
 	
 	private AbstractPDFSignatureService service;
@@ -56,13 +54,8 @@ public class PDFSignatureServiceTest {
 	}
 	
 	@Test
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/visible/suite/PDFSignatureServiceTest.java
-	public void alertOnSignatureFieldOverlapTest() throws IOException {
-		DSSDocument documentToSign = new InMemoryDocument(TestUtils.getResourceAsStream("EmptyPage.pdf"));
-=======
 	public void alertOnSignatureFieldOverlapTest() {
 		DSSDocument documentToSign = new InMemoryDocument(getClass().getResourceAsStream("/EmptyPage.pdf"));
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/visible/suite/PDFSignatureServiceTest.java
 		
 		SignatureFieldParameters parametersOne = new SignatureFieldParameters();
 		parametersOne.setFieldId("signature1");
@@ -93,10 +86,6 @@ public class PDFSignatureServiceTest {
 	}
 
 	@Test
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/visible/suite/PDFSignatureServiceTest.java
-	public void alertOnSignatureFieldOutsidePageDimensions() throws IOException {
-		DSSDocument documentToSign = new InMemoryDocument(TestUtils.getResourceAsStream("EmptyPage.pdf"));
-=======
 	public void alertOnSignatureFieldOverlapWithRotationTest() {
 		DSSDocument documentToSign = new InMemoryDocument(getClass().getResourceAsStream("/EmptyPage.pdf"));
 
@@ -156,7 +145,6 @@ public class PDFSignatureServiceTest {
 	@Test
 	public void alertOnSignatureFieldOutsidePageDimensions() {
 		DSSDocument documentToSign = new InMemoryDocument(getClass().getResourceAsStream("/EmptyPage.pdf"));
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/visible/suite/PDFSignatureServiceTest.java
 
 		PdfSignatureFieldPositionChecker pdfSignatureFieldPositionChecker = new PdfSignatureFieldPositionChecker();
 		pdfSignatureFieldPositionChecker.setAlertOnSignatureFieldOutsidePageDimensions(new ExceptionOnStatusAlert());
@@ -327,7 +315,7 @@ public class PDFSignatureServiceTest {
 	@Test
 	public void alertOnForbiddenSignatureCreationTest() {
 		DSSDocument documentToSign = new InMemoryDocument(
-				TestUtils.getResourceAsStream("validation/dss-2554/certified-no-change-permitted.pdf"));
+				getClass().getResourceAsStream("/validation/dss-2554/certified-no-change-permitted.pdf"));
 
 		List<String> availableSignatureFields = service.getAvailableSignatureFields(documentToSign);
 		assertEquals(0, availableSignatureFields.size());

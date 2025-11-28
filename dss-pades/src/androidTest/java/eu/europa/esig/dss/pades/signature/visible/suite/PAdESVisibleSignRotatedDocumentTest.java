@@ -20,9 +20,6 @@
  */
 package eu.europa.esig.dss.pades.signature.visible.suite;
 
-import com.signerry.dss.test.TestUtils;
-import eu.europa.esig.dss.DSSColor;
-
 import eu.europa.esig.dss.enumerations.SignatureLevel;
 import eu.europa.esig.dss.enumerations.VisualSignatureRotation;
 import eu.europa.esig.dss.model.DSSDocument;
@@ -72,13 +69,13 @@ public class PAdESVisibleSignRotatedDocumentTest extends AbstractPAdESTestSignat
 
     private static Stream<Arguments> data() {
         List<DSSDocument> signable = new ArrayList<>();
-        signable.add(new InMemoryDocument(TestUtils.getResourceAsStream("visualSignature/test.pdf"), "test"));
-        signable.add(new InMemoryDocument(TestUtils.getResourceAsStream("visualSignature/test_90.pdf"), "test_90"));
-        signable.add(new InMemoryDocument(TestUtils.getResourceAsStream("visualSignature/test_180.pdf"), "test_180"));
-        signable.add(new InMemoryDocument(TestUtils.getResourceAsStream("visualSignature/test_270.pdf"), "test_270"));
-        signable.add(new InMemoryDocument(TestUtils.getResourceAsStream("visualSignature/test_-90.pdf"), "test_-90"));
-        signable.add(new InMemoryDocument(TestUtils.getResourceAsStream("visualSignature/test_-180.pdf"), "test_-180"));
-        signable.add(new InMemoryDocument(TestUtils.getResourceAsStream("visualSignature/test_-270.pdf"), "test_-270"));
+        signable.add(new InMemoryDocument(PAdESVisibleSignRotatedDocumentTest.class.getResourceAsStream("/visualSignature/test.pdf"), "test"));
+        signable.add(new InMemoryDocument(PAdESVisibleSignRotatedDocumentTest.class.getResourceAsStream("/visualSignature/test_90.pdf"), "test_90"));
+        signable.add(new InMemoryDocument(PAdESVisibleSignRotatedDocumentTest.class.getResourceAsStream("/visualSignature/test_180.pdf"), "test_180"));
+        signable.add(new InMemoryDocument(PAdESVisibleSignRotatedDocumentTest.class.getResourceAsStream("/visualSignature/test_270.pdf"), "test_270"));
+        signable.add(new InMemoryDocument(PAdESVisibleSignRotatedDocumentTest.class.getResourceAsStream("/visualSignature/test_-90.pdf"), "test_-90"));
+        signable.add(new InMemoryDocument(PAdESVisibleSignRotatedDocumentTest.class.getResourceAsStream("/visualSignature/test_-180.pdf"), "test_-180"));
+        signable.add(new InMemoryDocument(PAdESVisibleSignRotatedDocumentTest.class.getResourceAsStream("/visualSignature/test_-270.pdf"), "test_-270"));
 
         Collection<Arguments> dataToRun = new ArrayList<>();
         for (DSSDocument document : signable) {
@@ -101,7 +98,7 @@ public class PAdESVisibleSignRotatedDocumentTest extends AbstractPAdESTestSignat
 
         SignatureImageTextParameters textParameters = new SignatureImageTextParameters();
         textParameters.setText("My signature");
-        textParameters.setBackgroundColor(DSSColor.PINK);
+        textParameters.setBackgroundColor(Color.PINK);
         imageParameters.setTextParameters(textParameters);
 
         SignatureFieldParameters fieldParameters = new SignatureFieldParameters();
@@ -128,14 +125,8 @@ public class PAdESVisibleSignRotatedDocumentTest extends AbstractPAdESTestSignat
         this.documentToSign.setName("image_" + originalDocName + "_" + rotation.name() + ".pdf");
 
         SignatureImageParameters imageParameters = new SignatureImageParameters();
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESVisibleSignRotatedDocumentTest.java
-        imageParameters.setBackgroundColor(DSSColor.PINK);
-        imageParameters.setRotation(rotation);
-        imageParameters.setImage(new InMemoryDocument(TestUtils.getResourceAsStream("signature-image.png")));
-=======
         imageParameters.setBackgroundColor(Color.PINK);
         imageParameters.setImage(new InMemoryDocument(PAdESVisibleSignRotatedDocumentTest.class.getResourceAsStream("/signature-image.png")));
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/visible/suite/PAdESVisibleSignRotatedDocumentTest.java
 
         SignatureFieldParameters fieldParameters = new SignatureFieldParameters();
         fieldParameters.setOriginX(100);

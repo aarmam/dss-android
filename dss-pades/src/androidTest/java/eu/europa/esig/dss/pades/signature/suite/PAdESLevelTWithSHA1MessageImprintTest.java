@@ -20,19 +20,6 @@
  */
 package eu.europa.esig.dss.pades.signature.suite;
 
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/suite/PAdESLevelTWithSHA1MessageImprintTest.java
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import com.signerry.dss.test.TestUtils;
-
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-
-=======
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/suite/PAdESLevelTWithSHA1MessageImprintTest.java
 import eu.europa.esig.dss.diagnostic.DiagnosticData;
 import eu.europa.esig.dss.diagnostic.TimestampWrapper;
 import eu.europa.esig.dss.diagnostic.jaxb.XmlDigestMatcher;
@@ -64,7 +51,7 @@ public class PAdESLevelTWithSHA1MessageImprintTest extends AbstractPAdESTestSign
 
 	@BeforeEach
 	public void init() throws Exception {
-		documentToSign = new InMemoryDocument(TestUtils.getResourceAsStream("sample.pdf"));
+		documentToSign = new InMemoryDocument(getClass().getResourceAsStream("/sample.pdf"));
 
 		signatureParameters = new PAdESSignatureParameters();
 		signatureParameters.setSigningCertificate(getSigningCert());

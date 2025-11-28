@@ -627,11 +627,7 @@ public class XmlTrustServiceProviderBuilder {
         return result;
     }
 
-<<<<<<< HEAD:dss-document/src/main/java/eu/europa/esig/dss/validation/XmlTrustedServiceProviderBuilder.java
-    private void overrideCertContent(CertificateToken certToken, ServiceEquivalence serviceEquivalence) {
-=======
     private XmlQcStatements applyCertContentEquivalence(CertificateToken certToken, ServiceEquivalence serviceEquivalence) {
->>>>>>> release-5.13.1:dss-document/src/main/java/eu/europa/esig/dss/validation/XmlTrustServiceProviderBuilder.java
         List<CertificateContentEquivalence> certificateContentEquivalences = serviceEquivalence.getCertificateContentEquivalences();
         if (Utils.isCollectionEmpty(certificateContentEquivalences)) {
             LOG.debug("No MRA equivalence is defined for certificate content.");
@@ -720,32 +716,6 @@ public class XmlTrustServiceProviderBuilder {
         return new XmlQcStatements();
     }
 
-<<<<<<< HEAD:dss-document/src/main/java/eu/europa/esig/dss/validation/XmlTrustedServiceProviderBuilder.java
-        for (CertificateContentEquivalence certificateContentEquivalence : certificateContentEquivalences) {
-            final MRAEquivalenceContext equivalenceContext = certificateContentEquivalence.getContext();
-            final Condition condition = certificateContentEquivalence.getCondition();
-            if (equivalenceContext != null && condition.check(certToken)) {
-                LOG.info("MRA condition match ({})", equivalenceContext);
-                if (qcStatements.getMRACertificateMapping() == null) {
-                    qcStatements.setMRACertificateMapping(getXmlMRACertificateMapping(qcStatements, serviceEquivalence));
-                    qcStatements.setEnactedMRA(true);
-                }
-                final QCStatementOids contentReplacement = certificateContentEquivalence.getContentReplacement();
-                switch (equivalenceContext) {
-                    case QC_COMPLIANCE:
-                        replaceCompliance(qcStatements, contentReplacement);
-                        break;
-                    case QC_TYPE:
-                        replaceType(qcStatements, contentReplacement);
-                        break;
-                    case QC_QSCD:
-                        replaceQSCD(qcStatements, contentReplacement);
-                        break;
-                    default:
-                        LOG.warn("Unsupported equivalence context {}", equivalenceContext);
-                        break;
-                }
-=======
     /**
      * This method sets new {@code XmlQcStatements} certificate extension to the given {@code XmlCertificate}.
      * The method replaces {@code XmlQcStatements} certificate extension, when present.
@@ -760,7 +730,6 @@ public class XmlTrustServiceProviderBuilder {
             if (CertificateExtensionEnum.QC_STATEMENTS.getOid().equals(certificateExtension.getOID())) {
                 it.remove();
                 break;
->>>>>>> release-5.13.1:dss-document/src/main/java/eu/europa/esig/dss/validation/XmlTrustServiceProviderBuilder.java
             }
         }
         xmlCertificate.getCertificateExtensions().add(xmlQcStatements);

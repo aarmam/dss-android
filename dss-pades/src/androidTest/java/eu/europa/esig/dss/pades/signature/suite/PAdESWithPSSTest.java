@@ -43,23 +43,15 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.signerry.dss.test.TestUtils;
-
 public class PAdESWithPSSTest extends AbstractPAdESTestSignature {
 
     private DocumentSignatureService<PAdESSignatureParameters, PAdESTimestampParameters> service;
     private PAdESSignatureParameters signatureParameters;
     private DSSDocument documentToSign;
 
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/signature/suite/PAdESWithPSSTest.java
-	@BeforeEach
-	public void init() throws Exception {
-		documentToSign = new InMemoryDocument(TestUtils.getResourceAsStream("sample.pdf"));
-=======
     @BeforeEach
     public void init() throws Exception {
         documentToSign = new InMemoryDocument(getClass().getResourceAsStream("/sample.pdf"));
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/signature/suite/PAdESWithPSSTest.java
 
         signatureParameters = new PAdESSignatureParameters();
         signatureParameters.setSigningCertificate(getSigningCert());

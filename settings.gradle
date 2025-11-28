@@ -80,3 +80,6 @@ include('::dss-android-compatibility')
 
 include(':dss-test-unit')
 include(':dss-test-instrumented')
+
+include(':dss-xml-common')
+include(':dss-xml-utils')

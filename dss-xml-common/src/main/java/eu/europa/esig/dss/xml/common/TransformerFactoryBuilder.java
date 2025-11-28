@@ -20,16 +20,10 @@
  */
 package eu.europa.esig.dss.xml.common;
 
-<<<<<<< HEAD:dss-jaxb-common/src/main/java/eu/europa/esig/dss/jaxb/common/TransformerFactoryBuilder.java
-import com.signerry.android.AndroidUtils;
-=======
 import eu.europa.esig.dss.xml.common.exception.SecurityConfigurationException;
->>>>>>> release-5.13.1:dss-xml-common/src/main/java/eu/europa/esig/dss/xml/common/TransformerFactoryBuilder.java
 
-import javax.xml.XMLConstants;
+import com.signerry.android.XMLConstants;
 import javax.xml.transform.TransformerFactory;
-
-import eu.europa.esig.dss.jaxb.common.exception.SecurityConfigurationException;
 
 /**
  * Builds a {@code TransformerFactory}
@@ -42,8 +36,8 @@ public class TransformerFactoryBuilder extends AbstractFactoryBuilder<Transforme
 	 */
 	protected TransformerFactoryBuilder() {
 		enableFeature(XMLConstants.FEATURE_SECURE_PROCESSING);
-//		setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-//		setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+		setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+		setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
 	}
 	
 	/**
@@ -69,7 +63,7 @@ public class TransformerFactoryBuilder extends AbstractFactoryBuilder<Transforme
 	
 	@Override
 	protected TransformerFactory instantiateFactory() {
-		return AndroidUtils.getService(TransformerFactory.class);
+		return TransformerFactory.newInstance();
 	}
 
 	@Override

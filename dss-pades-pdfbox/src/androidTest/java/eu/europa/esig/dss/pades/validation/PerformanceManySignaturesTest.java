@@ -29,13 +29,7 @@ import eu.europa.esig.dss.pdf.PdfDssDict;
 import eu.europa.esig.dss.pdf.pdfbox.PdfBoxDocumentReader;
 import eu.europa.esig.dss.spi.x509.revocation.OfflineRevocationSource;
 import eu.europa.esig.dss.validation.AdvancedSignature;
-<<<<<<< HEAD:dss-pades-pdfbox/src/androidTest/java/eu/europa/esig/dss/pades/validation/PerformanceManySignaturesTest.java
-import eu.europa.esig.dss.validation.timestamp.TimestampToken;
-
-import org.junit.jupiter.api.Disabled;
-=======
 import eu.europa.esig.dss.spi.x509.tsp.TimestampToken;
->>>>>>> release-5.13.1:dss-pades-pdfbox/src/test/java/eu/europa/esig/dss/pades/validation/PerformanceManySignaturesTest.java
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -50,13 +44,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.signerry.dss.test.TestUtils;
-
 public class PerformanceManySignaturesTest {
 
     @Test
     void extractSigDictionaries() throws IOException {
-        InMemoryDocument inMemoryDocument = new InMemoryDocument(TestUtils.getResourceAsStream("validation/51sigs.pdf"));
+        InMemoryDocument inMemoryDocument = new InMemoryDocument(getClass().getResourceAsStream("/validation/51sigs.pdf"));
 
         try (PdfBoxDocumentReader reader = new PdfBoxDocumentReader(inMemoryDocument)) {
             Map<PdfSignatureDictionary, List<PdfSignatureField>> pdfSignatureDictionaryListMap = reader.extractSigDictionaries();
@@ -66,12 +58,12 @@ public class PerformanceManySignaturesTest {
 
     @Test
     void getSignatures() {
-        InMemoryDocument inMemoryDocument = new InMemoryDocument(TestUtils.getResourceAsStream("validation/51sigs.pdf"));
+        InMemoryDocument inMemoryDocument = new InMemoryDocument(getClass().getResourceAsStream("/validation/51sigs.pdf"));
         initClasses(inMemoryDocument);
 
         PDFDocumentValidator validator = new PDFDocumentValidator(inMemoryDocument);
 
-        assertTimeout(Duration.ofSeconds(18000), () -> validator.getRevisions());
+        assertTimeout(Duration.ofSeconds(3), () -> validator.getRevisions());
 
         List<PdfRevision> revisions = assertTimeout(Duration.ofSeconds(1), () -> validator.getRevisions()); // cached
         assertNotNull(revisions);

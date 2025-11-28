@@ -20,7 +20,6 @@
  */
 package eu.europa.esig.dss.spi;
 
-import com.signerry.android.CryptoProvider;
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
 import eu.europa.esig.dss.model.DSSException;
@@ -79,7 +78,6 @@ import org.bouncycastle.cms.SignerId;
 import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.crypto.signers.PlainDSAEncoding;
 import org.bouncycastle.crypto.signers.StandardDSAEncoding;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.tsp.TSPException;
 import org.bouncycastle.tsp.TimeStampToken;
 import org.bouncycastle.util.BigIntegers;
@@ -128,6 +126,8 @@ public final class DSSASN1Utils {
 	private static List<ASN1ObjectIdentifier> timestampOids;
 
 	static {
+		Security.addProvider(DSSSecurityProvider.getSecurityProvider());
+
 		timestampOids = new ArrayList<>();
 		timestampOids.add(id_aa_ets_contentTimestamp);
 		timestampOids.add(id_aa_ets_archiveTimestampV2);
@@ -588,15 +588,15 @@ public final class DSSASN1Utils {
 	 * @return {@link CertificateToken}
 	 */
 	public static CertificateToken getCertificate(final X509CertificateHolder x509CertificateHolder) {
-		JcaX509CertificateConverter converter = new JcaX509CertificateConverter().setProvider(CryptoProvider.BCProvider);
 		try {
+			JcaX509CertificateConverter converter = new JcaX509CertificateConverter().setProvider(DSSSecurityProvider.getSecurityProviderName());
 			X509Certificate x509Certificate = converter.getCertificate(x509CertificateHolder);
 			return new CertificateToken(x509Certificate);
 
 		} catch (CertificateException e) {
-			throw new RuntimeException(e);
+			throw new DSSException(String.format(
+					"Unable to get a CertificateToken from X509CertificateHolder : %s", e.getMessage()), e);
 		}
-
 	}
 
 	/**
@@ -1235,33 +1235,6 @@ public final class DSSASN1Utils {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Returns a list of subject alternative names
-	 *
-	 * @param certToken {@link CertificateToken}
-	 * @return a list of {@link String}s
-	 * @deprecated since DSS 5.12. Use
-	 * 			{@code
-	 * 					SubjectAlternativeNames subjectAlternativeNames = CertificateExtensionsUtils.getSubjectAlternativeNames(certToken);
-	 * 					List<eu.europa.esig.dss.model.x509.extension.GeneralName> result = subjectAlternativeNames != null ? subjectAlternativeNames.getGeneralNames() : Collections.emptyList();
-	 * 			}
-	 */
-	@Deprecated
-	public static List<String> getSubjectAlternativeNames(CertificateToken certToken) {
-		SubjectAlternativeNames subjectAlternativeNames = CertificateExtensionsUtils.getSubjectAlternativeNames(certToken);
-		if (subjectAlternativeNames != null && Utils.isCollectionNotEmpty(subjectAlternativeNames.getGeneralNames())) {
-			List<String> result = new ArrayList<>();
-			for (eu.europa.esig.dss.model.x509.extension.GeneralName generalName : subjectAlternativeNames.getGeneralNames()) {
-				result.add(generalName.getValue());
-			}
-			return result;
-		}
-		return Collections.emptyList();
-	}
-
-	/**
-=======
->>>>>>> release-5.13.1
 	 * Checks if the binaries are ASN.1 encoded.
 	 *
 	 * @param binaries byte array to check.

@@ -20,16 +20,6 @@
  */
 package eu.europa.esig.dss.xades.validation;
 
-<<<<<<< HEAD
-import com.signerry.android.CryptoProvider;
-
-import eu.europa.esig.dss.DomUtils;
-import eu.europa.esig.dss.definition.DSSNamespace;
-import eu.europa.esig.dss.definition.xmldsig.XMLDSigAttribute;
-import eu.europa.esig.dss.definition.xmldsig.XMLDSigElement;
-import eu.europa.esig.dss.definition.xmldsig.XMLDSigPaths;
-=======
->>>>>>> release-5.13.1
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.enumerations.DigestMatcherType;
 import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
@@ -66,11 +56,6 @@ import eu.europa.esig.dss.validation.SignatureDigestReference;
 import eu.europa.esig.dss.validation.SignatureIdentifierBuilder;
 import eu.europa.esig.dss.validation.SignatureProductionPlace;
 import eu.europa.esig.dss.validation.SignerRole;
-<<<<<<< HEAD
-import eu.europa.esig.dss.validation.timestamp.TimestampToken;
-import eu.europa.esig.dss.xades.CanonicalizationMethod;
-=======
->>>>>>> release-5.13.1
 import eu.europa.esig.dss.xades.DSSXMLUtils;
 import eu.europa.esig.dss.xades.EnforcedResolverFragment;
 import eu.europa.esig.dss.xades.reference.XAdESReferenceValidation;
@@ -103,6 +88,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.transform.dom.DOMSource;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -236,16 +222,7 @@ public class XAdESSignature extends DefaultAdvancedSignature {
 	 *                          List of {@code XAdESPaths} to use when handling
 	 *                          signature
 	 */
-<<<<<<< HEAD
-	public XAdESSignature(final Element signatureElement, final List<XAdESPaths> xadesPathsHolders) {
-
-		if(Thread.currentThread().isInterrupted()) {
-			throw new DSSException(new InterruptedException());
-		}
-
-=======
 	public XAdESSignature(final Element signatureElement, final List<XAdESPath> xadesPathHolders) {
->>>>>>> release-5.13.1
 		Objects.requireNonNull(signatureElement, "Signature Element cannot be null");
 		this.signatureElement = signatureElement;
 		this.xadesPathHolders = xadesPathHolders;
@@ -1323,7 +1300,7 @@ public class XAdESSignature extends DefaultAdvancedSignature {
 			DSSXMLUtils.recursiveIdBrowse(rootElement);
 
 			// Secure validation disabled to support all signature algos
-			santuarioSignature = new XMLSignature(signatureElement, "", false, CryptoProvider.BCProvider);
+			santuarioSignature = new XMLSignature(signatureElement, "", false);
 			if (Utils.isCollectionNotEmpty(detachedContents)) {
 				initDetachedSignatureResolvers(detachedContents);
 				initCounterSignatureResolver(detachedContents);

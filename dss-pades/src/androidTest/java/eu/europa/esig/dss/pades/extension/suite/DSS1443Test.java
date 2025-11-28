@@ -48,18 +48,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.signerry.dss.test.TestUtils;
-
 public class DSS1443Test extends PKIFactoryAccess {
 
 	@Test
 	public void testSigWithAttached() {
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/extension/suite/DSS1443Test.java
-		DSSDocument dssDocument = new InMemoryDocument(TestUtils.getResourceAsStream("validation/DSS-1443.pdf"));
-=======
 
 		DSSDocument dssDocument = new InMemoryDocument(getClass().getResourceAsStream("/validation/DSS-1443.pdf"));
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/extension/suite/DSS1443Test.java
 		SignedDocumentValidator validator = SignedDocumentValidator.fromDocument(dssDocument);
 
 		CertificateVerifier certificateVerifier = getCertificateVerifier();

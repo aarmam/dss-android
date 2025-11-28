@@ -47,8 +47,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.signerry.dss.test.TestUtils;
-
 public class BuildKnownObjectsTest extends PKIFactoryAccess {
 
 	/**
@@ -66,7 +64,7 @@ public class BuildKnownObjectsTest extends PKIFactoryAccess {
 	public void buildKnownObjects() throws IOException {
 
 		DSSDocument dssDocument = new InMemoryDocument(
-				TestUtils.getResourceAsStream("validation/dss-1696/Test.signed_Certipost-2048-SHA512.extended.pdf"));
+				getClass().getResourceAsStream("/validation/dss-1696/Test.signed_Certipost-2048-SHA512.extended.pdf"));
 		PDFDocumentValidator validator = new PDFDocumentValidator(dssDocument);
 
 		CertificateVerifier certificateVerifier = getOfflineCertificateVerifier();
@@ -85,11 +83,7 @@ public class BuildKnownObjectsTest extends PKIFactoryAccess {
 
 		certificateVerifier.setAlertOnMissingRevocationData(new LogOnStatusAlert());
 		certificateVerifier.setAlertOnUncoveredPOE(new LogOnStatusAlert());
-<<<<<<< HEAD:dss-pades/src/androidTest/java/eu/europa/esig/dss/pades/extension/suite/BuildKnownObjectsTest.java
-		certificateVerifier.setAlertOnExpiredSignature(new LogOnStatusAlert());
-=======
 		certificateVerifier.setAlertOnExpiredSignature(new SilentOnStatusAlert());
->>>>>>> release-5.13.1:dss-pades/src/test/java/eu/europa/esig/dss/pades/extension/suite/BuildKnownObjectsTest.java
 
 		CertificateSource trustedCertSource = new CommonTrustedCertificateSource();
 		trustedCertSource.addCertificate(DSSUtils.loadCertificateFromBase64EncodedString(
