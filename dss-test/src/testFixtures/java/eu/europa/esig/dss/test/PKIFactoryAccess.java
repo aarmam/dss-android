@@ -70,7 +70,8 @@ import eu.europa.esig.dss.token.KeyStoreSignatureTokenConnection;
 import eu.europa.esig.dss.utils.Utils;
 import eu.europa.esig.dss.validation.CertificateVerifier;
 import eu.europa.esig.dss.validation.CommonCertificateVerifier;
-import org.h2.jdbcx.JdbcDataSource;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -98,7 +99,7 @@ public abstract class PKIFactoryAccess {
     private static final String PKI_FACTORY_RESOURCES_FOLDER;
     private static final String[] PKI_FACTORY_RESOURCES_FILENAMES;
 
-    private static final JdbcDataSource dataSource;
+    private static Connection cachedConnection;
 
     static {
         try (InputStream is = PKIFactoryAccess.class.getResourceAsStream("/pki-factory.properties")) {
@@ -112,8 +113,14 @@ public abstract class PKIFactoryAccess {
             PKI_FACTORY_RESOURCES_FOLDER = props.getProperty("pki.factory.resources.folder");
             PKI_FACTORY_RESOURCES_FILENAMES = Arrays.stream(props.getProperty("pki.factory.resources.filenames").split(",")).map(String::trim).toArray(String[]::new);
 
-            dataSource = new JdbcDataSource();
-            dataSource.setUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+            // Android uses SQLite instead of H2, but for test fixtures we'll use in-memory database
+            // Note: Caching is disabled on Android - use non-cached sources for tests
+            try {
+                cachedConnection = DriverManager.getConnection("jdbc:sqlite::memory:");
+            } catch (Exception e) {
+                // SQLite not available - caching will be disabled
+                cachedConnection = null;
+            }
         } catch (Exception e) {
             throw new RuntimeException("Unable to initialize from pki-factory.properties", e);
         }
@@ -267,9 +274,13 @@ public abstract class PKIFactoryAccess {
     }
 
     private AIASource cacheAIASource(AIASource aiaSource) {
+        if (cachedConnection == null) {
+            // No caching available on Android
+            return aiaSource;
+        }
         JdbcCacheAIASource cacheAIASource = new JdbcCacheAIASource();
         cacheAIASource.setProxySource(aiaSource);
-        JdbcCacheConnector jdbcCacheConnector = new JdbcCacheConnector(dataSource);
+        JdbcCacheConnector jdbcCacheConnector = new JdbcCacheConnector(cachedConnection);
         cacheAIASource.setJdbcCacheConnector(jdbcCacheConnector);
         try {
             cacheAIASource.initTable();
@@ -283,10 +294,14 @@ public abstract class PKIFactoryAccess {
         return new PKIAIASource(getCertEntityRepository());
     }
 
-    private JdbcCacheCRLSource cacheCRLSource(RevocationSource<CRL> revocationSource) {
+    private CRLSource cacheCRLSource(CRLSource revocationSource) {
+        if (cachedConnection == null) {
+            // No caching available on Android
+            return revocationSource;
+        }
         JdbcCacheCRLSource cacheCRLSource = new JdbcCacheCRLSource();
         cacheCRLSource.setProxySource(revocationSource);
-        JdbcCacheConnector jdbcCacheConnector = new JdbcCacheConnector(dataSource);
+        JdbcCacheConnector jdbcCacheConnector = new JdbcCacheConnector(cachedConnection);
         cacheCRLSource.setJdbcCacheConnector(jdbcCacheConnector);
         cacheCRLSource.setDefaultNextUpdateDelay(3 * 24 * 60 * 60L); // 3 days
         try {
@@ -306,10 +321,14 @@ public abstract class PKIFactoryAccess {
         return pkiCRLSource;
     }
 
-    private JdbcCacheOCSPSource cacheOCSPSource(RevocationSource<OCSP> revocationSource) {
+    private OCSPSource cacheOCSPSource(OCSPSource revocationSource) {
+        if (cachedConnection == null) {
+            // No caching available on Android
+            return revocationSource;
+        }
         JdbcCacheOCSPSource cacheOCSPSource = new JdbcCacheOCSPSource();
         cacheOCSPSource.setProxySource(revocationSource);
-        JdbcCacheConnector jdbcCacheConnector = new JdbcCacheConnector(dataSource);
+        JdbcCacheConnector jdbcCacheConnector = new JdbcCacheConnector(cachedConnection);
         cacheOCSPSource.setJdbcCacheConnector(jdbcCacheConnector);
         cacheOCSPSource.setDefaultNextUpdateDelay(3 * 60 * 60L); // 3 hours
         try {

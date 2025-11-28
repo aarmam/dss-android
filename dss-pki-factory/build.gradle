@@ -1,0 +1,7 @@
+apply from: '../module-build.gradle'
+
+dependencies {
+    api project(':dss-spi')
+}
+
+description = 'DSS PKI Factory'

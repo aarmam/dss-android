@@ -30,7 +30,6 @@ import eu.europa.esig.dss.spi.DSSUtils;
 import eu.europa.esig.dss.spi.client.http.DSSFileLoader;
 import org.w3c.dom.Document;
 
-import javax.xml.crypto.dsig.CanonicalizationMethod;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -65,7 +64,7 @@ public class XmlDownloadTask implements Supplier<XmlDownloadResult> {
 			assertDocumentIsValidXML(dssDocument);
 
 			final Document dom = DomUtils.buildDOM(dssDocument);
-			final byte[] canonicalizedContent = XMLCanonicalizer.createInstance(CanonicalizationMethod.EXCLUSIVE).canonicalize(dom);
+			final byte[] canonicalizedContent = XMLCanonicalizer.createInstance(XMLCanonicalizer.DEFAULT_DSS_C14N_METHOD).canonicalize(dom);
 			return new XmlDownloadResult(dssDocument, new Digest(DigestAlgorithm.SHA256, DSSUtils.digest(DigestAlgorithm.SHA256, canonicalizedContent)));
 		} catch (DSSException e) {
 			throw e;

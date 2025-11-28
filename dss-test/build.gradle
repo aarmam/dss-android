@@ -39,6 +39,8 @@ dependencies {
     testFixturesImplementation project(':dss-document')
     testFixturesImplementation project(':dss-token')
     testFixturesImplementation project(':dss-service')
+    testFixturesImplementation project(':dss-pki-factory')
+    testFixturesImplementation project(':dss-pki-factory-jaxb')
     testFixturesImplementation 'com.signerry.santuario:xmlsec:2.3.2'
     testFixturesImplementation 'ch.qos.logback:logback-classic:1.2.10'
     testFixturesImplementation 'com.h2database:h2:2.1.210'

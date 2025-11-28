@@ -1,0 +1,8 @@
+apply from: '../module-build.gradle'
+
+dependencies {
+    api project(':dss-jaxb-parsers')
+    api project(':dss-pki-factory')
+}
+
+description = 'JAXB PKI Factory'
