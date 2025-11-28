@@ -8,6 +8,7 @@ apply from: "../module-build.gradle"
 dependencies {
     api project(':dss-document')
     api project(':dss-utils')
+    api project(':dss-xml-utils')
     api project(':specs-asic-manifest')
     testFixturesImplementation testFixtures(project(':dss-test'))
     testFixturesImplementation testFixtures(project(':dss-token'))

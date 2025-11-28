@@ -28,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
-import javax.xml.crypto.dsig.CanonicalizationMethod;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -56,13 +55,13 @@ public class XMLCanonicalizer {
      * Canonicalization, which serializes XML namespace declarations independently
      * of the surrounding XML, was created.
      */
-    public static final String DEFAULT_DSS_C14N_METHOD = CanonicalizationMethod.EXCLUSIVE;
+    public static final String DEFAULT_DSS_C14N_METHOD = "http://www.w3.org/2001/10/xml-exc-c14n#";
 
     /**
      * This is the default canonicalization method for XMLDSIG used for signatures
      * and timestamps (see XMLDSIG 4.4.3.2) when one is not defined.
      */
-    public static final String DEFAULT_XMLDSIG_C14N_METHOD = CanonicalizationMethod.INCLUSIVE;
+    public static final String DEFAULT_XMLDSIG_C14N_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
 
     /** Xmlsec canonicalizer instance */
     private final Canonicalizer c14n;

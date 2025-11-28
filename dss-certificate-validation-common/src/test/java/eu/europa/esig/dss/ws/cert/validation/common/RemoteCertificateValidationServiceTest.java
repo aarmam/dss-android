@@ -43,8 +43,8 @@ import eu.europa.esig.dss.ws.dto.RemoteDocument;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.Unmarshaller;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Calendar;

@@ -3,5 +3,7 @@ apply from: '../module-build.gradle'
 dependencies {
     api project(':dss-xml-common')
     api project(':dss-enumerations')
+    api project(':dss-model')
+    api project(':dss-utils')
     api "com.signerry.santuario:xmlsec:${xmlsec_version}"
 }

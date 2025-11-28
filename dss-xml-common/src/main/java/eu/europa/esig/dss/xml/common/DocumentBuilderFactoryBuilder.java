@@ -20,11 +20,10 @@
  */
 package eu.europa.esig.dss.xml.common;
 
-import com.signerry.android.AndroidUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.signerry.android.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -40,12 +39,6 @@ public class DocumentBuilderFactoryBuilder extends AbstractFactoryBuilder<Docume
      * Default constructor building a secure pre-configured instance of {@code DocumentBuilderFactoryBuilder}
      */
     protected DocumentBuilderFactoryBuilder() {
-
-        //e.kuzma. This line is ready important for memory usage.
-        //Mostly xades xml aren't that complex, that deferred node expansion add
-        //some performance improvement.
-        disableFeature("http://apache.org/xml/features/dom/defer-node-expansion");
-
         enableFeature("http://xml.org/sax/features/namespaces"); // .setNamespaceAware(true)
         // XInclude is set to "false" by default. Enforcing of the feature value can throw an exception
         // if the implementation does not support the property
@@ -58,8 +51,8 @@ public class DocumentBuilderFactoryBuilder extends AbstractFactoryBuilder<Docume
         disableFeature("http://xml.org/sax/features/external-parameter-entities");
         disableFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd");
         // Sonar: XML parsers should not be vulnerable to XXE attacks
-//        setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-//        setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
     }
 
     /**
@@ -85,7 +78,7 @@ public class DocumentBuilderFactoryBuilder extends AbstractFactoryBuilder<Docume
 
     @Override
     protected DocumentBuilderFactory instantiateFactory() {
-        return AndroidUtils.getService(DocumentBuilderFactory.class);
+        return DocumentBuilderFactory.newInstance();
     }
 
     @Override
