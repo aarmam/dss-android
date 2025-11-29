@@ -333,10 +333,15 @@ public final class DSSUtils {
 	private static List<CertificateToken> loadCertificates(InputStream is) {
 		final List<CertificateToken> certificates = new ArrayList<>();
 		try {
+			// Read the InputStream into a byte array so it can be re-read on provider fallback
+			final byte[] certBytes = Utils.toByteArray(is);
 
-
-			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509", CryptoProvider.BCProvider);
-			Collection<X509Certificate> certificatesCollection = (Collection<X509Certificate>) certificateFactory.generateCertificates(is);
+			@SuppressWarnings("unchecked")
+			Collection<X509Certificate> certificatesCollection = CryptoProvider.bind((provider) -> {
+				CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509", provider);
+				return (Collection<X509Certificate>) certificateFactory.generateCertificates(
+						new java.io.ByteArrayInputStream(certBytes));
+			}).get();
 
 			if (certificatesCollection != null) {
 				for (X509Certificate cert : certificatesCollection) {
@@ -348,7 +353,7 @@ public final class DSSUtils {
 			}
 			return certificates;
 		} catch (DSSException e) {
-		  	throw e;
+			throw e;
 		} catch (Exception e) {
 			throw new DSSException("Unable to load certificate(s) : " + e.getMessage(), e);
 		}

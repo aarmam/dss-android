@@ -465,13 +465,15 @@ public enum DigestAlgorithm implements OidAndUriBasedEnum {
 
 	/**
 	 * Get a new instance of MessageDigest for the current digestAlgorithm
-	 * 
+	 *
 	 * @return an instance of MessageDigest
 	 * @throws NoSuchAlgorithmException
 	 *                                  if the algorithm is not supported
 	 */
 	public MessageDigest getMessageDigest() throws NoSuchAlgorithmException {
-		return MessageDigest.getInstance(javaName, CryptoProvider.BCProvider);
+		return CryptoProvider.bind((provider) ->
+				MessageDigest.getInstance(javaName, provider)
+		).get();
 	}
 
 	/**

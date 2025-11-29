@@ -20,6 +20,8 @@
  */
 package eu.europa.esig.dss.signature;
 
+import com.signerry.android.CryptoProvider;
+
 import eu.europa.esig.dss.AbstractSignatureParameters;
 import eu.europa.esig.dss.FileNameBuilder;
 import eu.europa.esig.dss.enumerations.SignatureAlgorithm;
@@ -54,7 +56,7 @@ public abstract class AbstractSignatureService<SP extends SerializableSignatureP
         implements DocumentSignatureService<SP, TP> {
 
     static {
-        Security.addProvider(DSSSecurityProvider.getSecurityProvider());
+        Security.addProvider(CryptoProvider.BCProvider);
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractSignatureService.class);
@@ -196,15 +198,14 @@ public abstract class AbstractSignatureService<SP extends SerializableSignatureP
         Objects.requireNonNull(signatureValue, "SignatureValue cannot be null!");
         Objects.requireNonNull(signingCertificate, "CertificateToken cannot be null!");
 
-        try {
-            Signature signature = Signature.getInstance(signatureValue.getAlgorithm().getJCEId(), DSSSecurityProvider.getSecurityProviderName());
-            signature.initVerify(signingCertificate.getPublicKey());
-            signature.update(toBeSigned.getBytes());
-            return signature.verify(signatureValue.getValue());
-        } catch (GeneralSecurityException | IllegalStateException e) { // IllegalStateException because of org.bouncycastle.jcajce.provider.asymmetric.edec.SignatureSpi
-            LOG.error("Unable to verify the signature value : {}", e.getMessage());
-            return false;
-        }
+        return CryptoProvider.bind((provider) -> {
+            Signature _signature = Signature.getInstance(signatureValue.getAlgorithm().getJCEId(), provider);
+            _signature.initVerify(signingCertificate.getPublicKey());
+            _signature.update(toBeSigned.getBytes());
+
+            return _signature.verify(signatureValue.getValue());
+        }).get();
+
     }
 
 }

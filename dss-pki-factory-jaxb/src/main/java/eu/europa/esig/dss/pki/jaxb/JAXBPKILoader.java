@@ -20,6 +20,7 @@
  */
 package eu.europa.esig.dss.pki.jaxb;
 
+import com.signerry.android.CryptoProvider;
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
 import eu.europa.esig.dss.enumerations.MaskGenerationFunction;
@@ -75,7 +76,7 @@ public class JAXBPKILoader {
     private static final Logger LOG = LoggerFactory.getLogger(JAXBPKILoader.class);
 
     static {
-        Security.addProvider(DSSSecurityProvider.getSecurityProvider());
+        Security.addProvider(CryptoProvider.BCProvider);
     }
 
     /**

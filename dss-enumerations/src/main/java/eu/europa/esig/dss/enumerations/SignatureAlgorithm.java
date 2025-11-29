@@ -20,6 +20,8 @@
  */
 package eu.europa.esig.dss.enumerations;
 
+import com.signerry.android.CryptoProvider;
+
 import java.io.IOException;
 import java.security.AlgorithmParameters;
 import java.security.GeneralSecurityException;
@@ -783,12 +785,16 @@ public enum SignatureAlgorithm implements OidAndUriBasedEnum {
 
         if (sigAlgParams != null && algorithm.getMaskGenerationFunction() != null) {
             try {
-                AlgorithmParameters algoParams = AlgorithmParameters.getInstance("PSS");
-                algoParams.init(sigAlgParams);
+                final byte[] params = sigAlgParams;
+                AlgorithmParameters algoParams = CryptoProvider.bind((provider) -> {
+                    AlgorithmParameters parameters = AlgorithmParameters.getInstance("PSS", provider);
+                    parameters.init(params);
+                    return parameters;
+                }).get();
                 PSSParameterSpec pssParam = algoParams.getParameterSpec(PSSParameterSpec.class);
                 DigestAlgorithm digestAlgorithm = DigestAlgorithm.forJavaName(pssParam.getDigestAlgorithm());
                 algorithm = getAlgorithm(algorithm.getEncryptionAlgorithm(), digestAlgorithm, algorithm.getMaskGenerationFunction());
-            } catch (GeneralSecurityException | IOException e) {
+            } catch (GeneralSecurityException e) {
                 throw new IllegalArgumentException("Unable to initialize PSS", e);
             }
         }

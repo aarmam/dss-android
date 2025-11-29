@@ -20,6 +20,8 @@
  */
 package eu.europa.esig.dss.spi.x509;
 
+import com.signerry.android.CryptoProvider;
+
 import eu.europa.esig.dss.model.DSSException;
 import eu.europa.esig.dss.model.x509.CertificateToken;
 import eu.europa.esig.dss.spi.DSSUtils;
@@ -169,7 +171,7 @@ public class KeyStoreCertificateSource extends CommonCertificateSource {
 
 	private void initKeystore(final InputStream ksStream, final String ksType, final char[] ksPassword) {
 		try (InputStream is = ksStream) {
-			keyStore = KeyStore.getInstance(ksType);
+			keyStore = CryptoProvider.bind((provider) -> KeyStore.getInstance(ksType, provider)).get();
 			keyStore.load(is, ksPassword);
 			passwordProtection = ksPassword;
 			extractCertificates();
