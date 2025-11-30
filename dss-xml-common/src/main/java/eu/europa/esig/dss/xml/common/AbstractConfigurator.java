@@ -20,7 +20,7 @@
  */
 package eu.europa.esig.dss.xml.common;
 
-import eu.europa.esig.dss.alert.ExceptionOnStatusAlert;
+import eu.europa.esig.dss.alert.LogOnStatusAlert;
 import eu.europa.esig.dss.alert.StatusAlert;
 import eu.europa.esig.dss.alert.status.ObjectStatus;
 import eu.europa.esig.dss.xml.common.exception.SecurityConfigurationException;
@@ -46,8 +46,10 @@ public abstract class AbstractConfigurator<F> {
     /** Map of attribute names and values to set */
     private final Map<String, Object> attributes = new HashMap<>();
 
-    /** Defines the behaviour for processing a security exception */
-    private StatusAlert securityExceptionAlert = new ExceptionOnStatusAlert();
+    /** Defines the behaviour for processing a security exception.
+     *  Default changed to LogOnStatusAlert for Android compatibility,
+     *  as Android's XML parser doesn't support certain security properties. */
+    private StatusAlert securityExceptionAlert = new LogOnStatusAlert();
 
     /**
      * Default constructor initializing empty maps of security features and attributes
